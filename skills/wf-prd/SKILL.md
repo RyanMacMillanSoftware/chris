@@ -4,7 +4,7 @@ description: "Write a Product Requirements Document for the current project."
 
 # /wf-prd
 
-Interactively write a PRD for the current project. Work through each section with Ryan, asking questions and drafting content. Don't write a wall of text and dump it — collaborate section by section.
+Interactively write a PRD for the current project. Work through each section with the user, asking questions and drafting content. Don't write a wall of text and dump it — collaborate section by section.
 
 `$ARGUMENTS` — optional project slug (if not in a project directory)
 
@@ -21,8 +21,8 @@ If no matching project is found, suggest running `/wf-new` first.
 Load `~/Code/chris/templates/PRD.md` as the structural guide.
 
 Work through each section **one at a time**. For each section:
-- Ask targeted questions to understand what Ryan wants to express
-- Draft the section content based on his answers
+- Ask targeted questions to understand what the user wants to express
+- Draft the section content based on their answers
 - Show the draft and ask for confirmation or edits before moving on
 - Don't proceed to the next section until the current one is confirmed
 
@@ -30,8 +30,8 @@ Sections to cover:
 1. **Overview** — What is this? Why does it exist? One paragraph.
 2. **Problem** — What pain is being solved?
 3. **Users** — Who uses this? What's their context?
-4. **Goals** — Measurable outcomes (ask Ryan to make them specific)
-5. **Non-Goals** — Explicitly out of scope (very valuable — push Ryan to define these)
+4. **Goals** — Measurable outcomes (ask the user to make them specific)
+5. **Non-Goals** — Explicitly out of scope (very valuable — push the user to define these)
 6. **Success Metrics** — How will you know it worked?
 7. **Constraints** — Tech, timeline, dependencies
 8. **Key Concepts** — Define any domain-specific terms or entities that will recur

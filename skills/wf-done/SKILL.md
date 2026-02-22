@@ -46,7 +46,7 @@ Base content on the PRD goals, problem statement, and completed tasks.
 
 **Write `~/Code/chris/projects/<slug>/release/RELEASE-NOTES.md`:**
 
-Technical changelog for future reference. Audience: future Ryan, future agents. Include:
+Technical changelog for future reference. Audience: future maintainers, future agents. Include:
 - Project name, completion date, repos touched, PR URL
 - **Completed Tasks** — list all `[x]` tasks from TASKS.md
 - **Decisions Made During Build** — any notable choices, trade-offs, or things that diverged from the spec

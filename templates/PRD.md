@@ -2,7 +2,7 @@
 
 **Date:** {{ YYYY-MM-DD }}
 **Status:** Draft
-**Author:** Ryan
+**Author:** [Your name]
 
 ---
 

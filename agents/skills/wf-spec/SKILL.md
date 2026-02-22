@@ -4,7 +4,7 @@ description: "Generate a technical specification from the project PRD."
 
 # /wf-spec
 
-Generate a technical spec from the project's PRD. Read the PRD carefully, then draft a spec covering architecture, data models, component breakdown, and tech decisions. Present it to Ryan before saving.
+Generate a technical spec from the project's PRD. Read the PRD carefully, then draft a spec covering architecture, data models, component breakdown, and tech decisions. Present it to the user before saving.
 
 `$ARGUMENTS` — optional project slug
 
@@ -37,9 +37,9 @@ Write a draft spec covering:
 
 Be specific. Avoid hand-waving. If a component needs an exact file path or JSON schema, define it.
 
-## Review with Ryan
+## Review with the user
 
-Show Ryan the draft spec and ask: "Does this look right? Anything to add, remove, or change?"
+Show the user the draft spec and ask: "Does this look right? Anything to add, remove, or change?"
 
 Iterate on sections until confirmed. Don't save without explicit approval.
 

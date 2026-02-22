@@ -4,7 +4,7 @@ description: "Break the spec into ordered tasks. Identify repos. Set up git bran
 
 # /wf-tasks
 
-Break the project spec into ordered, testable tasks. Identify which repos each task touches. Confirm with Ryan. Set up branches.
+Break the project spec into ordered, testable tasks. Identify which repos each task touches. Confirm with the user. Set up branches.
 
 `$ARGUMENTS` — optional project slug
 
@@ -43,11 +43,11 @@ Guidelines:
 
 As you write tasks, note which repos each one touches.
 
-## Confirm repos with Ryan
+## Confirm repos with the user
 
 After drafting all tasks, compile the full list of repos involved (deduplicated).
 
-Show Ryan: "This project will touch the following repos: [list]. Is that correct? Anything to add or remove?"
+Show the user: "This project will touch the following repos: [list]. Is that correct? Anything to add or remove?"
 
 Wait for confirmation. Adjust task repo assignments if needed.
 
@@ -60,7 +60,7 @@ For each confirmed repo:
    ⚠️  Repo '~/Code/<repo>/' not found.
    Either create it with /wf-new or add the path manually.
    ```
-   Ask Ryan how to proceed before continuing.
+   Ask the user how to proceed before continuing.
 
 2. Check if branch `chris/<slug>` already exists:
    ```bash

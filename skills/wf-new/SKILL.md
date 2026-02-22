@@ -67,7 +67,7 @@ Copy `~/Code/chris/templates/AGENTS.md` to `~/Code/<repo-name>/AGENTS.md` and pr
 - `slug:` → the repo slug
 - `repo:` → `~/Code/<repo-name>`
 
-Tell Ryan: "I've created `~/Code/<repo-name>/`. Please fill in the AGENTS.md with your stack, install command, and any initial notes. I'll wait."
+Tell the user: "I've created `~/Code/<repo-name>/`. Please fill in the AGENTS.md with your stack, install command, and any initial notes. I'll wait."
 
 Wait for confirmation before continuing.
 

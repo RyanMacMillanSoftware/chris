@@ -72,7 +72,7 @@ Format the report as:
 [Any observations, deferred items, or recommendations]
 ```
 
-Show Ryan the report and ask: "Does this review look accurate? Anything to adjust before proceeding?"
+Show the user the report and ask: "Does this review look accurate? Anything to adjust before proceeding?"
 
 ## On PASS
 

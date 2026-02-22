@@ -10,12 +10,12 @@ default_branch: main
 
 ## What Chris Is
 
-Chris is a coding project workflow manager — a personal tool built for Ryan to take software ideas from inception through to shipped code in a consistent, repeatable way. It manages:
+Chris is a coding project workflow manager — a personal tool built for you to take software ideas from inception through to shipped code in a consistent, repeatable way. It manages:
 
 - **Workflow stages**: Research → PRD → Spec → Tasks → Build → Review
-- **Git operations**: branching, worktrees, commits, and draft PRs — all on Ryan's behalf
+- **Git operations**: branching, worktrees, commits, and draft PRs — all on the user's behalf
 - **Multiple concurrent projects**: using git worktrees to prevent projects from clashing on shared repos
-- **Remote access**: integrating with OpenClaw so Ryan can manage projects from his phone via WhatsApp
+- **Remote access**: integrating with OpenClaw so the user can manage projects from their phone via WhatsApp
 
 Chris is self-hosting — it uses its own workflow to manage its own development. This repo IS the Chris tool. When you are working in this repo, you are either building Chris itself or updating its skills, templates, or project metadata.
 
@@ -80,7 +80,7 @@ When working in this repo, follow these conventions:
 - **Commit style**: Conventional commits — `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`
 - **No project slug in commit messages** — conventional type is sufficient
 - **Worktrees**: if multiple projects are editing this repo simultaneously, they use separate worktrees at `~/Code/.chris-worktrees/<project-slug>/chris/`
-- **PRs**: draft PRs opened automatically by `/wf-review` when it passes; Ryan promotes to ready
+- **PRs**: draft PRs opened automatically by `/wf-review` when it passes; the user promotes to ready
 
 **Examples of good commit messages in this repo:**
 ```
@@ -125,7 +125,7 @@ When an agent is tasked with working on Chris itself, be aware:
 - `/wf-review` pass → push branch → open draft PR on GitHub (target branch configurable via `default_branch` in CONTEXT.md, defaults to `main`)
 - `/wf-status` formatted as plain list (WhatsApp-compatible, no markdown tables)
 - Worktrees auto-run `install_cmd` from CONTEXT.md front matter on creation (e.g., `bun install`)
-- Conflict resolution: notify Ryan immediately, do NOT pause work; flag risk throughout project and at merge time
+- Conflict resolution: notify the user immediately, do NOT pause work; flag risk throughout project and at merge time
 
 ---
 
