@@ -96,7 +96,7 @@ Identify the working directory: worktree path if set up, else `~/Code/<repo>/`.
 
 **Default (no `--local` flag):**
 
-Spawn an OpenClaw subagent with this brief:
+Spawn a background Claude session with this brief:
 ```
 You are working on project '<slug>', task <TASK-NNN>: <title>.
 
@@ -116,10 +116,9 @@ Git instructions:
 - Commit your work at logical checkpoints using conventional commits (feat:, fix:, chore:, etc.)
 - Do not push — /wf-review handles pushing
 - When done with the task, update the checkbox in TASKS.md to [x]
-
-When completely finished, run:
-openclaw system event --text "Build complete: <slug> TASK-NNN done" --mode now
 ```
+
+Use: `claude --print --dangerously-skip-permissions` at `<worktree-or-repo-path>`, passing the brief above.
 
 **With `--local` flag:**
 

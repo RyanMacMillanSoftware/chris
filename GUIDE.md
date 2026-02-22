@@ -91,14 +91,11 @@ Update this as things change. It's the first thing any agent (desktop or remote)
 ```bash
 cd ~/Code/my-project
 # Open Claude CLI and run:
-/wf-build           # spawns OpenClaw subagent, tracks remotely
+/wf-build           # spawns a background agent
 /wf-build --local   # runs a Claude session right here in terminal
 ```
 
-**From your phone (OpenClaw):**
-> "Run a build on my-project"
-
-Chris will find the project, load AGENTS.md, and spawn a background agent. You'll get notified when it's done or needs input.
+Chris will find the project, load AGENTS.md, and spawn an agent.
 
 ---
 
@@ -109,20 +106,9 @@ Check what's going on across everything:
 /wf-status
 ```
 
-This shows all tracked projects and their current workflow stage. From OpenClaw, just ask "what's the status of my projects?" and you'll get the same view.
+This shows all tracked projects and their current workflow stage.
 
 ---
-
-## Mobile / Remote Use
-
-Chris integrates with OpenClaw so you can manage everything from WhatsApp on your phone:
-
-- "Start a build on [project]" → spawns agent
-- "What's the status?" → shows all projects
-- "What tasks are left on [project]?" → reads TASKS.md
-- "Kick off the review for [project]" → runs /wf-review
-
-You don't need to be at your desk. Running builds, checking status, and reviewing output all work remotely.
 
 ---
 

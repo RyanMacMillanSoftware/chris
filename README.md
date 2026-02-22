@@ -6,7 +6,7 @@ A personal coding project workflow manager. Takes software ideas from first thou
 /wf-new → /wf-prd → /wf-spec → /wf-tasks → /wf-build → /wf-review → /wf-done
 ```
 
-Works from the Claude CLI at your desk. Accessible from your phone via OpenClaw + WhatsApp.
+Works from the Claude CLI at your desk.
 
 ---
 
@@ -15,8 +15,7 @@ Works from the Claude CLI at your desk. Accessible from your phone via OpenClaw 
 - **Workflow stages** — each step produces a document that feeds the next: PRD → Spec → Tasks → Build → Review → Done
 - **Multi-repo projects** — a single project can span multiple codebases; Chris coordinates them all
 - **Git management** — creates branches, sets up worktrees for concurrent projects, commits in conventional style, opens draft PRs
-- **Agent orchestration** — spawns background agents (via OpenClaw) or local Claude sessions to do the actual building
-- **Mobile access** — full workflow control from WhatsApp via the OpenClaw skill
+- **Agent orchestration** — spawns background agents or local Claude sessions to do the actual building
 - **Self-hosting** — Chris manages its own development through the same workflow
 
 ---
@@ -137,10 +136,6 @@ git push -u origin main
 
 This repo is excluded from the public `chris/` repo via `.gitignore`.
 
-### 5. Install the OpenClaw skill *(for mobile access)*
-
-See [OpenClaw Integration](#openclaw-integration) below.
-
 ---
 
 ## AGENTS.md — Repo Briefs
@@ -188,46 +183,6 @@ Chris manages git throughout the workflow:
 - **PRs**: draft PRs opened automatically by `/wf-review` when it passes
 
 ---
-
-## OpenClaw Integration
-
-Chris integrates with [OpenClaw](https://openclaw.ai) to give you full workflow control from your phone via WhatsApp.
-
-### Install the OpenClaw skill
-
-Copy or symlink the Chris skill into your OpenClaw workspace:
-
-```bash
-cp ~/Code/chris/skills/openclaw/SKILL.md ~/.openclaw/workspace/skills/chris/SKILL.md
-```
-
-Or follow the OpenClaw skill installation docs at https://docs.openclaw.ai.
-
-### What you can do from WhatsApp
-
-Once the skill is installed, you can manage any project stage by messaging your OpenClaw instance:
-
-| Message | What happens |
-|---------|-------------|
-| "What's the status of my projects?" | Lists all projects and their current stage |
-| "Start a new project called auth-overhaul" | Creates the project in Chris |
-| "Write the spec for mobile-onboarding" | Spawns an agent to run `/wf-spec` |
-| "Break mobile-onboarding into tasks" | Runs `/wf-tasks` |
-| "Kick off the build on api-refactor" | Spawns a build agent |
-| "Review api-refactor" | Runs `/wf-review`, opens draft PR if it passes |
-| "Close out api-refactor" | Runs `/wf-done`, generates release docs |
-| "Research GraphQL vs REST for mobile-onboarding" | Runs `/wf-research` |
-| "Any conflicts?" | Lists all active cross-project conflicts |
-
-### How agents are spawned
-
-When you trigger a workflow stage from WhatsApp, OpenClaw spawns a background subagent that:
-1. Reads the relevant `status.json` and project metadata
-2. Loads the appropriate `AGENTS.md` for each involved repo
-3. Runs the workflow stage (same as if you typed `/wf-spec` in Claude CLI)
-4. Reports back when done (or when it needs input)
-
-You get a WhatsApp message when the agent finishes — or if it hits a conflict or needs a decision.
 
 ---
 

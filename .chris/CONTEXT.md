@@ -2,7 +2,7 @@
 name: Chris
 slug: chris
 repo: ~/Code/chris
-stack: [Claude CLI skills, OpenClaw skills, Markdown, Git]
+stack: [Claude CLI skills, Markdown, Git]
 stage: tasks
 install_cmd: null
 default_branch: main
@@ -15,7 +15,6 @@ Chris is a coding project workflow manager — a personal tool built for you to 
 - **Workflow stages**: Research → PRD → Spec → Tasks → Build → Review
 - **Git operations**: branching, worktrees, commits, and draft PRs — all on the user's behalf
 - **Multiple concurrent projects**: using git worktrees to prevent projects from clashing on shared repos
-- **Remote access**: integrating with OpenClaw so the user can manage projects from their phone via WhatsApp
 
 Chris is self-hosting — it uses its own workflow to manage its own development. This repo IS the Chris tool. When you are working in this repo, you are either building Chris itself or updating its skills, templates, or project metadata.
 
@@ -65,9 +64,9 @@ Skills live in `~/Code/chris/skills/` and are installed globally to `~/.claude/s
 | `/wf-prd` | Write a Product Requirements Document interactively. |
 | `/wf-spec` | Generate a technical spec from the PRD. |
 | `/wf-tasks` | Break the spec into ordered tasks; identify which repos are involved; lock in git strategy. |
-| `/wf-build` | Spawn an agent (OpenClaw subagent by default, `--local` for in-terminal). Loads this CONTEXT.md + project metadata. Manages git. |
+| `/wf-build` | Spawn an agent (`--local` for in-terminal). Loads this CONTEXT.md + project metadata. Manages git. |
 | `/wf-review` | Review current diff against spec + tasks. On pass: push branch, open draft PR. |
-| `/wf-status` | Show all projects and stages. WhatsApp-formatted plain list. |
+| `/wf-status` | Show all projects and stages. Plain list. |
 | `/wf-research [topic]` | Research a topic at any workflow stage. Saves to `projects/<slug>/research/`. |
 
 ---
@@ -123,7 +122,7 @@ When an agent is tasked with working on Chris itself, be aware:
 - `~/Code/chris/` = public git repo (skills, templates, guide); `~/Code/chris/projects/` = separate private git repo (all personal project data — PRDs, specs, tasks, research). Split is a nice-to-have, not day-one.
 - No bun/TypeScript compiled layer — everything is markdown + shell
 - `/wf-review` pass → push branch → open draft PR on GitHub (target branch configurable via `default_branch` in CONTEXT.md, defaults to `main`)
-- `/wf-status` formatted as plain list (WhatsApp-compatible, no markdown tables)
+- `/wf-status` formatted as plain list (no markdown tables)
 - Worktrees auto-run `install_cmd` from CONTEXT.md front matter on creation (e.g., `bun install`)
 - Conflict resolution: notify the user immediately, do NOT pause work; flag risk throughout project and at merge time
 

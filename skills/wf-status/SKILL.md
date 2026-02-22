@@ -4,7 +4,7 @@ description: "Show all Chris projects and their current stage."
 
 # /wf-status
 
-Show all active Chris projects and their current stage. Output is formatted as a plain list — no markdown tables — so it renders correctly in WhatsApp and any other plain-text surface.
+Show all active Chris projects and their current stage. Output is formatted as a plain list — no markdown tables.
 
 `$ARGUMENTS` — optional: `all` to include done projects (default hides them)
 
