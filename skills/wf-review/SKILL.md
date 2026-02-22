@@ -81,7 +81,7 @@ Push each repo's branch:
 git -C <worktree-or-repo-path> push origin chris/<slug>
 ```
 
-Get `default_branch` from `~/Code/<repo>/.chris/CONTEXT.md` front matter (default: `main`).
+Get `default_branch` from `~/Code/<repo>/AGENTS.md` front matter (default: `main`).
 
 Open a draft PR using the gh CLI:
 ```bash

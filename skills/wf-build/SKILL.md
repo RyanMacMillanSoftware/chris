@@ -70,7 +70,7 @@ For each repo in the project:
      mkdir -p ~/Code/.chris-worktrees/<slug>
      git -C ~/Code/<repo> worktree add ~/Code/.chris-worktrees/<slug>/<repo>/ chris/<slug>
      ```
-   - If `install_cmd` is set in `~/Code/<repo>/.chris/CONTEXT.md` front matter, run it in the worktree:
+   - If `install_cmd` is set in `~/Code/<repo>/AGENTS.md` front matter, run it in the worktree:
      ```bash
      cd ~/Code/.chris-worktrees/<slug>/<repo>/ && <install_cmd>
      ```
@@ -86,7 +86,7 @@ Collect and read:
 - `~/Code/chris/projects/<slug>/PRD.md`
 - `~/Code/chris/projects/<slug>/SPEC.md`
 - `~/Code/chris/projects/<slug>/TASKS.md`
-- `~/Code/<repo>/.chris/CONTEXT.md` for each involved repo
+- `~/Code/<repo>/AGENTS.md` for each involved repo
 
 Identify the specific task to work on (first unchecked TASK-NNN).
 
@@ -106,7 +106,7 @@ Branch: chris/<slug>
 [Full content of PRD.md]
 [Full content of SPEC.md]
 [Relevant section of TASKS.md]
-[Content of each repo's CONTEXT.md]
+[Content of each repo's AGENTS.md]
 
 Your task:
 <task description and acceptance criteria>

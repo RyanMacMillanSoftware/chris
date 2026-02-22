@@ -9,7 +9,7 @@ Chris is your coding project workflow manager. It gives every project the same c
 Every project has a **workflow**, a **context file**, and a **home**.
 
 - **Workflow**: A sequence of stages — PRD → Spec → Tasks → Build → Review. Each stage produces a document that feeds the next.
-- **Context file** (`.chris/CONTEXT.md`): A structured brief that lives in the project repo. Every agent session starts by reading this, so you never re-explain the project.
+- **Context file** (`AGENTS.md`): A structured brief that lives in the project repo. Every agent session starts by reading this, so you never re-explain the project.
 - **Home**: Actual code lives at `~/Code/<project-name>`. Chris's registry at `~/Code/chris/projects/<slug>/` tracks status and holds docs for projects without a repo yet.
 
 ---
@@ -22,7 +22,7 @@ Every project has a **workflow**, a **context file**, and a **home**.
 
 | Command | What it does | Produces |
 |---------|-------------|---------|
-| `/wf-new [name]` | Scaffolds project directory + Chris registry entry | `~/Code/<name>/`, `.chris/` dir, `CONTEXT.md` |
+| `/wf-new [name]` | Scaffolds project directory + Chris registry entry | `~/Code/<name>/`, `AGENTS.md` |
 | `/wf-prd` | Guides you through writing a Product Requirements Document | `PRD.md` |
 | `/wf-spec` | Writes a technical spec from the PRD | `SPEC.md` |
 | `/wf-tasks` | Breaks the spec into ordered, testable tasks | `TASKS.md` |
@@ -47,13 +47,13 @@ You don't have to go in order — skip stages that don't apply, or start from an
 /wf-build
 ```
 
-Chris creates `~/Code/my-project-name/` with a `.chris/` directory inside it. The CONTEXT.md there is the agent's briefing doc — keep it up to date as the project evolves.
+Chris creates `~/Code/my-project-name/` with an `AGENTS.md` file. This is the agent briefing doc — keep it up to date as the project evolves.
 
 ---
 
-## The CONTEXT.md File
+## The AGENTS.md File
 
-Every project has a `.chris/CONTEXT.md`. It looks like this:
+Every project has a `AGENTS.md`. It looks like this:
 
 ```yaml
 ---
@@ -98,7 +98,7 @@ cd ~/Code/my-project
 **From your phone (OpenClaw):**
 > "Run a build on my-project"
 
-Chris will find the project, load CONTEXT.md, and spawn a background agent. You'll get notified when it's done or needs input.
+Chris will find the project, load AGENTS.md, and spawn a background agent. You'll get notified when it's done or needs input.
 
 ---
 
@@ -148,7 +148,7 @@ When something feels clunky or you find a better pattern, note it in workflow-im
 
 ## Tips
 
-- **Keep CONTEXT.md current.** Stale context is worse than no context.
+- **Keep AGENTS.md current.** Stale context is worse than no context.
 - **Don't skip the PRD.** Even a rough one catches assumptions before they become bugs.
 - **`/wf-review` before merging.** Takes 2 minutes, catches drift from the original spec.
 - **Run multiple builds in parallel.** Chris is designed for concurrent projects — use it.

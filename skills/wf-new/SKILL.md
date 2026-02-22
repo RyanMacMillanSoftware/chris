@@ -60,15 +60,14 @@ cd ~/Code/<repo-name>
 git init
 git checkout -b main
 git commit --allow-empty -m "chore: init"
-mkdir -p .chris
 ```
 
-Copy `~/Code/chris/templates/CONTEXT.md` to `~/Code/<repo-name>/.chris/CONTEXT.md` and pre-fill:
+Copy `~/Code/chris/templates/AGENTS.md` to `~/Code/<repo-name>/AGENTS.md` and pre-fill:
 - `name:` → the repo display name
 - `slug:` → the repo slug
 - `repo:` → `~/Code/<repo-name>`
 
-Tell Ryan: "I've created `~/Code/<repo-name>/`. Please fill in the CONTEXT.md with your stack, install command, and any initial notes. I'll wait."
+Tell Ryan: "I've created `~/Code/<repo-name>/`. Please fill in the AGENTS.md with your stack, install command, and any initial notes. I'll wait."
 
 Wait for confirmation before continuing.
 

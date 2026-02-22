@@ -50,7 +50,7 @@ Check for `~/Code/chris/projects/chris/`. If missing:
 
 Check for `~/Code/chris/projects/workflow-improvements/`. If missing:
 - Create the directory
-- Copy `~/Code/chris/.chris/CONTEXT.md` to `~/Code/chris/projects/workflow-improvements/CONTEXT.md`
+- Copy `~/Code/chris/AGENTS.md` to `~/Code/chris/projects/workflow-improvements/AGENTS.md`
 - Print: `✅ Created meta-project: workflow-improvements`
 
 **4. Symlink skills into ~/.claude/commands/**
