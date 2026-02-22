@@ -32,12 +32,17 @@ All project metadata lives in `~/Code/chris/projects/`. Each project has a `stat
 
 **Triggers:** "status", "what's going on", "what are you working on", "what projects", "show me everything", "any updates", "progress"
 
-Read all `~/Code/chris/projects/*/status.json` files directly. Format as plain list:
+Read all `~/Code/chris/projects/*/status.json` files directly.
+
+For any project in `build` stage with a non-empty `active_agents` array: read `~/Code/chris/projects/<slug>/TASKS.md` and look up the title of the active task ID. Show it alongside the task number.
+
+Format as plain list:
 
 ```
 📋 Chris Projects
 
-🟢 api-refactor — build (agent running)
+🟢 api-refactor — build
+   Task: TASK-003 · Add session refresh endpoint
    Repos: api, shared-lib
    ⚠️ Conflict: api ↔ mobile-onboarding
 
@@ -104,8 +109,10 @@ Confirm: "Breaking '<slug>' into tasks. Will confirm repos with you."
 
 **Triggers:** "build", "kick off the build", "start building", "work on", "run the build", "next task"
 
-Extract the project slug. Spawn a subagent to run `/wf-build <slug>`.
-Confirm: "Starting build for '<slug>'. I'll notify you when the task completes or needs input."
+Extract the project slug. Before spawning, read `~/Code/chris/projects/<slug>/TASKS.md` and find the first unchecked task `- [ ] TASK-NNN`. Extract both the task ID and title.
+
+Spawn a subagent to run `/wf-build <slug>`.
+Confirm: "Starting build for '<slug>' — TASK-NNN: <title>. I'll notify you when it's done."
 
 ### REVIEW — Run a review
 
@@ -141,6 +148,15 @@ When a capability requires triggering a workflow stage (new, prd, spec, tasks, b
 If the user's message is ambiguous about which project (e.g. "kick off the build" with no project name):
 - If there's only one project at the relevant stage → use it and confirm: "Starting build for '<slug>' — that's your only project at tasks stage."
 - If multiple → ask: "Which project? Options: [list projects at relevant stage]"
+
+## Task ID resolution
+
+Never surface a bare task ID (e.g. "TASK-003") without its title. Whenever a task ID appears — in status output, build confirmations, agent completion reports, review results, or anywhere else — read the relevant `TASKS.md` and include the title inline:
+
+✅ `TASK-003: Add session refresh endpoint`
+❌ `TASK-003`
+
+If TASKS.md can't be read or the task ID isn't found, fall back to the ID alone and note it briefly.
 
 ## Tone
 
