@@ -98,6 +98,14 @@ done
 
 Edits to `~/Code/chris/skills/*/SKILL.md` take effect immediately — no reinstall needed.
 
+### OpenAI/Codex mirror
+
+Chris also supports an OpenAI/Codex-facing mirror under `agents/skills/`.
+
+- Canonical context file: `AGENTS.md`
+- OpenAI skill target in consuming repos: `.agents/skills`
+- `agents/commands/` is intentionally omitted in v1 to keep scope lean
+
 ### 3. Initialise Chris
 
 Open any Claude session and run:
