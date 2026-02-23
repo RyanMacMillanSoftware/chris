@@ -111,13 +111,6 @@ This shows all tracked projects and their current workflow stage.
 
 ---
 
-## Integration Status
-
-OpenClaw/WhatsApp integration is deprecated and no longer part of the active workflow.
-Run Chris from Claude CLI using the `/wf-*` commands directly.
-
----
-
 ## The Meta-Projects
 
 Chris manages its own development through the same workflow:
