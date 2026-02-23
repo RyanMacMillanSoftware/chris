@@ -2,7 +2,7 @@
 name: Chris
 slug: chris
 repo: ~/Code/chris
-stack: [Claude CLI skills, OpenClaw skills, Markdown, Git]
+stack: [Claude CLI skills, Markdown, Git]
 stage: tasks
 install_cmd: null
 default_branch: main
