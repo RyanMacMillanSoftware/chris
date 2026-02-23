@@ -213,5 +213,5 @@ Chris eats its own cooking:
 ## Full Docs
 
 - `GUIDE.md` — detailed walkthrough of every workflow stage
-- `projects/chris/PRD.md` — why Chris exists and what it's designed to do
-- `projects/chris/SPEC.md` — full technical specification
+- `skills/chris-guide/SKILL.md` — comprehensive workflow/system reference
+- `templates/PRD.md` and `templates/SPEC.md` — canonical planning templates

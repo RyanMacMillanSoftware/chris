@@ -74,7 +74,7 @@ For each repo in the project:
      ```bash
      cd ~/Code/.chris-worktrees/<slug>/<repo>/ && <install_cmd>
      ```
-   - Update `status.json` worktrees: `{"<repo>": "~/Code/.chris-worktrees/<slug>/<repo>/"}
+   - Update `status.json` worktrees: `{"<repo>": "~/Code/.chris-worktrees/<slug>/<repo>/"}`
 3. If no competing branch — work directly in `~/Code/<repo>/` on branch `chris/<slug>`:
    ```bash
    git -C ~/Code/<repo> checkout chris/<slug>
@@ -118,7 +118,7 @@ Git instructions:
 - When done with the task, update the checkbox in TASKS.md to [x]
 ```
 
-Use: `claude --print --dangerously-skip-permissions` at `<worktree-or-repo-path>`, passing the brief above.
+Use: `claude --print` at `<worktree-or-repo-path>`, passing the brief above.
 
 **With `--local` flag:**
 

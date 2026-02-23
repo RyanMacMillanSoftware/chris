@@ -8,7 +8,7 @@ Chris is your coding project workflow manager. It gives every project the same c
 
 Every project has a **workflow**, a **context file**, and a **home**.
 
-- **Workflow**: A sequence of stages — PRD → Spec → Tasks → Build → Review. Each stage produces a document that feeds the next.
+- **Workflow**: A sequence of stages — PRD → Spec → Tasks → Build → Review → Done. Each stage produces a document that feeds the next.
 - **Context file** (`AGENTS.md`): A structured brief that lives in the project repo. Every agent session starts by reading this, so you never re-explain the project.
 - **Home**: Actual code lives at `~/Code/<project-name>`. Chris's registry at `~/Code/chris/projects/<slug>/` tracks status and holds docs for projects without a repo yet.
 
@@ -17,7 +17,7 @@ Every project has a **workflow**, a **context file**, and a **home**.
 ## Workflow Stages
 
 ```
-/wf-new → /wf-prd → /wf-spec → /wf-tasks → /wf-build → /wf-review
+/wf-new → /wf-prd → /wf-spec → /wf-tasks → /wf-build → /wf-review → /wf-done
 ```
 
 | Command | What it does | Produces |
@@ -28,7 +28,9 @@ Every project has a **workflow**, a **context file**, and a **home**.
 | `/wf-tasks` | Breaks the spec into ordered, testable tasks | `TASKS.md` |
 | `/wf-build` | Spawns an agent loaded with your project context | Running agent |
 | `/wf-review` | Reviews the current diff against spec + tasks | Review report |
+| `/wf-done` | Closes a merged project and writes release artifacts | `release/` docs |
 | `/wf-status` | Shows all projects and their current stage | Status list |
+| `/wf-research [topic]` | Runs research at any stage and saves findings | `research/*.md` |
 
 You don't have to go in order — skip stages that don't apply, or start from any point.
 
