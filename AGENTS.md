@@ -20,12 +20,14 @@ Maintain stable workflow behavior, clear docs, and cross-agent parity between Cl
 
 - Keep `skills/` and `agents/skills/` behaviorally aligned.
 - Prefer `AGENTS.md` for repo context and `CLAUDE.md` for Claude global context.
+- Treat `agents/` as tracked mirror source and `.agents/` as runtime local state.
 
 ## Key Files
 
 - `README.md` - public-facing setup and workflow overview
 - `CLAUDE.md` - Claude-specific global context
 - `skills/chris-guide/SKILL.md` - complete workflow reference
+- `agents/README.md` - Codex mirror conventions and install targets
 
 ## Open Questions
 
