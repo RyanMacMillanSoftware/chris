@@ -53,21 +53,37 @@ Check for `~/Code/chris/projects/workflow-improvements/`. If missing:
 - Copy `~/Code/chris/AGENTS.md` to `~/Code/chris/projects/workflow-improvements/AGENTS.md`
 - Print: `✅ Created meta-project: workflow-improvements`
 
-**4. Symlink skills into ~/.claude/commands/**
+**4. Install ~/.claude/CLAUDE.md**
+
+Symlink Claude's global context file so every session loads Chris awareness automatically:
+
+```bash
+mkdir -p ~/.claude
+ln -sf ~/Code/chris/CLAUDE.md ~/.claude/CLAUDE.md
+```
+
+`~/Code/chris/CLAUDE.md` is the canonical source, tracked in this repo. The symlink means
+edits to it take effect immediately — no reinstall needed.
+
+If the symlink already exists and points to the right place, skip silently.
+If it points elsewhere, overwrite and note it.
+Print: `✅ ~/.claude/CLAUDE.md installed`
+
+**5. Symlink skills into ~/.claude/commands/**
 
 Run:
 ```bash
 mkdir -p ~/.claude/commands
-for skill in ~/Code/chris/skills/wf-*/SKILL.md; do
+for skill in ~/Code/chris/skills/*/SKILL.md; do
   name=$(basename $(dirname $skill))
   ln -sf "$skill" ~/.claude/commands/${name}.md
-  echo "  ✅ /$(echo $name | tr '-' '-')"
+  echo "  ✅ /${name}"
 done
 ```
 
 If any symlink already exists and points to the right place, skip silently. If it points elsewhere, overwrite and note it.
 
-**5. Verify gh CLI**
+**6. Verify gh CLI**
 
 Run `gh auth status 2>&1`. If it fails or returns unauthenticated:
 - Print: `⚠️  gh CLI not authenticated. Run: gh auth login`
@@ -75,7 +91,7 @@ Run `gh auth status 2>&1`. If it fails or returns unauthenticated:
 
 If authenticated, print: `✅ gh CLI authenticated`
 
-**6. Print setup summary**
+**7. Print setup summary**
 
 ```
 ✅ Chris initialised successfully.
@@ -83,7 +99,7 @@ If authenticated, print: `✅ gh CLI authenticated`
 Skills installed:
   /wf-new    /wf-prd    /wf-spec   /wf-tasks
   /wf-build  /wf-review /wf-done   /wf-status
-  /wf-research
+  /wf-research  /chris-guide
 
 ⚠️  One manual step required — set up the private projects remote:
 
