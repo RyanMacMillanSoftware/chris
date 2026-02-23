@@ -171,6 +171,8 @@ Key patterns to follow.
 
 `/wf-new` creates this file for new repos. For existing repos, copy from `~/Code/chris/templates/AGENTS.md` and fill it in.
 
+Child projects that Chris spawns up create their own `.claude/` workspaces. Before making your first commit in any such repo, add `.claude/` to its `.gitignore` (create the file if needed) so Claude session data stays local.
+
 ---
 
 ## Git Conventions

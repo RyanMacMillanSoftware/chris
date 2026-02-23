@@ -49,6 +49,8 @@ You don't have to go in order — skip stages that don't apply, or start from an
 
 Chris creates `~/Code/my-project-name/` with an `AGENTS.md` file. This is the agent briefing doc — keep it up to date as the project evolves.
 
+Child projects spawned by Chris create their own `.claude/` caches. Make sure the repo's `.gitignore` lists `.claude/` (create the file if one does not exist) before committing so those session files never land in git.
+
 ---
 
 ## The AGENTS.md File
