@@ -96,7 +96,7 @@ Identify the working directory: worktree path if set up, else `~/Code/<repo>/`.
 
 **Default (no `--local` flag):**
 
-Spawn a background Claude session with this brief:
+Spawn a background Codex session with this brief:
 ```
 You are working on project '<slug>', task <TASK-NNN>: <title>.
 
@@ -118,15 +118,15 @@ Git instructions:
 - When done with the task, update the checkbox in TASKS.md to [x]
 ```
 
-Use: `claude --print` at `<worktree-or-repo-path>`, passing the brief above.
+Use: `codex --print` at `<worktree-or-repo-path>`, passing the brief above.
 
 **With `--local` flag:**
 
 Print the agent brief above to the terminal and say:
 ```
-Open a new Claude session in the working directory and run the task:
+Open a new Codex session in the working directory and run the task:
   cd <worktree-or-repo-path>
-  claude
+  codex
 ```
 
 ## Update status.json

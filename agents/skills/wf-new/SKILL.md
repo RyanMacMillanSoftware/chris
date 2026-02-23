@@ -67,6 +67,15 @@ Copy `~/Code/chris/templates/AGENTS.md` to `~/Code/<repo-name>/AGENTS.md` and pr
 - `slug:` → the repo slug
 - `repo:` → `~/Code/<repo-name>`
 
+Set up local agent runtime paths and ignore rules:
+```bash
+mkdir -p ~/Code/<repo-name>/.agents
+ln -sfn ~/Code/chris/agents/skills ~/Code/<repo-name>/.agents/skills
+touch ~/Code/<repo-name>/.gitignore
+rg -qxF ".claude/" ~/Code/<repo-name>/.gitignore || echo ".claude/" >> ~/Code/<repo-name>/.gitignore
+rg -qxF ".agents/" ~/Code/<repo-name>/.gitignore || echo ".agents/" >> ~/Code/<repo-name>/.gitignore
+```
+
 Tell the user: "I've created `~/Code/<repo-name>/`. Please fill in the AGENTS.md with your stack, install command, and any initial notes. I'll wait."
 
 Wait for confirmation before continuing.
