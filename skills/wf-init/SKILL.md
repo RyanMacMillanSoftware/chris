@@ -74,7 +74,7 @@ Print: `✅ ~/.claude/CLAUDE.md installed`
 Run:
 ```bash
 mkdir -p ~/.claude/commands
-for skill in ~/Code/chris/skills/*/SKILL.md; do
+for skill in ~/Code/chris/skills/wf-*/SKILL.md ~/Code/chris/skills/chris-guide/SKILL.md; do
   name=$(basename $(dirname $skill))
   ln -sf "$skill" ~/.claude/commands/${name}.md
   echo "  ✅ /${name}"

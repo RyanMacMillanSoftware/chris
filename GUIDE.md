@@ -1,6 +1,6 @@
 # Chris — How to Use It
 
-Chris is your coding project workflow manager. It gives every project the same consistent structure — from initial idea through to shipped code — and makes it easy to manage multiple projects running concurrently, whether you're at your desk or on your phone.
+Chris is your coding project workflow manager. It gives every project the same consistent structure — from initial idea through to shipped code — and makes it easy to manage multiple projects running concurrently from Claude CLI.
 
 ---
 
@@ -83,7 +83,7 @@ Key patterns, naming, architecture decisions to follow.
 Things that still need decisions.
 ```
 
-Update this as things change. It's the first thing any agent (desktop or remote) loads when working on the project.
+Update this as things change. It's the first thing any agent session loads when working on the project.
 
 ---
 
@@ -93,11 +93,10 @@ Update this as things change. It's the first thing any agent (desktop or remote)
 ```bash
 cd ~/Code/my-project
 # Open Claude CLI and run:
-/wf-build           # spawns a background agent
-/wf-build --local   # runs a Claude session right here in terminal
+/wf-build           # spawns an agent session for the next task
+/wf-build --local   # prints a task brief for a local Claude session
 ```
-
-Chris will find the project, load AGENTS.md, and spawn an agent.
+Chris will find the project, load AGENTS.md, and spawn a background agent.
 
 ---
 
@@ -111,6 +110,11 @@ Check what's going on across everything:
 This shows all tracked projects and their current workflow stage.
 
 ---
+
+## Integration Status
+
+OpenClaw/WhatsApp integration is deprecated and no longer part of the active workflow.
+Run Chris from Claude CLI using the `/wf-*` commands directly.
 
 ---
 
