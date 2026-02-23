@@ -74,7 +74,7 @@ For each repo in the project:
      ```bash
      cd ~/Code/.chris-worktrees/<slug>/<repo>/ && <install_cmd>
      ```
-   - Update `status.json` worktrees: `{"<repo>": "~/Code/.chris-worktrees/<slug>/<repo>/"}
+   - Update `status.json` worktrees: `{"<repo>": "~/Code/.chris-worktrees/<slug>/<repo>/"}`
 3. If no competing branch — work directly in `~/Code/<repo>/` on branch `chris/<slug>`:
    ```bash
    git -C ~/Code/<repo> checkout chris/<slug>
