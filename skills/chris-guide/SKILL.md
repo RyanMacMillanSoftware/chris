@@ -244,28 +244,10 @@ Chris notifies but does not block. Watch for merge conflicts at PR time.
 
 ---
 
-## OpenClaw Integration
+## Integration Status
 
-Chris integrates with OpenClaw for full workflow control from WhatsApp.
-
-Install: `cp ~/Code/chris/skills/openclaw/SKILL.md ~/.openclaw/workspace/skills/chris/SKILL.md`
-
-| WhatsApp message | What happens |
-|-----------------|-------------|
-| "What's the status of my projects?" | `/wf-status` |
-| "Start a new project called X" | `/wf-new X` |
-| "Write the spec for X" | Spawns agent → `/wf-spec X` |
-| "Break X into tasks" | Spawns agent → `/wf-tasks X` |
-| "Kick off the build on X" | `/wf-build X` |
-| "Review X" | `/wf-review X` → draft PR if passes |
-| "Close out X" | `/wf-done X` → release artifacts |
-| "Research Y for X" | `/wf-research Y` in context of X |
-| "Any conflicts?" | Lists unresolved conflicts across all projects |
-
-When a stage completes, OpenClaw sends a WhatsApp notification. Agents use:
-```
-openclaw system event --text "Build complete: <slug> TASK-NNN done" --mode now
-```
+OpenClaw/WhatsApp integration is deprecated and no longer part of the active workflow.
+Run Chris from Claude CLI using the `/wf-*` commands directly.
 
 ---
 
@@ -294,4 +276,4 @@ Chris manages its own development through the same workflow:
 - **Forgetting /wf-review** — takes 2 minutes; catches drift from the original spec
 - **Running builds in the main checkout when a worktree exists** — check `status.json` worktrees first
 - **Pushing before review** — let `/wf-review` handle pushing; it sets up the PR correctly
-- **Not committing the projects repo** — each wf-* skill commits status.json changes; don't skip it
+- **Not committing the projects repo** — most wf-* skills update project metadata there; don't skip it

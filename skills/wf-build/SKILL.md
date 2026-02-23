@@ -96,7 +96,7 @@ Identify the working directory: worktree path if set up, else `~/Code/<repo>/`.
 
 **Default (no `--local` flag):**
 
-Spawn a background Claude session with this brief:
+Spawn a subagent with this brief:
 ```
 You are working on project '<slug>', task <TASK-NNN>: <title>.
 
@@ -116,9 +116,10 @@ Git instructions:
 - Commit your work at logical checkpoints using conventional commits (feat:, fix:, chore:, etc.)
 - Do not push — /wf-review handles pushing
 - When done with the task, update the checkbox in TASKS.md to [x]
-```
 
-Use: `claude --print --dangerously-skip-permissions` at `<worktree-or-repo-path>`, passing the brief above.
+When completely finished, report completion back to the parent session:
+Build complete: <slug> TASK-NNN done
+```
 
 **With `--local` flag:**
 
@@ -152,6 +153,6 @@ git commit -m "chore: start build for <slug> TASK-NNN"
    Working in: <working-directory>
    Branch: chris/<slug>
 
-You'll be notified when the task completes.
+Check back in this session for task completion.
 Run /wf-status to check progress.
 ```

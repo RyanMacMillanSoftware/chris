@@ -15,7 +15,7 @@ Works from the Claude CLI at your desk.
 - **Workflow stages** — each step produces a document that feeds the next: PRD → Spec → Tasks → Build → Review → Done
 - **Multi-repo projects** — a single project can span multiple codebases; Chris coordinates them all
 - **Git management** — creates branches, sets up worktrees for concurrent projects, commits in conventional style, opens draft PRs
-- **Agent orchestration** — spawns background agents or local Claude sessions to do the actual building
+- **Agent orchestration** — spawns Claude-driven agent sessions to do the actual building
 - **Self-hosting** — Chris manages its own development through the same workflow
 
 ---
@@ -86,16 +86,16 @@ git clone https://github.com/<your-username>/chris ~/Code/chris
 
 ### 2. Install skills globally
 
-Symlink all skill files into `~/.claude/commands/` so they're available in every Claude session:
+Symlink workflow and guide skills into `~/.claude/commands/` so they're available in every Claude session:
 
 ```bash
-for skill in ~/Code/chris/skills/*/SKILL.md; do
+for skill in ~/Code/chris/skills/wf-*/SKILL.md ~/Code/chris/skills/chris-guide/SKILL.md; do
   name=$(basename $(dirname $skill))
   ln -sf "$skill" ~/.claude/commands/${name}.md
 done
 ```
 
-Edits to `~/Code/chris/skills/*/SKILL.md` take effect immediately — no reinstall needed.
+Edits to these skill files take effect immediately — no reinstall needed.
 
 ### OpenAI/Codex mirror
 
@@ -135,8 +135,6 @@ git push -u origin main
 ```
 
 This repo is excluded from the public `chris/` repo via `.gitignore`.
-
----
 
 ## AGENTS.md — Repo Briefs
 
@@ -183,8 +181,6 @@ Chris manages git throughout the workflow:
 - **Commits**: conventional style — `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
 - **Concurrent projects**: if two projects touch the same repo, git worktrees keep them isolated
 - **PRs**: draft PRs opened automatically by `/wf-review` when it passes
-
----
 
 ---
 
