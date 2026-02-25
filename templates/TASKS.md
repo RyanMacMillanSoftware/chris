@@ -5,11 +5,13 @@
 **Repos:** {{ repo-names }}
 **Status:** Ready to build
 
+> Tasks marked `[P]` can run in parallel if their deps are met.
+
 ---
 
 ## Phase 1 — {{ Phase Name }}
 
-- [ ] TASK-001: Short task title
+- [ ] TASK-001: Short task title [P]
   **Repos:** {{ repo-name }}
   **Deps:** none
 
