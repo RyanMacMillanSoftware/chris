@@ -6,7 +6,10 @@ description: "Review work against spec and tasks. On pass: push branch and open 
 
 Review the current state of the project branch against the spec and task acceptance criteria. On pass, push and open a draft PR. On fail, report what needs fixing.
 
-`$ARGUMENTS` — optional project slug
+`$ARGUMENTS` — optional: `<project-slug>` or `<project-slug> --no-critic`
+
+**Flags:**
+- `--no-critic` — Skip the critic sub-agent pre-review entirely.
 
 ## Detect the current project
 
@@ -26,6 +29,54 @@ Otherwise:
 git -C ~/Code/<repo>/ diff $(git -C ~/Code/<repo>/ merge-base main chris/<slug>) chris/<slug>
 ```
 
+## Consume handoff files
+
+Read all files matching `~/Code/chris/projects/<slug>/handoffs/*.json`.
+
+For each handoff file found:
+- Collect any `open_questions` entries.
+- Note the `confidence` level.
+- Note the `test_status`.
+- Pass all handoff contents to the critic brief (see next section).
+
+## AgentOS standards injection (into critic brief)
+
+For each repo in the project, check if `~/Code/<repo>/agent-os/standards/index.yml` exists.
+
+If present:
+- Read `index.yml`. Match entries to the completed tasks using keywords from task descriptions and the Repos field.
+- Select up to 5 of the most relevant standards. Always include `global/tech-stack.md` if it exists.
+- Load the selected standard files.
+- Inject under `## Project Standards` in the critic sub-agent brief.
+
+## Critic agent pre-review
+
+Skip this section entirely if `--no-critic` flag is set.
+
+Spawn a synchronous critic sub-agent (using the Task tool, in-session) with:
+- The full diff gathered above
+- Task acceptance criteria from TASKS.md (all completed tasks)
+- All handoff JSON contents from `~/Code/chris/projects/<slug>/handoffs/*.json`
+- Injected AgentOS standards (see above)
+
+Sub-agent instruction: "Review this diff. For each completed task: does the diff satisfy the acceptance criteria? Note any standards violations. Produce a structured verdict."
+
+Display the critic output labeled "Agent Pre-Review" **above** the human review report, using this exact format:
+```
+## Agent Pre-Review
+
+- [x] TASK-001 — ✅ Auth module matches acceptance criteria.
+- [x] TASK-002 — ✅ Tests pass. ⚠️ Missing test for expired token (open question in handoff).
+- [ ] TASK-003 — ❌ No changelog update found in diff.
+
+Open questions from handoffs:
+- TASK-002: Should token refresh be automatic? (confidence: medium)
+
+**Verdict:** PASS WITH NOTES
+```
+
+The critic verdict is advisory — it does not block the review from proceeding.
+
 ## Review against spec and tasks
 
 Read `~/Code/chris/projects/<slug>/SPEC.md` and `TASKS.md` in full.
@@ -35,6 +86,7 @@ Evaluate the diff against each criterion:
 **Per task (from TASKS.md):**
 - Is the task checkbox marked `[x]`?
 - Does the diff show changes that satisfy the acceptance criteria?
+- Cite specific evidence from the diff for each task (file names and line ranges if possible).
 - Are there any obvious gaps?
 
 **Against the spec:**
@@ -55,10 +107,24 @@ Format the report as:
 
 **Overall:** PASS / FAIL
 
+### Agent Pre-Review
+<critic agent output, if not skipped>
+
 ### Tasks
 - [x] TASK-001: title — ✅ Complete
+  Evidence: src/auth/jwt.ts (lines 45–89), tests/auth/jwt.test.ts (12 test cases)
 - [x] TASK-002: title — ✅ Complete
+  Evidence: src/models/user.ts (lines 12–34)
 - [ ] TASK-003: title — ❌ Not done / acceptance criteria not met
+  ⚠️ Unverified — no specific evidence found in diff
+
+Note: distinguish file-exists parity (file is present in the diff) from test-passes parity
+(tests are present and verifiably correct) in report language.
+
+### Handoff Notes
+Tasks with open questions or lower confidence that deserve closer scrutiny:
+- TASK-002 (confidence: medium): Should token refresh be automatic?
+- TASK-004 (confidence: low): Performance under load not yet verified.
 
 ### Spec Compliance
 ✅ Architecture matches spec
