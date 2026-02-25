@@ -1,4 +1,3 @@
-<!-- Canonical context template. Legacy CONTEXT.md is deprecated. -->
 ---
 name: {{ name }}
 slug: {{ slug }}

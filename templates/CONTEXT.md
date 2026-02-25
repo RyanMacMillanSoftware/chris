@@ -20,17 +20,6 @@ What is actively being worked on right now. Update this as focus shifts.
 
 <!-- Key decisions made in recent tasks — keeps the next agent from re-litigating closed decisions. -->
 
-## Conventions
-
-Key coding patterns, naming conventions, and architecture decisions agents should follow.
--
--
-
-## Key Files
-
-Important files agents should know about.
-- `src/index.ts` — entry point (update as appropriate)
-
 ## Open Questions
 
 Unresolved decisions or things to revisit.
