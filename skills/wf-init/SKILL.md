@@ -105,7 +105,20 @@ Run `gh auth status 2>&1`. If it fails or returns unauthenticated:
 
 If authenticated, print: `✅ gh CLI authenticated`
 
-**8. Print setup summary**
+**8. Configure AgentOS path**
+
+Ask: "Where is your AgentOS clone? (e.g. ~/Code/buildermethods/agent-os) — leave blank to skip"
+
+- If a path is provided:
+  - If `~/.chris/config.yml` exists, read it and merge `agent_os_path: <path>` into the file without overwriting other keys.
+  - If `~/.chris/config.yml` does not exist, create `~/.chris/` if needed, then write the file with content:
+    ```yaml
+    agent_os_path: <path>
+    ```
+  - Print: `✅ AgentOS path saved to ~/.chris/config.yml`
+- If blank: skip silently.
+
+**9. Print setup summary**
 
 ```
 ✅ Chris initialised successfully.

@@ -20,6 +20,21 @@ If the project has no `PRD.md`, print:
 ❌ No PRD found for '<slug>'. Run /wf-prd first.
 ```
 
+## Write guards
+
+Before proceeding to any file write operation:
+
+- **Single match, no slug argument:** If `$ARGUMENTS` was not provided and exactly one project was detected from cwd, confirm with the user before proceeding:
+  ```
+  Writing spec for '<slug>'. Confirm? (y/n)
+  ```
+  If the user answers `n`, abort and stop.
+
+- **Slug mismatch:** If a slug was provided in `$ARGUMENTS` but it does not match the cwd-detected project, hard block and stop:
+  ```
+  ❌ Slug mismatch: argument is '<arg-slug>' but cwd matches '<detected-slug>'. Check your working directory.
+  ```
+
 ## Draft the spec
 
 Read `~/Code/chris/projects/<slug>/PRD.md` in full.
@@ -55,6 +70,25 @@ cd ~/Code/chris/projects
 git add <slug>/SPEC.md <slug>/status.json
 git commit -m "docs: add spec for <slug>"
 ```
+
+## Write AgentOS product docs (optional)
+
+After SPEC.md is saved and committed:
+
+1. Determine the first repo in `status.json.repos` (call it `<repo>`).
+2. Check if `~/Code/<repo>/agent-os/product/` exists.
+3. If it exists, ask: "Write tech stack decisions from this spec to `agent-os/product/tech-stack.md`? (y/n)"
+4. If y:
+   - Read `~/Code/<repo>/agent-os/standards/global/tech-stack.md` (if present) to understand the expected format. Match that style.
+   - Extract runtime, framework, database, and key libraries from the spec's Tech Decisions table.
+   - Write `~/Code/<repo>/agent-os/product/tech-stack.md` in that style.
+   - Commit the new file alongside SPEC.md (or as a follow-up commit if SPEC.md was already committed):
+     ```bash
+     cd ~/Code/<repo>
+     git add agent-os/product/tech-stack.md
+     git commit -m "docs: add AgentOS product tech-stack from spec for <slug>"
+     ```
+5. If n or if `product/` does not exist: skip silently.
 
 ## Print confirmation
 

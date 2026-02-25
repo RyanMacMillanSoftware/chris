@@ -16,6 +16,21 @@ Interactively write a PRD for the current project. Work through each section wit
 
 If no matching project is found, suggest running `/wf-new` first.
 
+## Write guards
+
+Before proceeding to any file write operation:
+
+- **Single match, no slug argument:** If `$ARGUMENTS` was not provided and exactly one project was detected from cwd, confirm with the user before proceeding:
+  ```
+  Writing PRD for '<slug>'. Confirm? (y/n)
+  ```
+  If the user answers `n`, abort and stop.
+
+- **Slug mismatch:** If a slug was provided in `$ARGUMENTS` but it does not match the cwd-detected project, hard block and stop:
+  ```
+  ❌ Slug mismatch: argument is '<arg-slug>' but cwd matches '<detected-slug>'. Check your working directory.
+  ```
+
 ## Write the PRD
 
 Load `~/Code/chris/templates/PRD.md` as the structural guide.
