@@ -35,10 +35,25 @@ Before proceeding to any file write operation:
   ❌ Slug mismatch: argument is '<arg-slug>' but cwd matches '<detected-slug>'. Check your working directory.
   ```
 
+## Run shape-spec
+
+Before drafting, check if `~/Code/<repo>/agent-os/specs/` contains a recent spec folder matching `<slug>` (look for any `*-<slug>/` folder). If a recent one exists, load its contents and skip to "Draft the spec".
+
+If no recent shape exists, run the `/shape-spec` flow in plan mode:
+1. **Gather visuals** — ask if there are any mockups, screenshots, or diagrams to include
+2. **Reference implementations** — ask for any existing code or similar products to reference
+3. **Product context** — load PRD.md goals, constraints, and user stories
+4. **Surface standards** — call `/inject-standards` with PRD keywords to surface relevant project standards
+
+Present the shape summary (scope, key decisions, relevant standards, references) and ask: "Does this shape look right before I write the spec?"
+
+Once confirmed, save shape artifacts to `~/Code/<repo>/agent-os/specs/YYYY-MM-DD-HHMM-<slug>/` and use the shape outputs as inputs to the draft below.
+
 ## Draft the spec
 
 Read `~/Code/chris/projects/<slug>/PRD.md` in full.
 Load `~/Code/chris/templates/SPEC.md` as structural guide.
+Incorporate any shape-spec outputs (scope decisions, standards, references) from the previous step.
 
 Write a draft spec covering:
 

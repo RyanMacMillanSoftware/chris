@@ -39,15 +39,9 @@ For each handoff file found:
 - Note the `test_status`.
 - Pass all handoff contents to the critic brief (see next section).
 
-## AgentOS standards injection (into critic brief)
+## Assemble critic brief
 
-For each repo in the project, check if `~/Code/<repo>/agent-os/standards/index.yml` exists.
-
-If present:
-- Read `index.yml`. Match entries to the completed tasks using keywords from task descriptions and the Repos field.
-- Select up to 5 of the most relevant standards. Always include `global/tech-stack.md` if it exists.
-- Load the selected standard files.
-- Inject under `## Project Standards` in the critic sub-agent brief.
+Assemble the critic brief following `skills/_shared/brief.md` (AGENTS.md excerpt, CONTEXT.md excerpt, completed task blocks, standards via `/inject-standards`). Pass all handoff contents from the previous step as the prior handoff section.
 
 ## Critic agent pre-review
 
