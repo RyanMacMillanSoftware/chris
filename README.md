@@ -105,26 +105,6 @@ done
 
 Edits to these skill files take effect immediately — no reinstall needed.
 
-### OpenAI/Codex mirror
-
-Chris also supports an OpenAI/Codex-facing mirror under `agents/skills/`.
-
-- Canonical context file: `AGENTS.md`
-- Tracked mirror source in this repo: `~/Code/chris/agents/skills`
-- OpenAI skill target in consuming repos: `.agents/skills`
-- Global Codex install target: `~/.codex/skills/chris`
-- `agents/commands/` is intentionally omitted in v1 to keep scope lean
-
-Install Codex skills globally:
-
-```bash
-mkdir -p ~/.codex/skills/chris
-for skill_dir in ~/Code/chris/agents/skills/*; do
-  name=$(basename "$skill_dir")
-  ln -sfn "$skill_dir" ~/.codex/skills/chris/${name}
-done
-```
-
 ### 3. Initialise Chris
 
 Open any Claude session and run:
@@ -196,7 +176,7 @@ Unresolved decisions or things to revisit.
 
 `/wf-new` creates both files for new repos. For existing repos, copy from `~/Code/chris/templates/`.
 
-Child projects that Chris spawns up create their own `.claude/` and `.agents/` runtime folders. Before making your first commit in any such repo, ensure both entries are present in that repo's `.gitignore` so local agent session data stays untracked.
+Child projects that Chris spawns up create their own `.claude/` runtime folder. Before making your first commit in any such repo, ensure `.claude/` is present in that repo's `.gitignore` so local agent session data stays untracked.
 
 ---
 
@@ -245,8 +225,8 @@ Chris eats its own cooking:
 
 ## Contributor Checks
 
-Validate Claude/Codex skill parity before opening a PR:
+Run the linter and verify skill files are well-formed before opening a PR:
 
 ```bash
-./scripts/check-skill-parity.sh
+# No automated check required — review changed SKILL.md files manually
 ```
