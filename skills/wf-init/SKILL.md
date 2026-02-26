@@ -83,21 +83,7 @@ done
 
 If any symlink already exists and points to the right place, skip silently. If it points elsewhere, overwrite and note it.
 
-**6. Symlink skills into ~/.codex/skills/chris/**
-
-Run:
-```bash
-mkdir -p ~/.codex/skills/chris
-for skill_dir in ~/Code/chris/agents/skills/*; do
-  name=$(basename "$skill_dir")
-  ln -sfn "$skill_dir" ~/.codex/skills/chris/${name}
-  echo "  ✅ codex:${name}"
-done
-```
-
-If any symlink already exists and points to the right place, skip silently. If it points elsewhere, overwrite and note it.
-
-**7. Verify gh CLI**
+**6. Verify gh CLI**
 
 Run `gh auth status 2>&1`. If it fails or returns unauthenticated:
 - Print: `⚠️  gh CLI not authenticated. Run: gh auth login`
@@ -105,7 +91,7 @@ Run `gh auth status 2>&1`. If it fails or returns unauthenticated:
 
 If authenticated, print: `✅ gh CLI authenticated`
 
-**8. Configure AgentOS path**
+**7. Configure AgentOS path**
 
 Ask: "Where is your AgentOS clone? (e.g. ~/Code/buildermethods/agent-os) — leave blank to skip"
 
@@ -118,7 +104,7 @@ Ask: "Where is your AgentOS clone? (e.g. ~/Code/buildermethods/agent-os) — lea
   - Print: `✅ AgentOS path saved to ~/.chris/config.yml`
 - If blank: skip silently.
 
-**9. Print setup summary**
+**8. Print setup summary**
 
 ```
 ✅ Chris initialised successfully.
@@ -127,19 +113,6 @@ Claude commands installed:
   /wf-new    /wf-prd    /wf-spec   /wf-tasks
   /wf-build  /wf-review /wf-done   /wf-status
   /wf-research  /chris-guide
-
-Codex skills installed:
-  ~/.codex/skills/chris/wf-new
-  ~/.codex/skills/chris/wf-prd
-  ~/.codex/skills/chris/wf-spec
-  ~/.codex/skills/chris/wf-tasks
-  ~/.codex/skills/chris/wf-build
-  ~/.codex/skills/chris/wf-review
-  ~/.codex/skills/chris/wf-done
-  ~/.codex/skills/chris/wf-status
-  ~/.codex/skills/chris/wf-research
-  ~/.codex/skills/chris/wf-init
-  ~/.codex/skills/chris/chris-guide
 
 ⚠️  One manual step required — set up the private projects remote:
 
