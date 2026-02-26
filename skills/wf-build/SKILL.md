@@ -28,26 +28,7 @@ List all projects with stage `"tasks"` or `"build"` and ask: "Which project do y
 
 ## Stage preflight
 
-Run these checks before proceeding further. Stop on any failure.
-
-1. **Stage check:** Verify `status.json.stage` is `"tasks"` or `"build"`. If not:
-   ```
-   ❌ Stage is '<stage>'. Run /wf-tasks first.
-   ```
-   Stop.
-
-2. **Required files check:** Verify all three of these files exist in the project folder:
-   - `~/Code/chris/projects/<slug>/PRD.md`
-   - `~/Code/chris/projects/<slug>/SPEC.md`
-   - `~/Code/chris/projects/<slug>/TASKS.md`
-
-   List any missing files and stop if any are absent.
-
-3. **Branch check:** Verify the current git branch in each repo equals `status.json.branch`. If there is a mismatch:
-   ```
-   ❌ Wrong branch. Run: git checkout <expected-branch>
-   ```
-   Stop.
+Follow the procedure in `skills/_shared/preflight.md`. Stop on any failure before proceeding.
 
 ## Find the next task
 
@@ -118,39 +99,11 @@ For each repo in the project:
 
 ## Assemble agent context
 
-Collect and read:
-- `~/Code/chris/projects/<slug>/PRD.md`
-- `~/Code/chris/projects/<slug>/SPEC.md`
-- `~/Code/chris/projects/<slug>/TASKS.md`
-- `~/Code/<repo>/AGENTS.md` for each involved repo
+Read PRD.md, SPEC.md, TASKS.md, and each involved repo's AGENTS.md in full.
 
-Identify the specific task(s) to work on.
+Identify the specific task(s) to work on and the working directory (worktree path if set up, else `~/Code/<repo>/`).
 
-Identify the working directory: worktree path if set up, else `~/Code/<repo>/`.
-
-## AgentOS standards injection
-
-For each repo referenced in the task's Repos field:
-
-1. Check if `~/Code/<repo>/agent-os/standards/index.yml` exists.
-2. If it does not exist and AgentOS is not configured in `~/.chris/config.yml`, print a one-line tip and skip:
-   ```
-   Tip: configure AgentOS path with /wf-init to enable standards injection.
-   ```
-3. If `index.yml` is present:
-   - Read `index.yml`. Match entries to the task using keywords from the task description and the Repos field.
-   - Select up to 5 of the most relevant standards. Always include `global/tech-stack.md` if it exists.
-   - Load the selected standard files.
-   - Append the following block to both the architect brief and the builder brief:
-     ```
-     ## Project Standards (from AgentOS — follow these rules)
-
-     ### Tech Stack
-     <content of global/tech-stack.md>
-
-     ### <Standard Name>
-     <content>
-     ```
+Assemble the agent brief following `skills/_shared/brief.md` — this covers AGENTS.md and CONTEXT.md excerpts, the task block, standards injection via `/inject-standards`, and prior handoff, all with section budgets.
 
 ## Architect pass (per task)
 
@@ -176,41 +129,33 @@ For parallel tasks: run one architect pass per task sequentially, confirm all, t
 
 **Default (no `--local` flag):**
 
-Spawn a subagent with this brief:
+Spawn a subagent with a brief assembled per `skills/_shared/brief.md`, plus:
 ```
 You are working on project '<slug>', task <TASK-NNN>: <title>.
-
 Working directory: <worktree-or-repo-path>
 Branch: chris/<slug>
 
-[Full content of PRD.md]
-[Full content of SPEC.md]
-[Relevant section of TASKS.md]
-[Content of each repo's AGENTS.md]
+[Assembled context per skills/_shared/brief.md]
 
 ## Architect Plan
 <approved architect plan, if any>
 
-## Project Standards (from AgentOS — follow these rules)
-<injected standards, if any>
-
-Your task:
-<task description and acceptance criteria>
-
 Git instructions:
 - You are on branch chris/<slug>. Do not switch branches.
-- Commit your work at logical checkpoints using conventional commits (feat:, fix:, chore:, etc.)
+- Commit at logical checkpoints using conventional commits (feat:, fix:, chore:, etc.)
 - Do not push — /wf-review handles pushing
+
+## Handoff instructions (section E)
 
 When done with this task:
 1. Mark the task [x] in TASKS.md
-2. Create ~/Code/chris/projects/<slug>/handoffs/ if it doesn't exist
-3. Write ~/Code/chris/projects/<slug>/handoffs/TASK-NNN.json using this schema:
-   <paste full content of templates/handoff.json verbatim>
-4. Commit all changes (TASKS.md + handoff file + any source changes)
-5. Report completion: "Build complete: <slug> TASK-NNN done"
+2. Generate handoff per `skills/_shared/handoff.md`
+3. Commit all changes (TASKS.md + handoff + source)
+4. Report: "Build complete: <slug> TASK-NNN done"
 
-Also update CONTEXT.md on completion:
+## CONTEXT.md update instructions (section F)
+
+Update CONTEXT.md on completion:
 - Set "Current Focus" to the next expected work
 - Add key decisions to "Recent Decisions"
 - Remove any resolved items from "Open Questions"
