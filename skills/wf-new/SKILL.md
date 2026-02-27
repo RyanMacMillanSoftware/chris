@@ -66,7 +66,7 @@ Copy `~/Code/chris/templates/AGENTS.md` to `~/Code/<repo-name>/AGENTS.md` and pr
 Set up ignore rules:
 ```bash
 touch ~/Code/<repo-name>/.gitignore
-rg -qxF ".claude/" ~/Code/<repo-name>/.gitignore || echo ".claude/" >> ~/Code/<repo-name>/.gitignore
+grep -qxF ".claude/" ~/Code/<repo-name>/.gitignore || echo ".claude/" >> ~/Code/<repo-name>/.gitignore
 ```
 
 Tell the user: "I've created `~/Code/<repo-name>/`. Please fill in the AGENTS.md with your stack, install command, and any initial notes. I'll wait."

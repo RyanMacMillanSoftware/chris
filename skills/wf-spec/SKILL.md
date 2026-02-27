@@ -97,9 +97,8 @@ After SPEC.md is saved and committed:
    - Write `~/Code/<repo>/agent-os/product/tech-stack.md` in that style.
    - Commit the new file alongside SPEC.md (or as a follow-up commit if SPEC.md was already committed):
      ```bash
-     cd ~/Code/<repo>
-     git add agent-os/product/tech-stack.md
-     git commit -m "docs: add AgentOS product tech-stack from spec for <slug>"
+     git -C ~/Code/<repo> add agent-os/product/tech-stack.md
+     git -C ~/Code/<repo> commit -m "docs: add AgentOS product tech-stack from spec for <slug>"
      ```
 5. If n or if `product/` does not exist: skip silently.
 
