@@ -55,11 +55,7 @@ Ask: "What should the repo be named?" (suggest `<slug>` as default)
 
 Then scaffold the new repo:
 ```bash
-mkdir -p ~/Code/<repo-name>
-cd ~/Code/<repo-name>
-git init
-git checkout -b main
-git commit --allow-empty -m "chore: init"
+mkdir -p ~/Code/<repo-name> && git -C ~/Code/<repo-name> init && git -C ~/Code/<repo-name> checkout -b main && git -C ~/Code/<repo-name> commit --allow-empty -m "chore: init"
 ```
 
 Copy `~/Code/chris/templates/AGENTS.md` to `~/Code/<repo-name>/AGENTS.md` and pre-fill:
@@ -146,9 +142,7 @@ Ask: "Generate a Taskfile.yml for this repo? (y/n)"
 **7. Commit to projects repo**
 
 ```bash
-cd ~/Code/chris/projects
-git add <slug>/
-git commit -m "docs: init project <slug>"
+git -C ~/Code/chris/projects add <slug>/ && git -C ~/Code/chris/projects commit -m "docs: init project <slug>"
 ```
 
 **8. Print confirmation**

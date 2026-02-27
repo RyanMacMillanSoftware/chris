@@ -81,9 +81,7 @@ Update `status.json`: set `stage` to `"spec"`, update `updated` timestamp.
 
 Commit:
 ```bash
-cd ~/Code/chris/projects
-git add <slug>/SPEC.md <slug>/status.json
-git commit -m "docs: add spec for <slug>"
+git -C ~/Code/chris/projects add <slug>/SPEC.md <slug>/status.json && git -C ~/Code/chris/projects commit -m "docs: add spec for <slug>"
 ```
 
 ## Write AgentOS product docs (optional)

@@ -82,9 +82,7 @@ Create the `research/` directory if it doesn't exist.
 
 Commit:
 ```bash
-cd ~/Code/chris/projects
-git add <slug>/research/
-git commit -m "docs: add research on <topic-slug> for <slug>"
+git -C ~/Code/chris/projects add <slug>/research/ && git -C ~/Code/chris/projects commit -m "docs: add research on <topic-slug> for <slug>"
 ```
 
 ## Print confirmation

@@ -143,15 +143,9 @@ git -C <worktree-or-repo-path> push origin chris/<slug>
 
 Get `default_branch` from `~/Code/<repo>/AGENTS.md` front matter (default: `main`).
 
-Open a draft PR using the gh CLI:
+Open a draft PR using the gh CLI (single command, no line breaks):
 ```bash
-gh pr create \
-  --repo <github-org>/<repo> \
-  --head chris/<slug> \
-  --base <default_branch> \
-  --title "<slug>: <one-line summary from PRD overview>" \
-  --body "<generated PR body>" \
-  --draft
+gh pr create --repo <github-org>/<repo> --head chris/<slug> --base <default_branch> --title "<slug>: <one-line summary from PRD overview>" --body "<generated PR body>" --draft
 ```
 
 **Generated PR body** should include:
@@ -164,9 +158,7 @@ Record the PR URL in `status.json` as `pr_url`.
 Update `stage` to `"review"`.
 Commit:
 ```bash
-cd ~/Code/chris/projects
-git add <slug>/status.json
-git commit -m "chore: review passed for <slug>, PR opened"
+git -C ~/Code/chris/projects add <slug>/status.json && git -C ~/Code/chris/projects commit -m "chore: review passed for <slug>, PR opened"
 ```
 
 Print:

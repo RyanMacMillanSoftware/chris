@@ -127,9 +127,7 @@ Update `status.json`:
 
 Commit:
 ```bash
-cd ~/Code/chris/projects
-git add <slug>/TASKS.md <slug>/status.json
-git commit -m "docs: add tasks for <slug>"
+git -C ~/Code/chris/projects add <slug>/TASKS.md <slug>/status.json && git -C ~/Code/chris/projects commit -m "docs: add tasks for <slug>"
 ```
 
 ## Print confirmation

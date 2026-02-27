@@ -60,9 +60,7 @@ Update `~/Code/chris/projects/<slug>/status.json`: set `stage` to `"prd"` and `u
 
 Commit:
 ```bash
-cd ~/Code/chris/projects
-git add <slug>/PRD.md <slug>/status.json
-git commit -m "docs: add PRD for <slug>"
+git -C ~/Code/chris/projects add <slug>/PRD.md <slug>/status.json && git -C ~/Code/chris/projects commit -m "docs: add PRD for <slug>"
 ```
 
 ## Print confirmation
