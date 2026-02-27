@@ -1,0 +1,21 @@
+{
+  "task": "TASK-003",
+  "slug": "my-project",
+  "completed_at": "2026-02-25T12:00:00Z",
+  "files_changed": [
+    "src/auth/jwt.ts",
+    "tests/auth/jwt.test.ts",
+    "TASKS.md"
+  ],
+  "decisions_made": [
+    "Used HS256 algorithm for JWT signing — sufficient for internal tokens",
+    "Token expiry set to 24h; refresh handled client-side"
+  ],
+  "open_questions": [
+    "Should token refresh be automatic on the server side?",
+    "Do we need to support multiple signing keys for key rotation?"
+  ],
+  "confidence": "high",
+  "test_status": "passed",
+  "agent_notes": "All acceptance criteria met. Auth module is isolated and tested. No changes to unrelated files."
+}

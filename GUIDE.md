@@ -6,10 +6,10 @@ Chris is your coding project workflow manager. It gives every project the same c
 
 ## The Core Idea
 
-Every project has a **workflow**, a **context file**, and a **home**.
+Every project has a **workflow**, **context files**, and a **home**.
 
 - **Workflow**: A sequence of stages — PRD → Spec → Tasks → Build → Review → Done. Each stage produces a document that feeds the next.
-- **Context file** (`AGENTS.md`): A structured brief that lives in the project repo. Every agent session starts by reading this, so you never re-explain the project.
+- **Context files**: Two files live in each repo. `AGENTS.md` holds stable context (purpose, conventions, key files) and rarely changes. `CONTEXT.md` is the evolving layer (current focus, recent decisions, open questions) — updated by each build agent on task completion.
 - **Home**: Actual code lives at `~/Code/<project-name>`. Chris's registry at `~/Code/chris/projects/<slug>/` tracks status and holds docs for projects without a repo yet.
 
 ---
@@ -51,13 +51,15 @@ You don't have to go in order — skip stages that don't apply, or start from an
 
 Chris creates `~/Code/my-project-name/` with an `AGENTS.md` file. This is the agent briefing doc — keep it up to date as the project evolves.
 
-Child projects spawned by Chris create their own `.claude/` caches. Make sure the repo's `.gitignore` lists `.claude/` (create the file if one does not exist) before committing so those session files never land in git.
+Child projects spawned by Chris create their own `.claude/` runtime cache. Make sure the repo's `.gitignore` lists `.claude/` (create the file if one does not exist) before committing so those session files never land in git.
 
 ---
 
-## The AGENTS.md File
+## The AGENTS.md + CONTEXT.md Files
 
-Every project has a `AGENTS.md`. It looks like this:
+Every repo has two context files that agents load at session start.
+
+**`AGENTS.md`** holds stable context that changes only when architecture changes:
 
 ```yaml
 ---
@@ -71,21 +73,28 @@ stage: tasks
 ## Purpose
 What this project does and why it exists.
 
-## Current Focus
-What the agent should be working on right now.
-
 ## Conventions
 Key patterns, naming, architecture decisions to follow.
 
 ## Key Files
 - src/index.ts — entry point
 - src/api/ — API layer
+```
+
+**`CONTEXT.md`** is the evolving layer — updated by each build agent when it finishes a task:
+
+```markdown
+## Current Focus
+What the agent should be working on right now.
+
+## Recent Decisions
+Key decisions made in recent tasks — keeps the next agent from re-litigating closed decisions.
 
 ## Open Questions
 Things that still need decisions.
 ```
 
-Update this as things change. It's the first thing any agent session loads when working on the project.
+Keep both files current. Stale context is worse than no context.
 
 ---
 
@@ -95,10 +104,17 @@ Update this as things change. It's the first thing any agent session loads when 
 ```bash
 cd ~/Code/my-project
 # Open Claude CLI and run:
-/wf-build           # spawns an agent session for the next task
-/wf-build --local   # prints a task brief for a local Claude session
+/wf-build              # spawns an agent session for the next task
+/wf-build --local      # prints a task brief for a local Claude session
+/wf-build --no-arch    # skip the architect pass for this run
+/wf-build --sequential # disable parallel execution, run one task at a time
 ```
-Chris will find the project, load AGENTS.md, and spawn a background agent.
+
+Before spawning a builder, `/wf-build` runs a **stage preflight** (checks branch, stage, and required docs) and an **architect pass** — a synchronous sub-agent that produces a one-screen implementation plan for your approval. Approve, revise, or skip before the builder runs.
+
+If multiple tasks are tagged `[P]` and their dependencies are met, Chris offers to spawn them as concurrent sub-agents.
+
+Each builder writes a `handoffs/TASK-NNN.json` on completion — capturing files changed, decisions made, confidence level, and open questions for the next agent.
 
 ---
 
@@ -133,9 +149,24 @@ When something feels clunky or you find a better pattern, note it in workflow-im
 
 ---
 
+## AgentOS Integration
+
+Chris integrates with [AgentOS](https://github.com/buildermethods/agent-os) to inject indexed project standards into every agent brief automatically.
+
+- Run `/wf-init` to configure the path to your AgentOS clone
+- `/wf-new` can install AgentOS into a new repo (`agent-os/standards/`)
+- `/wf-spec` can write tech stack decisions to `agent-os/product/tech-stack.md`
+- `/wf-build` and `/wf-review` automatically load relevant standards into agent briefs
+
+AgentOS is opt-in — Chris degrades gracefully if it's not configured.
+
+---
+
 ## Tips
 
 - **Keep AGENTS.md current.** Stale context is worse than no context.
+- **Update CONTEXT.md per task.** Builders do this automatically; check it if something feels off.
 - **Don't skip the PRD.** Even a rough one catches assumptions before they become bugs.
-- **`/wf-review` before merging.** Takes 2 minutes, catches drift from the original spec.
+- **Use `[P]` tags in TASKS.md.** Independent tasks tagged `[P]` can run in parallel — big throughput win.
+- **`/wf-review` before merging.** Runs a critic agent pre-review + the human report. Takes 2 minutes, catches drift from the original spec.
 - **Run multiple builds in parallel.** Chris is designed for concurrent projects — use it.

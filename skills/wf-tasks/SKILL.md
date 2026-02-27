@@ -18,6 +18,21 @@ Same detection logic as other wf-* skills. Require stage `"spec"` — if not, pr
 
 Read `~/Code/chris/projects/<slug>/SPEC.md` in full.
 
+## Write guards
+
+Before proceeding to any file write operation:
+
+- **Single match, no slug argument:** If `$ARGUMENTS` was not provided and exactly one project was detected from cwd, confirm with the user before proceeding:
+  ```
+  Writing tasks for '<slug>'. Confirm? (y/n)
+  ```
+  If the user answers `n`, abort and stop.
+
+- **Slug mismatch:** If a slug was provided in `$ARGUMENTS` but it does not match the cwd-detected project, hard block and stop:
+  ```
+  ❌ Slug mismatch: argument is '<arg-slug>' but cwd matches '<detected-slug>'. Check your working directory.
+  ```
+
 ## Write the tasks
 
 Break the spec into atomic, ordered tasks. Each task should be completable in a single focused agent session.
@@ -41,7 +56,28 @@ Guidelines:
 - Group related tasks under `## Phase N — Name` headings
 - Keep descriptions concrete — file paths, command names, exact formats
 
+**Parallel tagging `[P]`:**
+- Tag a task `[P]` inline on its title line if it is safe to run concurrently with other `[P]`-tagged tasks whose deps are also met.
+- A task is safe to parallelize when it does not write to files that overlap with sibling `[P]` tasks in the same ready batch, and its outputs are not consumed by those sibling tasks.
+- Example: `- [ ] TASK-005: Update readme [P]`
+- Add the header note `> Tasks marked \`[P]\` can run in parallel if their deps are met.` to the generated TASKS.md, immediately after the title/status block and before the first Phase heading.
+
 As you write tasks, note which repos each one touches.
+
+## Lint the tasks
+
+After generating all tasks and before asking the user to confirm repos, run these validation checks:
+
+1. **No duplicate task IDs** — every TASK-NNN appears exactly once.
+2. **Valid dep references** — all `Deps:` values are either `"none"` or reference a TASK-NNN that exists in the same file.
+3. **No self-references** — no task lists itself as a dep.
+4. **No circular dependencies** — perform a basic cycle check (e.g. A→B→A).
+
+Print results inline:
+- If all checks pass: `✅ Lint passed`
+- If any check fails: list each error as `❌ <description>` (e.g. `❌ TASK-003 lists dep TASK-007 which does not exist`)
+
+If any errors are found, **block the save** and ask the user to correct them before continuing.
 
 ## Confirm repos with the user
 
@@ -91,9 +127,7 @@ Update `status.json`:
 
 Commit:
 ```bash
-cd ~/Code/chris/projects
-git add <slug>/TASKS.md <slug>/status.json
-git commit -m "docs: add tasks for <slug>"
+git -C ~/Code/chris/projects add <slug>/TASKS.md <slug>/status.json && git -C ~/Code/chris/projects commit -m "docs: add tasks for <slug>"
 ```
 
 ## Print confirmation

@@ -99,9 +99,7 @@ For each repo in `status.json` repos:
 ## Commit release artifacts
 
 ```bash
-cd ~/Code/chris/projects
-git add <slug>/release/ <slug>/status.json
-git commit -m "docs: add release artifacts for <slug>"
+git -C ~/Code/chris/projects add <slug>/release/ <slug>/status.json && git -C ~/Code/chris/projects commit -m "docs: add release artifacts for <slug>"
 ```
 
 ## Print summary
