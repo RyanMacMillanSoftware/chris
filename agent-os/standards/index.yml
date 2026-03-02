@@ -1,0 +1,11 @@
+# Agent OS Standards Index
+
+skills:
+  project-detection:
+    description: Three-step project detection sequence and stage gating rules
+  shared-fragments:
+    description: When to extract to _shared/ and how skills reference shared fragments
+  skill-structure:
+    description: SKILL.md front-matter fields and body conventions
+  write-guards:
+    description: Confirmation and hard-block gates before writing project documents
