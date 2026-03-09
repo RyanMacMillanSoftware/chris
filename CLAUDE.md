@@ -9,3 +9,25 @@ Need repo context or local conventions? Keep the repo-level `AGENTS.md` up to da
 # Bash Commands
 
 Avoid newlines inside a single Bash tool call — use `&&` or `;` to chain commands on one line. Newlines in Bash calls trigger a permissions prompt.
+
+# Domain Rules
+
+## Code Projects
+
+- Follow conventional commits (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`).
+- Every new feature or bug fix must have a corresponding test; tests must pass before the stage advances to review.
+- Stack preferences: use the language and framework already present in the repo; do not introduce new runtime dependencies without explicit user approval.
+- Branch naming: `<project-slug>/<short-description>`; never commit directly to `main`.
+- Keep `AGENTS.md` up to date in any repo you touch.
+
+## Research Projects
+
+- Prefer primary sources, peer-reviewed publications, and official documentation over secondary summaries.
+- Save all research output to `~/Code/chris/projects/<slug>/research/`.
+- Cite every source as a markdown link including the page title and the date accessed, e.g. `[Title](https://example.com) — accessed 2026-03-09`.
+
+## Writing Projects
+
+- Save all draft output to `~/Code/chris/projects/<slug>/`.
+- All deliverables must be in markdown format.
+- The stage does not advance from build to review until the author has read the draft and explicitly approved it.
