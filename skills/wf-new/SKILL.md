@@ -34,6 +34,7 @@ Create `~/Code/chris/projects/<slug>/` and write `status.json`:
   "project": "<name>",
   "slug": "<slug>",
   "stage": "new",
+  "project_type": "code",
   "repos": [],
   "branch": "chris/<slug>",
   "worktrees": {},
