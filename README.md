@@ -1,6 +1,6 @@
 # Chris
 
-A personal coding project workflow manager. Takes software ideas from first thought to shipped code through a structured, repeatable process — managing git, spawning agents, and coordinating across multiple repos.
+A personal project workflow manager. Takes ideas from first thought to shipped output through a structured, repeatable process — managing git, spawning agents, and coordinating across multiple repos. Supports code, research, and writing projects.
 
 ```
 /wf-new → /wf-prd → /wf-spec → /wf-tasks → /wf-build → /wf-review → /wf-done
@@ -19,6 +19,9 @@ Works from the Claude CLI at your desk.
 - **Parallel execution** — tasks tagged `[P]` can be spawned as concurrent sub-agents when their dependencies are met
 - **Standards injection** — integrates with AgentOS to load indexed project standards into every agent brief automatically
 - **Build handoffs** — each completed task writes a `handoff.json` capturing decisions made, files changed, and open questions for the next agent
+- **Project types** — `code`, `research`, and `writing` projects each get domain-specific task formats, agent briefs, and acceptance criteria
+- **Hooks** — shell scripts that fire on Claude Code events (e.g., auto-advance to review when tests pass and all tasks are complete)
+- **Eval gates** — lightweight checks at stage transitions that block advancement when criteria are unmet (e.g., spec must have required sections, build must have all tasks complete)
 - **Self-hosting** — Chris manages its own development through the same workflow
 
 ---
@@ -41,6 +44,7 @@ Works from the Claude CLI at your desk.
 │
 ├── chris/                      ← this repo (public tool)
 │   ├── AGENTS.md               ← Chris's own repo context
+│   ├── hooks/                  ← Claude Code PostToolUse hook scripts
 │   ├── skills/                 ← /wf-* skill source files
 │   ├── templates/              ← blank doc templates
 │   ├── README.md

@@ -14,7 +14,7 @@ Chris is a personal workflow manager that turns ideas into shipped code through 
 
 ## Current Focus
 
-Phase 4 simplification: `_shared/` skill fragments, wf-build/wf-review refactors, wf-spec shape-spec integration.
+AI-native workflow upgrade: hooks for auto-stage-advancement, eval gates at spec/build transitions, project_type support (code/research/writing) across wf-new/wf-tasks/wf-build, wf-write skill for writing projects.
 
 ## Conventions
 
