@@ -43,6 +43,26 @@ For each handoff file found:
 
 Assemble the critic brief following `skills/_shared/brief.md` (AGENTS.md excerpt, CONTEXT.md excerpt, completed task blocks, standards via `/inject-standards`). Pass all handoff contents from the previous step as the prior handoff section.
 
+## Build eval gate
+
+Before proceeding, verify that the build is complete.
+
+**Check 1 — Task completion:** Scan `~/Code/chris/projects/<slug>/TASKS.md` for any lines matching `- [ ]`. Collect the task IDs of any incomplete tasks.
+
+**Check 2 — Handoff existence:** Check whether at least one file exists in `~/Code/chris/projects/<slug>/handoffs/`. A missing or empty handoffs directory means no build agent has handed off work.
+
+**On fail:** List each issue found:
+- For incomplete tasks: list each task ID and title that still has `- [ ]`
+- For missing handoffs: report "No handoff files found in projects/<slug>/handoffs/"
+
+Then print:
+```
+❌ Build eval failed
+```
+Stop. Do not proceed to the critic agent or review.
+
+**On pass:** Both checks pass (no `- [ ]` lines remain, at least one handoff file exists). Continue with the review flow below.
+
 ## Critic agent pre-review
 
 Skip this section entirely if `--no-critic` flag is set.

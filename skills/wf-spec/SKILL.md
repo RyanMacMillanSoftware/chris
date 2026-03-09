@@ -73,6 +73,31 @@ Show the user the draft spec and ask: "Does this look right? Anything to add, re
 
 Iterate on sections until confirmed. Don't save without explicit approval.
 
+## Eval gate
+
+Before writing SPEC.md to disk, inspect the approved draft for the four required headings. This is a plain text check — no LLM call.
+
+**Required headings (prefix match):**
+- `## Architecture Overview`
+- `## Data Models`
+- `## Component`
+- `## Tech Decisions`
+
+**Rules:**
+1. Each heading must appear in the draft (a line that starts with the heading string).
+2. Each heading must have at least one non-blank content line between it and the next `##` heading (or end of document).
+
+**On failure:** Do not write the file. Print:
+```
+❌ Spec is incomplete. The following sections are missing or empty:
+  - <section name>
+  - <section name>
+Please complete these sections, then confirm to save.
+```
+Stop and return control to the user.
+
+**On pass:** Fall through to "Save and commit" without any additional prompt.
+
 ## Save and commit
 
 Write to `~/Code/chris/projects/<slug>/SPEC.md`.

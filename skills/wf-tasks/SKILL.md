@@ -18,6 +18,8 @@ Same detection logic as other wf-* skills. Require stage `"spec"` — if not, pr
 
 Read `~/Code/chris/projects/<slug>/SPEC.md` in full.
 
+Read `project_type` from `~/Code/chris/projects/<slug>/status.json`; default to `"code"` if the field is absent.
+
 ## Write guards
 
 Before proceeding to any file write operation:
@@ -37,7 +39,9 @@ Before proceeding to any file write operation:
 
 Break the spec into atomic, ordered tasks. Each task should be completable in a single focused agent session.
 
-Format — use this exact structure for every task:
+Use the task template variant that matches `project_type`:
+
+**`"code"` (default)** — `Accepts:` with a test-focused criterion:
 
 ```markdown
 - [ ] TASK-NNN: Short descriptive title
@@ -46,7 +50,32 @@ Format — use this exact structure for every task:
 
   Description: what needs to be done. Specific enough that an agent can execute this without asking clarifying questions.
 
-  **Accepts:** A specific, verifiable condition that proves the task is complete.
+  **Accepts:** A specific, verifiable condition that proves the task is complete (e.g., tests pass, file exists with expected content).
+```
+
+**`"writing"`** — `Deliverable:` replaces `Accepts:`:
+
+```markdown
+- [ ] TASK-NNN: Short descriptive title
+  **Repos:** repo-name (or comma-separated list)
+  **Deps:** TASK-NNN, TASK-NNN (or "none")
+
+  Description: what needs to be written. Specific enough that an agent can execute this without asking clarifying questions.
+
+  **Deliverable:** A specific, reviewable output (e.g., "500-word section covering X, reviewed by author").
+```
+
+**`"research"`** — `Question:` + `Deliverable:` replace `Accepts:`:
+
+```markdown
+- [ ] TASK-NNN: Short descriptive title
+  **Repos:** repo-name (or comma-separated list)
+  **Deps:** TASK-NNN, TASK-NNN (or "none")
+
+  Description: what needs to be researched. Specific enough that an agent can execute this without asking clarifying questions.
+
+  **Question:** The specific question this task must answer.
+  **Deliverable:** A specific, verifiable output (e.g., "Summary + sources saved to research/").
 ```
 
 Guidelines:

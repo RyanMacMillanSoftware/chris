@@ -16,16 +16,23 @@ If `$ARGUMENTS` is provided, use it as the project name. Otherwise ask: "What's 
 
 Slugify the name: lowercase, replace spaces and special characters with hyphens, strip anything non-alphanumeric except hyphens. Examples: "API Refactor" → `api-refactor`, "My App v2!" → `my-app-v2`.
 
-**2. Check for conflicts**
+**2. Ask for project type**
+
+Ask: "Project type? [code / research / writing] (default: code)"
+
+If the user presses Enter without typing, or enters anything other than `code`, `research`, or `writing`, default to `"code"`. Store the result as `<project_type>`.
+
+**3. Check for conflicts**
 
 If `~/Code/chris/projects/<slug>/` already exists, print:
+
 ```
 ❌ Project '<slug>' already exists at ~/Code/chris/projects/<slug>/
 Run /wf-status to see its current stage.
 ```
 Then stop.
 
-**3. Create project metadata directory**
+**4. Create project metadata directory**
 
 Create `~/Code/chris/projects/<slug>/` and write `status.json`:
 
@@ -34,6 +41,7 @@ Create `~/Code/chris/projects/<slug>/` and write `status.json`:
   "project": "<name>",
   "slug": "<slug>",
   "stage": "new",
+  "project_type": "<project_type>",
   "repos": [],
   "branch": "chris/<slug>",
   "worktrees": {},
@@ -45,7 +53,7 @@ Create `~/Code/chris/projects/<slug>/` and write `status.json`:
 }
 ```
 
-**4. Ask about a new repo**
+**5. Ask about a new repo**
 
 Ask: "Does this project need a new repo to be created? (y/n)"
 
@@ -77,7 +85,7 @@ Wait for confirmation before continuing.
 
 Print: "Repos will be identified during /wf-tasks when you break the spec into tasks."
 
-**5. AgentOS install (optional)**
+**6. AgentOS install (optional)**
 
 Ask: "Set up AgentOS standards in this repo? (y/n)"
 
@@ -102,7 +110,7 @@ Ask: "Set up AgentOS standards in this repo? (y/n)"
      ```
 - **If n:** Skip silently.
 
-**6. Taskfile.yml generation (optional)**
+**7. Taskfile.yml generation (optional)**
 
 Ask: "Generate a Taskfile.yml for this repo? (y/n)"
 
@@ -136,13 +144,13 @@ Ask: "Generate a Taskfile.yml for this repo? (y/n)"
   ```
 - **If n:** Skip silently.
 
-**7. Commit to projects repo**
+**8. Commit to projects repo**
 
 ```bash
 git -C ~/Code/chris/projects add <slug>/ && git -C ~/Code/chris/projects commit -m "docs: init project <slug>"
 ```
 
-**8. Print confirmation**
+**9. Print confirmation**
 
 ```
 ✅ Project '<slug>' created.
