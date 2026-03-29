@@ -13,7 +13,7 @@ Generate a technical spec from the project's PRD. Read the PRD carefully, then d
 Same logic as `/wf-prd`:
 1. Use `$ARGUMENTS` slug if provided
 2. Detect from cwd by matching repos in `status.json` files
-3. Otherwise list projects with stage `"prd"` and ask
+3. Otherwise list projects with stage `"prd"`, `"spec-research"`, or `"spec"` and ask
 
 If the project has no `PRD.md`, print:
 ```
@@ -34,6 +34,15 @@ Before proceeding to any file write operation:
   ```
   ❌ Slug mismatch: argument is '<arg-slug>' but cwd matches '<detected-slug>'. Check your working directory.
   ```
+
+## Load research context
+
+Check if `~/Code/chris/projects/<slug>/SPEC-RESEARCH.md` exists.
+
+- **If it exists:** Read it in full. Print: `Loading spec research findings as context...`
+  Use the research content to inform spec drafting — reference specific patterns, repos, and architecture decisions from the research when drafting Architecture Overview, Component Breakdown, and Tech Decisions sections.
+
+- **If it does not exist:** Proceed unchanged. Do not mention the research file.
 
 ## Run shape-spec
 
