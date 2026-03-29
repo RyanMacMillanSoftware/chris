@@ -101,11 +101,10 @@ Once approved, write the research document to `~/Code/chris/projects/<slug>/PRD-
 
 Update `~/Code/chris/projects/<slug>/status.json`: set `stage` to `"prd-research"` and `updated` to the current ISO 8601 timestamp.
 
-Commit:
+Commit (if projects/ is a git repo):
 ```bash
 git -C ~/Code/chris/projects add <slug>/PRD-RESEARCH.md <slug>/status.json && git -C ~/Code/chris/projects commit -m "docs: add PRD research for <slug>"
 ```
-
 ## Print confirmation
 
 ```
