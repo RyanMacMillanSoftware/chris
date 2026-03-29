@@ -18,10 +18,12 @@ Order:
 1. `build` (active agent running — highest priority)
 2. `tasks`
 3. `spec`
-4. `prd`
-5. `new`
-6. `review` (PR open, awaiting merge)
-7. `done` (only shown if `$ARGUMENTS` is `all`)
+4. `spec-research`
+5. `prd`
+6. `prd-research`
+7. `new`
+8. `review` (PR open, awaiting merge)
+9. `done` (only shown if `$ARGUMENTS` is `all`)
 
 ## Format the output
 
@@ -51,6 +53,7 @@ Use this exact format — plain text, emoji for stage, no tables:
 **Stage emoji:**
 - 🔵 `new` — just created
 - 🟡 `prd`, `spec`, `tasks` — in planning
+- 🟡 `prd-research`, `spec-research` — researching
 - 🟢 `build` — actively building
 - 🔵 `review` — PR open
 - ✅ `done` — merged and closed
