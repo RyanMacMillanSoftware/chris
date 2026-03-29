@@ -16,7 +16,7 @@ first thought to shipped code through a fixed, repeatable pipeline — managing 
 agents, and coordinating work across multiple repos and concurrent projects.
 
 ```
-/wf-new → /wf-prd → /wf-spec → /wf-tasks → /wf-build → /wf-review → /wf-done
+/wf-new → [/wf-prd-research] → /wf-prd → [/wf-spec-research] → /wf-spec → /wf-tasks → /wf-build → /wf-review → /wf-done
 ```
 
 Everything is markdown + Claude CLI skills. No compiled app. Not multi-user.
@@ -28,7 +28,9 @@ Everything is markdown + Claude CLI skills. No compiled app. Not multi-user.
 | Stage | Command | What it does | Output document |
 |-------|---------|-------------|-----------------|
 | `new` | `/wf-new [name]` | Create project registry entry | `status.json` |
+| `prd-research` | `/wf-prd-research` | Market/competitive research before PRD | `PRD-RESEARCH.md` |
 | `prd` | `/wf-prd` | Write PRD interactively, section by section | `PRD.md` |
+| `spec-research` | `/wf-spec-research` | Technical design research before spec | `SPEC-RESEARCH.md` |
 | `spec` | `/wf-spec` | Generate technical spec from PRD | `SPEC.md` |
 | `tasks` | `/wf-tasks` | Break spec into ordered tasks; set up branches | `TASKS.md` |
 | `build` | `/wf-build` | Spawn agent on next unchecked task | Running agent |
@@ -61,6 +63,8 @@ You don't have to go in order. Skip stages that don't apply. Re-run any stage to
 │           ├── PRD.md
 │           ├── SPEC.md
 │           ├── TASKS.md
+│           ├── PRD-RESEARCH.md
+│           ├── SPEC-RESEARCH.md
 │           ├── research/
 │           └── release/
 │
@@ -78,7 +82,7 @@ Every project has `~/Code/chris/projects/<slug>/status.json`:
 {
   "project": "Human readable name",
   "slug": "kebab-case-identifier",
-  "stage": "new|prd|spec|tasks|build|review|done",
+  "stage": "new|prd-research|prd|spec-research|spec|tasks|build|review|done",
   "repos": ["repo-name-1", "repo-name-2"],
   "branch": "chris/<slug>",
   "worktrees": {
@@ -235,8 +239,10 @@ Chris notifies but does not block. Watch for merge conflicts at PR time.
 
 | Skill | Required stage | Error message |
 |-------|---------------|---------------|
-| `/wf-prd` | `new` or `prd` | "Run /wf-new first" |
-| `/wf-spec` | `prd` | "Run /wf-prd first" |
+| `/wf-prd-research` | `new` or `prd-research` | "Run /wf-new first" |
+| `/wf-prd` | `new`, `prd-research`, or `prd` | "Run /wf-new first" |
+| `/wf-spec-research` | `prd` or `spec-research` | "Run /wf-prd first" |
+| `/wf-spec` | `prd`, `spec-research`, or `spec` | "Run /wf-prd first" |
 | `/wf-tasks` | `spec` | "Run /wf-spec first" (warn but allow re-run if already `tasks`) |
 | `/wf-build` | `tasks` or `build` | "Run /wf-tasks first" |
 | `/wf-review` | `build` or `tasks` | "Run /wf-build first" |
