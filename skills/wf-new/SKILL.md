@@ -155,6 +155,6 @@ git -C ~/Code/chris/projects add <slug>/ && git -C ~/Code/chris/projects commit 
 ```
 ✅ Project '<slug>' created.
 
-Next step: /wf-prd
-  Write the Product Requirements Document for this project.
+Next step: /wf-prd-research (optional) or /wf-prd
+  Run /wf-prd-research to investigate the market before writing the PRD, or skip straight to /wf-prd.
 ```
