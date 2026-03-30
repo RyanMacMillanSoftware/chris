@@ -6,24 +6,62 @@ description: "Show all Chris projects and their current stage."
 
 Show all active Chris projects and their current stage. Output is formatted as a plain list — no markdown tables — so it renders correctly in plain-text surfaces.
 
-`$ARGUMENTS` — optional: `all` to include done projects (default hides them)
+`$ARGUMENTS` — optional: `all` to include done projects (default hides them), `--dashboard` to write Obsidian dashboard
 
 ## Read all projects
 
 Scan `~/Code/chris/projects/*/status.json`. Read each file.
+
+## Dashboard mode
+
+If `$ARGUMENTS` contains `--dashboard`:
+
+1. Read `vault_path` from `~/.chris/config.yml`. If not set:
+   ```
+   ❌ Vault path not configured. Run scripts/install.sh to set it up.
+   ```
+   Stop.
+
+2. Scan all projects (same as table mode).
+
+3. Write `<vault_path>/dashboard.md` in Obsidian wiki-link format:
+   ```markdown
+   # Chris Dashboard
+
+   *Last updated: YYYY-MM-DD HH:MM*
+
+   ## Active Projects
+
+   | Project | Type | Stage | Updated |
+   |---------|------|-------|---------|
+   | [[Projects/<slug>/PLAN\|<name>]] | <type> | <stage> | <YYYY-MM-DD> |
+
+   ## Completed
+
+   | Project | Type | Completed |
+   |---------|------|-----------|
+   | [[Projects/<slug>/PLAN\|<name>]] | <type> | <YYYY-MM-DD> |
+   ```
+
+   Use `[[Projects/<slug>/PLAN\|<name>]]` for non-code projects and `[[Projects/<slug>/PRD\|<name>]]` for code projects.
+
+4. Print: `✅ Dashboard written to <vault_path>/dashboard.md`
+
+5. Then continue to print the normal table mode output below.
 
 ## Sort projects
 
 Order:
 1. `build` (active agent running — highest priority)
 2. `tasks`
-3. `spec`
-4. `spec-research`
-5. `prd`
-6. `prd-research`
-7. `new`
-8. `review` (PR open, awaiting merge)
-9. `done` (only shown if `$ARGUMENTS` is `all`)
+3. `plan`
+4. `spec`
+5. `spec-research`
+6. `prd`
+7. `prd-research`
+8. `new`
+9. `review` (PR open, awaiting merge)
+10. `done` (only shown if `$ARGUMENTS` contains `all`)
 
 ## Format the output
 
@@ -32,31 +70,36 @@ Use this exact format — plain text, emoji for stage, no tables:
 ```
 📋 Chris Projects
 
-🟢 <slug> — build (agent running)
+🟢 <slug> — build (code)
    Repos: <repo1>, <repo2>
    ⚠️  Conflict: <repo> ↔ <competing-project>
 
-🟡 <slug> — tasks
+🟡 <slug> — tasks (code)
    Repos: <repo>
 
-🔵 <slug> — prd
+🟡 <slug> — plan (research)
+   Repos: (not applicable)
+
+🔵 <slug> — prd (code)
    Repos: (not yet assigned)
 
-🔵 <slug> — review
+🔵 <slug> — review (code)
    Repos: <repo>
    PR: <pr_url>
 
-✅ <slug> — done
+✅ <slug> — done (writing)
    (only shown with /wf-status all)
 ```
 
 **Stage emoji:**
 - 🔵 `new` — just created
-- 🟡 `prd`, `spec`, `tasks` — in planning
+- 🟡 `prd`, `spec`, `tasks`, `plan` — in planning
 - 🟡 `prd-research`, `spec-research` — researching
 - 🟢 `build` — actively building
-- 🔵 `review` — PR open
-- ✅ `done` — merged and closed
+- 🔵 `review` — under review
+- ✅ `done` — closed
+
+**Type display:** Show the project type in parentheses after the stage: `build (code)`, `plan (research)`, etc. Read `project_type` from each project's `status.json`.
 
 **Conflict indicator:** Only show the `⚠️ Conflict` line if the project's `conflicts` array contains entries where `resolved` is `false`.
 

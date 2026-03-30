@@ -30,3 +30,23 @@ If a handoff file exists for the immediately preceding dependency task, include 
 - `confidence` level
 
 Omit `files_changed`, `decisions_made`, `agent_notes`, and `completed_at` from prior handoffs.
+
+---
+
+## Investigation brief assembly
+
+For `investigation` projects, assemble the brief with these sections instead of the standard code brief:
+
+1. **Project header** — project name, slug, type (`investigation`)
+2. **PLAN.md excerpt** — Hypothesis, Data Sources, current investigation step description
+3. **Prior step findings** — summary of completed step outputs from `research/*.md` (max 10 lines)
+4. **Prior handoff** — `open_questions` and `confidence` from the most recent handoff (max 5 lines)
+
+## Communication brief assembly
+
+For `communication` projects, assemble the brief with these sections:
+
+1. **Project header** — project name, slug, type (`communication`)
+2. **PLAN.md excerpt** — Audience, Channel, Key Messages, Tone
+3. **Prior draft** — if a draft already exists in `drafts/`, include its content for revision context (max 20 lines)
+4. **Prior handoff** — `open_questions` and `confidence` from the most recent handoff (max 5 lines)

@@ -12,9 +12,30 @@ Close a project after its PR has been merged. Generate release artifacts, clean 
 
 Same detection logic as other wf-* skills. Project should be at stage `"review"`, but also accept `"build"` (in case review was skipped).
 
+## Read project type
+
+Read `project_type` from `status.json`. Default to `"code"` if absent.
+
+## Program children check
+
+If `project_type == "program"`:
+1. Read `children[]` from `status.json`.
+2. For each child, read its `status.json` and check the stage.
+3. If any child is not at `"done"`, warn:
+   ```
+   ⚠️ Not all children are done:
+     <child-slug> — <stage>
+   Continue anyway? (y/n)
+   ```
+   If no, stop. If yes, proceed.
+
 ## Confirm before proceeding
 
+For code projects:
 Ask: "Is the PR for '<slug>' merged and the work complete? This will generate release artifacts and archive the project. Confirm? (y/n)"
+
+For non-code projects:
+Ask: "Is the work for '<slug>' complete? This will generate release artifacts and archive the project. Confirm? (y/n)"
 
 If no, print: "Cancelled. Run again when ready."
 
@@ -23,10 +44,17 @@ If no, print: "Cancelled. Run again when ready."
 Create directory `~/Code/chris/projects/<slug>/release/` if it doesn't exist.
 
 Read the full project history:
-- `~/Code/chris/projects/<slug>/PRD.md`
-- `~/Code/chris/projects/<slug>/SPEC.md`
-- `~/Code/chris/projects/<slug>/TASKS.md`
+
+For code projects:
+- `<project_dir>/PRD.md`
+- `<project_dir>/SPEC.md`
+- `<project_dir>/TASKS.md`
 - `status.json` (for PR URL, repos, branch)
+
+For non-code projects:
+- `<project_dir>/PLAN.md`
+- `status.json`
+- Any files in `research/`, `drafts/`, or `handoffs/`
 
 Get the commit log for each repo:
 ```bash
@@ -69,7 +97,9 @@ Terse commit log, grouped by repo. Format:
 
 ## Clean up git
 
-For each repo in `status.json` repos:
+**Skip this section entirely for non-code projects** (`research`, `investigation`, `writing`, `communication`, `program`). Non-code projects don't use git branches or worktrees.
+
+For each repo in `status.json` repos (code projects only):
 
 1. If a worktree exists (check `status.json` worktrees map):
    ```bash
@@ -95,6 +125,11 @@ For each repo in `status.json` repos:
   "updated": "<current ISO8601 timestamp>"
 }
 ```
+
+## Dashboard regeneration
+
+If `vault_path` is configured in `~/.chris/config.yml`, regenerate the dashboard:
+- Scan all projects, write `<vault_path>/dashboard.md` (same logic as `/wf-status --dashboard`).
 
 ## Commit release artifacts
 

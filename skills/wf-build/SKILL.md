@@ -25,6 +25,12 @@ Read `project_type` from `status.json`. Default to `"code"` if the field is abse
 
 **Branch gate — writing projects:** If `project_type == "writing"`, delegate immediately to the wf-write skill. Follow all instructions in `skills/wf-write/SKILL.md` starting from "Load context." Do not proceed past this point.
 
+**Branch gate — investigation projects:** If `project_type == "investigation"`, delegate immediately to the wf-investigate skill. Follow all instructions in `skills/wf-investigate/SKILL.md` starting from "Read the plan." Do not proceed past this point.
+
+**Branch gate — communication projects:** If `project_type == "communication"`, delegate immediately to the wf-communicate skill. Follow all instructions in `skills/wf-communicate/SKILL.md` starting from "Read the plan." Do not proceed past this point.
+
+**Branch gate — program projects:** If `project_type == "program"`, skip to the [Program path] section below. Do not proceed with the standard task flow.
+
 ## Find the next task
 
 Read TASKS.md. Find the first unchecked `- [ ] TASK-NNN`. If all checked, print `✅ All tasks complete for '<slug>'. Run /wf-review.` and stop.
@@ -196,3 +202,29 @@ For `"research"` projects:
 ## Research path
 
 _Entered when `project_type == "research"` after "Find the next task" and "Parallel detection". Skip "Check for conflicts", "Set up worktrees", "Assemble agent context", and "Architect pass". Proceed directly to [Spawn the agent — project_type == "research"] above, then "Update status.json" and "Print confirmation"._
+
+---
+
+## Program path
+
+_Entered when `project_type == "program"` from the branch gate in "Stage preflight"._
+
+1. Read `children[]` from `status.json`.
+2. For each child slug, read its `status.json` to get the current stage.
+3. Print a status table:
+   ```
+   📋 Program: <slug>
+
+   | Child | Type | Stage |
+   |-------|------|-------|
+   | <child-slug> | <type> | <stage> |
+   ```
+4. Identify the child that should advance next. Priority:
+   - Children at `build` stage (need `/wf-build`)
+   - Children at `plan` or `tasks` stage (need next pipeline step)
+   - Children at `new` stage (need `/wf-plan` or `/wf-prd`)
+   - Skip children at `review` or `done`
+5. Suggest the next command:
+   - If a child needs planning: `Next: /wf-plan <child-slug>` (or `/wf-prd` for code)
+   - If a child needs building: `Next: /wf-build <child-slug>`
+   - If all children are `done`: `✅ All children complete. Run /wf-review <slug>.`
