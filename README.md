@@ -1,36 +1,48 @@
 # Chris
 
-A personal project workflow manager. Takes ideas from first thought to shipped output through a structured, repeatable process — managing git, spawning agents, and coordinating across multiple repos. Supports code, research, and writing projects.
+A personal project workflow manager. Takes ideas from first thought to shipped output through a structured, repeatable process — managing git, spawning agents, and coordinating across multiple repos. Supports 6 project types: code, research, investigation, writing, communication, and program.
 
+**Code projects** (7+ stages, research stages optional):
 ```
-/wf-new → /wf-prd → /wf-spec → /wf-tasks → /wf-build → /wf-review → /wf-done
+/wf-new → [/wf-prd-research] → /wf-prd → [/wf-spec-research] → /wf-spec → /wf-tasks → /wf-build → /wf-review → /wf-done
 ```
 
-Works from the Claude CLI at your desk.
+**Non-code projects** (5 stages):
+```
+/wf-new → /wf-plan → /wf-build → /wf-review → /wf-done
+```
+
+Works from the Claude CLI at your desk. Everything is markdown + shell. No compiled app. Not multi-user.
 
 ---
 
 ## What Chris Does
 
-- **Workflow stages** — each step produces a document that feeds the next: PRD → Spec → Tasks → Build → Review → Done
+- **Two-track pipeline** — code projects get the full PRD → Spec → Tasks detail path; non-code projects use a simpler Plan → Build path with type-specific templates
+- **6 project types** — `code`, `research`, `investigation`, `writing`, `communication`, and `program` — each with domain-specific plans, agents, and review checks
+- **Optional research stages** — code projects can optionally run `/wf-prd-research` (market/competitive analysis) before the PRD and `/wf-spec-research` (technical design research) before the spec
 - **Multi-repo projects** — a single project can span multiple codebases; Chris coordinates them all
-- **Git management** — creates branches, sets up worktrees for concurrent projects, commits in conventional style, opens draft PRs
+- **Git management** — creates branches, sets up worktrees for concurrent projects, commits in conventional style, opens draft PRs (code projects only)
 - **Agent orchestration** — spawns Claude-driven agent sessions to do the actual building; runs an architect pass before each build and a critic agent before each review
+- **Reusable agent specs** — `agents/` directory with dedicated specs for research-analyst, investigator, writer, and communicator agents
 - **Parallel execution** — tasks tagged `[P]` can be spawned as concurrent sub-agents when their dependencies are met
 - **Standards injection** — integrates with AgentOS to load indexed project standards into every agent brief automatically
 - **Build handoffs** — each completed task writes a `handoff.json` capturing decisions made, files changed, and open questions for the next agent
-- **Project types** — `code`, `research`, and `writing` projects each get domain-specific task formats, agent briefs, and acceptance criteria
-- **Hooks** — shell scripts that fire on Claude Code events (e.g., auto-advance to review when tests pass and all tasks are complete)
-- **Eval gates** — lightweight checks at stage transitions that block advancement when criteria are unmet (e.g., spec must have required sections, build must have all tasks complete)
+- **Vault backing** — optionally store project state in an Obsidian vault for browsable dashboards and wiki-link navigation
+- **Eval gates** — lightweight checks at stage transitions that block advancement when criteria are unmet
 - **Self-hosting** — Chris manages its own development through the same workflow
 
 ---
 
 ## Concepts
 
-**Project** — a unit of work, defined by a PRD. Not 1:1 with a repo. One project can touch many repos. Metadata lives in `~/Code/chris/projects/<slug>/`.
+**Project** — a unit of work, defined by a PRD (code) or PLAN (non-code). Not 1:1 with a repo. One project can touch many repos. Metadata lives in `~/Code/chris/projects/<slug>/` (or in the Obsidian vault if configured).
 
-**Repo** — source code at `~/Code/<repo-name>/`. Has a `AGENTS.md` that any agent loads at session start for instant context. One repo can be part of many concurrent projects.
+**Project type** — determines which pipeline track, plan template, build handler, and review checks are used. Set at creation via `/wf-new`.
+
+**Repo** — source code at `~/Code/<repo-name>/`. Has an `AGENTS.md` that any agent loads at session start for instant context. One repo can be part of many concurrent projects.
+
+**Program** — a compound project with child projects. The program is complete when all children reach `done`.
 
 ---
 
@@ -38,53 +50,118 @@ Works from the Claude CLI at your desk.
 
 ```
 ~/Code/
-├── .chris-worktrees/           ← isolated checkouts for concurrent projects
+├── .chris-worktrees/              ← isolated checkouts for concurrent projects
 │   └── <project-slug>/
 │       └── <repo-name>/
 │
-├── chris/                      ← this repo (public tool)
-│   ├── AGENTS.md               ← Chris's own repo context
-│   ├── hooks/                  ← Claude Code PostToolUse hook scripts
-│   ├── skills/                 ← /wf-* skill source files
-│   ├── templates/              ← blank doc templates
-│   ├── README.md
-│   └── GUIDE.md
+├── chris/                         ← this repo (public tool)
+│   ├── AGENTS.md                  ← Chris's own repo context
+│   ├── agents/                    ← reusable agent behaviour specs
+│   │   ├── research-analyst.md
+│   │   ├── investigator.md
+│   │   ├── writer.md
+│   │   └── communicator.md
+│   ├── scripts/
+│   │   └── install.sh             ← setup script
+│   ├── skills/                    ← /wf-* skill source files
+│   │   └── _shared/               ← reusable fragments (preflight, brief, paths)
+│   ├── templates/                 ← document and plan templates
+│   └── README.md
 │
-├── chris/projects/             ← private git repo (your personal project data)
+├── chris/projects/                ← private project data (gitignored)
 │   └── <project-slug>/
-│       ├── PRD.md
-│       ├── SPEC.md
-│       ├── TASKS.md
 │       ├── status.json
-│       ├── handoffs/           ← TASK-NNN.json written by each build agent
-│       ├── research/
-│       └── release/            ← generated by /wf-done
+│       ├── PRD.md                 ← code projects
+│       ├── PRD-RESEARCH.md        ← optional (code projects)
+│       ├── SPEC.md                ← code projects
+│       ├── SPEC-RESEARCH.md       ← optional (code projects)
+│       ├── TASKS.md               ← code projects
+│       ├── PLAN.md                ← non-code projects
+│       ├── REVIEW.md              ← generated by /wf-review
+│       ├── handoffs/              ← TASK-NNN.json written by each build agent
+│       ├── research/              ← research and investigation outputs
+│       ├── drafts/                ← writing and communication drafts
+│       └── release/               ← generated by /wf-done
 │
-└── <repo-name>/                ← your code repos (siblings of chris/)
-    ├── AGENTS.md               ← stable: Purpose, Conventions, Key Files
-    ├── CONTEXT.md              ← evolving: Current Focus, Recent Decisions, Open Questions
-    └── agent-os/               ← optional: AgentOS standards directory
-        └── standards/
-            └── index.yml
+└── <repo-name>/                   ← your code repos (siblings of chris/)
+    ├── AGENTS.md                  ← stable: Purpose, Conventions, Key Files
+    └── CONTEXT.md                 ← evolving: Current Focus, Recent Decisions
+```
+
+### Vault layout (optional)
+
+When `vault_path` is set in `~/.chris/config.yml`, project directories live in the Obsidian vault with symlinks for backwards compatibility:
+
+```
+<vault_path>/
+├── dashboard.md                   ← generated by /wf-status --dashboard
+└── Projects/
+    └── <slug>/                    ← same structure as above
 ```
 
 ---
 
 ## Workflow Skills
 
-Each `/wf-*` command is a Claude CLI slash command, available in any session.
+Each `/wf-*` command is a Claude CLI slash command, available in any session after install.
+
+### Core pipeline
 
 | Command | What it does |
 |---------|-------------|
-| `/wf-new [name]` | Create a new project. Optionally scaffold a new repo. |
-| `/wf-prd` | Write a Product Requirements Document interactively. |
-| `/wf-spec` | Generate a technical spec from the PRD. |
-| `/wf-tasks` | Break the spec into ordered tasks. Identify repos. Set up branches. |
-| `/wf-build` | Spawn an agent for the next task. Manages git, loads context. |
-| `/wf-review` | Review diff vs spec + tasks. On pass: push + open draft PR. |
-| `/wf-done` | Close project: generate release artifacts, clean up git, archive. |
-| `/wf-status` | Show all projects and their current stage. |
+| `/wf-new [name]` | Create a new project. Choose type, optionally scaffold a repo. |
+| `/wf-prd` | Write a Product Requirements Document interactively. (Code projects) |
+| `/wf-spec` | Generate a technical spec from the PRD. (Code projects) |
+| `/wf-tasks` | Break the spec into ordered tasks. Set up branches. (Code projects) |
+| `/wf-plan` | Write a plan using type-specific template. (Non-code projects) |
+| `/wf-build` | Spawn an agent for the next task. Routes by project type. |
+| `/wf-review` | Review deliverables. On pass: push + draft PR (code) or write REVIEW.md (non-code). |
+| `/wf-done` | Close project: release artifacts, git cleanup, archive. |
+
+### Optional research stages (code projects)
+
+| Command | What it does |
+|---------|-------------|
+| `/wf-prd-research` | Market and competitive research before the PRD. Saves `PRD-RESEARCH.md`. |
+| `/wf-spec-research` | Technical design research before the spec. Saves `SPEC-RESEARCH.md`. |
+
+These are optional — skip them if you already know the landscape, or run them to inform your PRD and spec with real-world data.
+
+### Supporting skills
+
+| Command | What it does |
+|---------|-------------|
+| `/wf-status [--dashboard]` | Show all projects and their stage. `--dashboard` writes Obsidian markdown. |
 | `/wf-research [topic]` | Research a topic at any stage. Saves findings to project. |
+| `/wf-investigate [slug]` | Run next investigation step. (Investigation projects) |
+| `/wf-communicate [slug]` | Draft communication with approval gate. (Communication projects) |
+| `/chris-guide` | Print the full workflow system reference. |
+
+---
+
+## Project Types
+
+| Type | Pipeline | Plan template | Build handler |
+|------|----------|---------------|---------------|
+| `code` | 7-stage (PRD → SPEC → TASKS) | N/A — uses PRD + SPEC | Standard code build with architect pass |
+| `research` | 5-stage (PLAN) | `PLAN-research.md` | Research-analyst agent |
+| `investigation` | 5-stage (PLAN) | `PLAN-investigation.md` | Investigator agent |
+| `writing` | 5-stage (PLAN) | `PLAN-writing.md` | Writer agent |
+| `communication` | 5-stage (PLAN) | `PLAN-communication.md` | Communicator agent (never sends without approval) |
+| `program` | 5-stage (PLAN) | `PLAN-program.md` | Coordinates child projects |
+
+---
+
+## Agent Specs
+
+Reusable agent behaviour specs live in `agents/`. Each defines role, inputs, outputs, tools, and constraints.
+
+| Agent | Purpose | Spawned by |
+|-------|---------|------------|
+| `research-analyst` | Deep research with source citations | `/wf-build` (research), `/wf-research` |
+| `investigator` | Data-driven investigation with evidence chains | `/wf-investigate` |
+| `writer` | Long-form drafting by outline section | `/wf-build` (writing) |
+| `communicator` | Message drafting for Slack, email, Notion | `/wf-communicate` |
 
 ---
 
@@ -96,49 +173,34 @@ Each `/wf-*` command is a Claude CLI slash command, available in any session.
 git clone https://github.com/<your-username>/chris ~/Code/chris
 ```
 
-### 2. Install skills globally
-
-Symlink workflow and guide skills into `~/.claude/commands/` so they're available in every Claude session:
+### 2. Run the install script
 
 ```bash
-for skill in ~/Code/chris/skills/wf-*/SKILL.md ~/Code/chris/skills/chris-guide/SKILL.md; do
-  name=$(basename $(dirname $skill))
-  ln -sf "$skill" ~/.claude/commands/${name}.md
-done
+~/Code/chris/scripts/install.sh
 ```
 
-Edits to these skill files take effect immediately — no reinstall needed.
+This will:
+- Create `~/.chris/config.yml` (prompts for optional vault path and AgentOS path)
+- Symlink all `/wf-*` skills and `/chris-guide` to `~/.claude/commands/`
+- Symlink all agent specs to `~/.claude/agents/`
+- Create vault directories (if vault path provided)
+- Check `gh auth status`
 
-### 3. Initialise Chris
+Edits to skill and agent files take effect immediately — no reinstall needed.
 
-Open any Claude session and run:
+### 3. Set up the private projects repo *(optional)*
 
-```
-/wf-init
-```
-
-This creates the `projects/` directory, sets up the meta-projects, and verifies your `gh` CLI auth.
-
-### 4. Set up the private projects repo *(manual step)*
-
-Your `projects/` directory contains all your personal project data — PRDs, specs, tasks, research. It should be a separate private GitHub repo:
+Your `projects/` directory contains personal project data — PRDs, specs, tasks, research. You can optionally track it as a separate private repo:
 
 ```bash
 cd ~/Code/chris/projects
-git init
-git add .
-git commit -m "chore: init projects repo"
+git init && git add . && git commit -m "chore: init projects repo"
 gh repo create chris-projects --private --source=. --push
 ```
 
-Or create the repo on GitHub first and then:
+This directory is excluded from the public `chris/` repo via `.gitignore`.
 
-```bash
-git remote add origin git@github.com:<your-username>/chris-projects.git
-git push -u origin main
-```
-
-This repo is excluded from the public `chris/` repo via `.gitignore`.
+---
 
 ## AGENTS.md + CONTEXT.md — Repo Briefs
 
@@ -172,7 +234,7 @@ Key patterns to follow.
 What's being worked on right now.
 
 ## Recent Decisions
-Key decisions made in recent tasks — keeps the next agent from re-litigating closed decisions.
+Key decisions made in recent tasks.
 
 ## Open Questions
 Unresolved decisions or things to revisit.
@@ -180,18 +242,18 @@ Unresolved decisions or things to revisit.
 
 `/wf-new` creates both files for new repos. For existing repos, copy from `~/Code/chris/templates/`.
 
-Child projects that Chris spawns up create their own `.claude/` runtime folder. Before making your first commit in any such repo, ensure `.claude/` is present in that repo's `.gitignore` so local agent session data stays untracked.
-
 ---
 
 ## Git Conventions
 
-Chris manages git throughout the workflow:
+Chris manages git for code projects throughout the workflow:
 
 - **One branch per project**: `chris/<project-slug>` (e.g., `chris/auth-overhaul`)
 - **Commits**: conventional style — `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
 - **Concurrent projects**: if two projects touch the same repo, git worktrees keep them isolated
 - **PRs**: draft PRs opened automatically by `/wf-review` when it passes
+
+Non-code projects skip all git operations (no branches, worktrees, or PRs).
 
 ---
 
@@ -212,20 +274,12 @@ If the projects overlap on the same files, Chris notifies you immediately and fl
 
 ---
 
-## Meta-Projects
-
-Chris eats its own cooking:
-
-- `projects/chris/` — tracks Chris's own development (PRD, SPEC, TASKS, releases)
-- `projects/workflow-improvements/` — a low-friction notebook for anything that feels clunky or could be better
-
----
-
 ## Full Docs
 
-- `GUIDE.md` — detailed walkthrough of every workflow stage
-- `skills/chris-guide/SKILL.md` — comprehensive workflow/system reference
-- `templates/PRD.md` and `templates/SPEC.md` — canonical planning templates
+- `skills/chris-guide/SKILL.md` — comprehensive workflow and system reference
+- `templates/` — all document templates (PRD, PLAN-*, REVIEW, status schema)
+- `agents/` — agent behaviour specs (research-analyst, investigator, writer, communicator)
+- `templates/status.schema.md` — full `status.json` field documentation
 
 ## Contributor Checks
 

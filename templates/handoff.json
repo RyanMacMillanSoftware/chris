@@ -17,5 +17,6 @@
   ],
   "confidence": "high",
   "test_status": "passed",
-  "agent_notes": "All acceptance criteria met. Auth module is isolated and tested. No changes to unrelated files."
+  "agent_notes": "All acceptance criteria met. Auth module is isolated and tested. No changes to unrelated files.",
+  "agent": ""
 }

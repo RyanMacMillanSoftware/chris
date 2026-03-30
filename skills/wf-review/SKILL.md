@@ -13,7 +13,12 @@ Review the current state of the project branch against the spec and task accepta
 
 ## Detect the current project
 
-Same detection logic as other wf-* skills. Require stage `"build"` or `"tasks"`.
+Same detection logic as other wf-* skills.
+
+Read `project_type` from `status.json`. Default to `"code"` if absent.
+
+For `code` projects: require stage `"build"` or `"tasks"`.
+For non-code projects: require stage `"build"` or `"plan"`.
 
 ## Gather the diff
 
@@ -45,23 +50,41 @@ Assemble the critic brief following `skills/_shared/brief.md` (AGENTS.md excerpt
 
 ## Build eval gate
 
-Before proceeding, verify that the build is complete.
+Before proceeding, verify that the build is complete. Checks vary by project type.
 
-**Check 1 — Task completion:** Scan `~/Code/chris/projects/<slug>/TASKS.md` for any lines matching `- [ ]`. Collect the task IDs of any incomplete tasks.
+### Code projects
 
-**Check 2 — Handoff existence:** Check whether at least one file exists in `~/Code/chris/projects/<slug>/handoffs/`. A missing or empty handoffs directory means no build agent has handed off work.
+**Check 1 — Task completion:** Scan `<project_dir>/TASKS.md` for any lines matching `- [ ]`. Collect the task IDs of any incomplete tasks.
 
-**On fail:** List each issue found:
-- For incomplete tasks: list each task ID and title that still has `- [ ]`
-- For missing handoffs: report "No handoff files found in projects/<slug>/handoffs/"
+**Check 2 — Handoff existence:** Check whether at least one file exists in `<project_dir>/handoffs/`. A missing or empty handoffs directory means no build agent has handed off work.
 
-Then print:
-```
-❌ Build eval failed
-```
-Stop. Do not proceed to the critic agent or review.
+**On fail:** List each issue and print `❌ Build eval failed`. Stop.
 
-**On pass:** Both checks pass (no `- [ ]` lines remain, at least one handoff file exists). Continue with the review flow below.
+**On pass:** Both checks pass. Continue with the review flow below.
+
+### Research / Investigation projects
+
+**Check:** All planned questions (research) or investigation steps have output files in `<project_dir>/research/`. Compare against PLAN.md's Research Questions or Investigation Steps.
+
+**On fail:** List missing outputs and print `❌ Build eval failed`. Stop.
+
+### Writing projects
+
+**Check:** All planned sections from PLAN.md's Outline have draft files in `<project_dir>/drafts/`.
+
+**On fail:** List missing sections and print `❌ Build eval failed`. Stop.
+
+### Communication projects
+
+**Check:** At least one draft file exists in `<project_dir>/drafts/`.
+
+**On fail:** Print `❌ Build eval failed — no draft found in drafts/`. Stop.
+
+### Program projects
+
+**Check:** All `children[]` slugs from `status.json` are at stage `"done"`.
+
+**On fail:** List children not yet done and print `❌ Build eval failed — not all children complete`. Stop.
 
 ## Critic agent pre-review
 
@@ -154,7 +177,11 @@ Tasks with open questions or lower confidence that deserve closer scrutiny:
 
 Show the user the report and ask: "Does this review look accurate? Anything to adjust before proceeding?"
 
-## On PASS
+## Review template
+
+Load `~/Code/chris/templates/REVIEW.md` and fill in the template with the review findings. Write the completed review to `<project_dir>/REVIEW.md`.
+
+## On PASS — code projects
 
 Push each repo's branch:
 ```bash
@@ -191,6 +218,20 @@ Promote to ready when satisfied:
 
 After merge, run /wf-done to clean up and generate release artifacts.
 ```
+
+## On PASS — non-code projects
+
+Non-code projects do not create PRs or push branches. Instead:
+
+1. Write `REVIEW.md` to the project directory.
+2. Update `status.json`: set `stage` to `"review"`.
+3. Print:
+   ```
+   ✅ Review complete for '<slug>'.
+      REVIEW.md written to <project_dir>/REVIEW.md
+
+   Next step: /wf-done <slug>
+   ```
 
 ## On FAIL
 

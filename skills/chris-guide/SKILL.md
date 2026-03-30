@@ -11,35 +11,71 @@ or a subagent on the full system. No arguments needed.
 
 ## What Chris Is
 
-Chris is a personal coding workflow manager for one developer. It takes software ideas from
-first thought to shipped code through a fixed, repeatable pipeline — managing git, spawning
-agents, and coordinating work across multiple repos and concurrent projects.
+Chris is a personal workflow manager for one developer. It takes ideas from first thought to
+shipped work through a fixed, repeatable pipeline — managing git, spawning agents, and
+coordinating work across multiple repos and concurrent projects.
 
+Chris supports 6 project types with two pipeline tracks:
+
+**Code projects** (7 stages):
 ```
 /wf-new → [/wf-prd-research] → /wf-prd → [/wf-spec-research] → /wf-spec → /wf-tasks → /wf-build → /wf-review → /wf-done
+```
+
+**Non-code projects** (5 stages):
+```
+/wf-new → /wf-plan → /wf-build → /wf-review → /wf-done
 ```
 
 Everything is markdown + Claude CLI skills. No compiled app. Not multi-user.
 
 ---
 
+## Project Types
+
+| Type | Pipeline | Description |
+|------|----------|-------------|
+| `code` | 7-stage | Software implementation with PRD → SPEC → TASKS |
+| `research` | 5-stage | Deep research with cited sources |
+| `investigation` | 5-stage | Data-driven diagnosis (debugging, root-cause analysis) |
+| `writing` | 5-stage | Long-form content drafting |
+| `communication` | 5-stage | Message drafting for Slack, email, Notion |
+| `program` | 5-stage | Compound project coordinating child projects |
+
+---
+
 ## Workflow Stages
 
-| Stage | Command | What it does | Output document |
-|-------|---------|-------------|-----------------|
+### Code projects
+
+| Stage | Command | What it does | Output |
+|-------|---------|-------------|--------|
 | `new` | `/wf-new [name]` | Create project registry entry | `status.json` |
-| `prd-research` | `/wf-prd-research` | Market/competitive research before PRD | `PRD-RESEARCH.md` |
+| `prd-research` | `/wf-prd-research` | Market/competitive research before PRD (optional) | `PRD-RESEARCH.md` |
 | `prd` | `/wf-prd` | Write PRD interactively, section by section | `PRD.md` |
-| `spec-research` | `/wf-spec-research` | Technical design research before spec | `SPEC-RESEARCH.md` |
+| `spec-research` | `/wf-spec-research` | Technical design research before spec (optional) | `SPEC-RESEARCH.md` |
 | `spec` | `/wf-spec` | Generate technical spec from PRD | `SPEC.md` |
 | `tasks` | `/wf-tasks` | Break spec into ordered tasks; set up branches | `TASKS.md` |
 | `build` | `/wf-build` | Spawn agent on next unchecked task | Running agent |
 | `review` | `/wf-review` | Review diff vs spec + tasks; push + draft PR | Review report |
 | `done` | `/wf-done` | Release artifacts + git cleanup + archive | `release/` |
 
-Supporting skills (any stage):
-- `/wf-status [all]` — list all projects; shows conflicts, active agents, PR URLs
-- `/wf-research [topic]` — run research and save to `~/Code/chris/projects/<slug>/research/`
+### Non-code projects
+
+| Stage | Command | What it does | Output |
+|-------|---------|-------------|--------|
+| `new` | `/wf-new [name]` | Create project registry entry | `status.json` |
+| `plan` | `/wf-plan` | Write plan using type-specific template | `PLAN.md` |
+| `build` | `/wf-build` | Route to type-specific build handler | Running agent |
+| `review` | `/wf-review` | Type-aware review of deliverables | `REVIEW.md` |
+| `done` | `/wf-done` | Release artifacts + archive | `release/` |
+
+### Supporting skills (any stage)
+
+- `/wf-status [all] [--dashboard]` — list all projects; `--dashboard` writes Obsidian markdown
+- `/wf-research [topic]` — run research and save to project's `research/`
+- `/wf-investigate [slug]` — run next investigation step (investigation projects)
+- `/wf-communicate [slug]` — draft communication with approval gate (communication projects)
 
 You don't have to go in order. Skip stages that don't apply. Re-run any stage to update it.
 
@@ -51,61 +87,92 @@ You don't have to go in order. Skip stages that don't apply. Re-run any stage to
 ~/Code/
 ├── .chris-worktrees/              ← isolated checkouts for concurrent projects
 │   └── <slug>/
-│       └── <repo>/                ← worktree for this project+repo
-│
+│       └── <repo>/
+
 ├── chris/                         ← this repo (public)
 │   ├── AGENTS.md
+│   ├── agents/                    ← reusable agent behaviour specs
+│   │   ├── research-analyst.md
+│   │   ├── investigator.md
+│   │   ├── writer.md
+│   │   └── communicator.md
+│   ├── scripts/
+│   │   └── install.sh             ← setup script (replaces /wf-init)
 │   ├── skills/                    ← /wf-* skill sources
-│   ├── templates/                 ← blank doc templates
-│   └── projects/                  ← private project data (separate git repo)
+│   │   └── _shared/               ← reusable fragments (preflight, brief, handoff, paths)
+│   ├── templates/                 ← document templates (PRD, PLAN-*, REVIEW, etc.)
+│   └── projects/                  ← private project data
 │       └── <slug>/
 │           ├── status.json
-│           ├── PRD.md
-│           ├── SPEC.md
-│           ├── TASKS.md
-│           ├── PRD-RESEARCH.md
-│           ├── SPEC-RESEARCH.md
+│           ├── PRD.md              ← code projects
+│           ├── PRD-RESEARCH.md     ← optional (code projects)
+│           ├── SPEC.md             ← code projects
+│           ├── SPEC-RESEARCH.md    ← optional (code projects)
+│           ├── TASKS.md            ← code projects
+│           ├── PLAN.md             ← non-code projects
+│           ├── REVIEW.md           ← generated by /wf-review
 │           ├── research/
+│           ├── drafts/
+│           ├── handoffs/
 │           └── release/
-│
+
 └── <repo-name>/                   ← code repos (siblings of chris/)
     └── AGENTS.md
 ```
+
+### Vault layout (when configured)
+
+When `vault_path` is set in `~/.chris/config.yml`, project directories live in the Obsidian vault:
+
+```
+<vault_path>/
+├── dashboard.md                   ← generated by /wf-status --dashboard
+└── Projects/
+    └── <slug>/                    ← same structure as above
+```
+
+A symlink at `~/Code/chris/projects/<slug>/` points to the vault location for backwards compatibility.
 
 ---
 
 ## status.json Schema
 
-Every project has `~/Code/chris/projects/<slug>/status.json`:
+Every project has a `status.json` (see `templates/status.schema.md` for full documentation):
 
 ```json
 {
   "project": "Human readable name",
   "slug": "kebab-case-identifier",
-  "stage": "new|prd-research|prd|spec-research|spec|tasks|build|review|done",
+  "stage": "new|prd-research|prd|spec-research|spec|tasks|plan|build|review|done",
+  "project_type": "code|research|investigation|writing|communication|program",
   "repos": ["repo-name-1", "repo-name-2"],
   "branch": "chris/<slug>",
-  "worktrees": {
-    "<repo>": "~/Code/.chris-worktrees/<slug>/<repo>/"
-  },
-  "active_agents": [
-    {"task": "TASK-001", "started_at": "<ISO8601>"}
-  ],
-  "conflicts": [
-    {
-      "repo": "<repo>",
-      "competing_project": "<other-slug>",
-      "files": ["src/auth/session.ts"],
-      "detected_at": "<ISO8601>",
-      "resolved": false
-    }
-  ],
-  "pr_url": "https://github.com/org/repo/pull/42",
+  "worktrees": {},
+  "active_agents": [],
+  "conflicts": [],
+  "pr_url": null,
+  "tags": [],
+  "children": [],
   "created": "<ISO8601>",
   "updated": "<ISO8601>",
-  "closed_at": "<ISO8601>"
+  "closed_at": null
 }
 ```
+
+---
+
+## Agent Specs
+
+Agent behaviour specs live in `agents/`. Each defines role, inputs, outputs, tools, and constraints.
+
+| Agent | Purpose | Spawned by |
+|-------|---------|------------|
+| `research-analyst` | Deep research with source citations | `/wf-build` (research), `/wf-research` |
+| `investigator` | Data-driven investigation with evidence chains | `/wf-investigate` |
+| `writer` | Long-form drafting by outline section | `/wf-build` (writing), `/wf-write` |
+| `communicator` | Message drafting for Slack/email/Notion | `/wf-communicate` |
+
+Agents are spawned by skills, not invoked directly. They write output to project directories and produce handoff JSON files.
 
 ---
 
@@ -155,18 +222,9 @@ Stale AGENTS.md is worse than no AGENTS.md — keep it updated as the project ev
   **Repos:** repo-name
   **Deps:** none
 
-  Description: what needs to be done. Specific enough that an agent can execute without
-  asking clarifying questions. Include file paths, command names, exact formats.
+  Description: what needs to be done.
 
   **Accepts:** A specific, verifiable condition proving this task is complete.
-
-- [ ] TASK-002: Next task
-  **Repos:** repo-name
-  **Deps:** TASK-001
-
-  Description here.
-
-  **Accepts:** Acceptance condition.
 ```
 
 Rules:
@@ -180,7 +238,7 @@ Rules:
 
 ## Git Operations
 
-Chris manages git throughout the workflow:
+Chris manages git for code projects throughout the workflow:
 
 **Branch creation** (`/wf-tasks`):
 ```bash
@@ -209,11 +267,13 @@ git -C ~/Code/<repo> worktree remove ~/Code/.chris-worktrees/<slug>/<repo>/ --fo
 git -C ~/Code/<repo> branch -d chris/<slug>
 ```
 
+Non-code projects skip all git operations (no branches, worktrees, or PRs).
+
 ---
 
 ## Conflict Detection
 
-`/wf-build` checks for conflicts before spawning an agent:
+`/wf-build` checks for conflicts before spawning an agent (code projects only):
 
 1. Find all other `chris/*` branches on the same repo
 2. Get files modified by each competing branch since diverging from main
@@ -237,6 +297,8 @@ Chris notifies but does not block. Watch for merge conflicts at PR time.
 
 ## Stage-Gating
 
+### Code projects
+
 | Skill | Required stage | Error message |
 |-------|---------------|---------------|
 | `/wf-prd-research` | `new` or `prd-research` | "Run /wf-new first" |
@@ -248,23 +310,47 @@ Chris notifies but does not block. Watch for merge conflicts at PR time.
 | `/wf-review` | `build` or `tasks` | "Run /wf-build first" |
 | `/wf-done` | `review` or `build` | — |
 
+### Non-code projects
+
+| Skill | Required stage | Error message |
+|-------|---------------|---------------|
+| `/wf-plan` | `new` or `plan` | "Run /wf-new first" |
+| `/wf-build` | `plan` or `build` | "Run /wf-plan first" |
+| `/wf-review` | `build` or `plan` | "Run /wf-build first" |
+| `/wf-done` | `review` or `build` | — |
+
+---
+
+## Vault Backing (optional)
+
+When `vault_path` is set in `~/.chris/config.yml`, project directories are created in the Obsidian vault instead of `~/Code/chris/projects/`. A symlink ensures backwards compatibility.
+
+- **Setup:** Run `scripts/install.sh` and provide your vault path when prompted.
+- **Migration:** When a skill accesses a non-vault project with vault configured, it offers to migrate.
+- **Dashboard:** `/wf-status --dashboard` writes an Obsidian wiki-link dashboard to `<vault_path>/dashboard.md`.
+
+---
+
+## Setup
+
+Run `scripts/install.sh` to set up Chris. This replaces the old `/wf-init` skill.
+
+The script:
+1. Creates `~/.chris/config.yml` (vault path, AgentOS path)
+2. Symlinks all skills to `~/.claude/commands/`
+3. Symlinks all agent specs to `~/.claude/agents/`
+4. Creates vault directories (if configured)
+5. Checks `gh auth status`
+
 ---
 
 ## Release Artifacts (generated by /wf-done)
 
-Saved to `~/Code/chris/projects/<slug>/release/`:
+Saved to the project's `release/` directory:
 
 - `PRESS-RELEASE.md` — human-readable announcement: headline, what was built, why it matters, key highlights
 - `RELEASE-NOTES.md` — technical changelog: completed tasks, decisions, deferred items, known issues
-- `UPDATE-LOG.md` — terse commit log grouped by repo
-
----
-
-## Meta-Projects
-
-Chris manages its own development through the same workflow:
-- `projects/chris/` — design and build of Chris itself
-- `projects/workflow-improvements/` — running log of things to improve (low friction: just notes)
+- `UPDATE-LOG.md` — terse commit log grouped by repo (code projects only)
 
 ---
 
@@ -275,4 +361,5 @@ Chris manages its own development through the same workflow:
 - **Forgetting /wf-review** — takes 2 minutes; catches drift from the original spec
 - **Running builds in the main checkout when a worktree exists** — check `status.json` worktrees first
 - **Pushing before review** — let `/wf-review` handle pushing; it sets up the PR correctly
-- **Not committing the projects repo** — most wf-* skills update project metadata there; don't skip it
+- **Using /wf-prd for non-code projects** — use `/wf-plan` instead; it loads type-specific templates
+- **Sending without approval** — communication projects require two explicit approvals before any send

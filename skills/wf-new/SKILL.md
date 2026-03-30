@@ -18,9 +18,9 @@ Slugify the name: lowercase, replace spaces and special characters with hyphens,
 
 **2. Ask for project type**
 
-Ask: "Project type? [code / research / writing] (default: code)"
+Ask: "Project type? [code / research / investigation / writing / communication / program] (default: code)"
 
-If the user presses Enter without typing, or enters anything other than `code`, `research`, or `writing`, default to `"code"`. Store the result as `<project_type>`.
+Valid types: `code`, `research`, `investigation`, `writing`, `communication`, `program`. If the user presses Enter without typing or enters an invalid value, default to `"code"`. Store the result as `<project_type>`.
 
 **3. Check for conflicts**
 
@@ -48,10 +48,23 @@ Create `~/Code/chris/projects/<slug>/` and write `status.json`:
   "active_agents": [],
   "conflicts": [],
   "pr_url": null,
+  "tags": [],
+  "children": [],
   "created": "<current ISO8601 timestamp>",
   "updated": "<current ISO8601 timestamp>"
 }
 ```
+
+**4b. Vault path handling**
+
+Read `~/.chris/config.yml` and extract `vault_path` (may not exist or be empty).
+
+If `vault_path` is set and the directory exists:
+1. Create the project directory at `<vault_path>/Projects/<slug>/` instead of `~/Code/chris/projects/<slug>/`.
+2. Create a symlink: `~/Code/chris/projects/<slug>/` → `<vault_path>/Projects/<slug>/`.
+3. Write `status.json` to `<vault_path>/Projects/<slug>/status.json` (the symlink ensures backwards compatibility).
+
+If `vault_path` is not set or directory doesn't exist, use `~/Code/chris/projects/<slug>/` directly (the default behavior in step 4).
 
 **5. Ask about a new repo**
 
@@ -84,6 +97,37 @@ Wait for confirmation before continuing.
 **If no:**
 
 Print: "Repos will be identified during /wf-tasks when you break the spec into tasks."
+
+**5b. Program auto-stubs (program type only)**
+
+If `<project_type>` is `"program"`:
+
+Ask: "List child project names and types (e.g., `auth-api:code, user-research:research`):"
+
+For each child entry:
+1. Slugify the name.
+2. Create `<project_dir>/<child-slug>/status.json` with:
+   ```json
+   {
+     "project": "<child-name>",
+     "slug": "<child-slug>",
+     "stage": "new",
+     "project_type": "<child-type>",
+     "repos": [],
+     "branch": "chris/<child-slug>",
+     "worktrees": {},
+     "active_agents": [],
+     "conflicts": [],
+     "pr_url": null,
+     "tags": [],
+     "children": [],
+     "created": "<current ISO8601>",
+     "updated": "<current ISO8601>"
+   }
+   ```
+3. Add the child slug to the parent's `children[]` array in `status.json`.
+
+Print: `Created N child project stubs.`
 
 **6. AgentOS install (optional)**
 
@@ -152,9 +196,18 @@ git -C ~/Code/chris/projects add <slug>/ && git -C ~/Code/chris/projects commit 
 
 **9. Print confirmation**
 
+For `code` projects:
 ```
 ✅ Project '<slug>' created.
 
 Next step: /wf-prd-research (optional) or /wf-prd
   Run /wf-prd-research to investigate the market before writing the PRD, or skip straight to /wf-prd.
+```
+
+For all other project types (`research`, `investigation`, `writing`, `communication`, `program`):
+```
+✅ Project '<slug>' created.
+
+Next step: /wf-plan
+  Write the Plan document for this project.
 ```
