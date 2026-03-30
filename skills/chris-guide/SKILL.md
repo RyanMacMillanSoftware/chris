@@ -147,10 +147,22 @@ Every project has a `status.json` (see `templates/status.schema.md` for full doc
   "project_type": "code|research|investigation|writing|communication|program",
   "repos": ["repo-name-1", "repo-name-2"],
   "branch": "chris/<slug>",
-  "worktrees": {},
-  "active_agents": [],
-  "conflicts": [],
-  "pr_url": null,
+  "worktrees": {
+    "<repo>": "~/Code/.chris-worktrees/<slug>/<repo>/"
+  },
+  "active_agents": [
+    {"task": "TASK-001", "started_at": "<ISO8601>"}
+  ],
+  "conflicts": [
+    {
+      "repo": "<repo>",
+      "competing_project": "<other-slug>",
+      "files": ["src/auth/session.ts"],
+      "detected_at": "<ISO8601>",
+      "resolved": false
+    }
+  ],
+  "pr_url": "https://github.com/org/repo/pull/42",
   "tags": [],
   "children": [],
   "created": "<ISO8601>",
