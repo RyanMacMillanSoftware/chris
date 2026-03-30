@@ -82,7 +82,7 @@ Every project has `~/Code/chris/projects/<slug>/status.json`:
 {
   "project": "Human readable name",
   "slug": "kebab-case-identifier",
-  "stage": "new|prd-research|prd|spec-research|spec|tasks|build|review|done",
+  "stage": "new|prd-research|prd|spec-research|spec|tasks|plan|build|review|done",
   "repos": ["repo-name-1", "repo-name-2"],
   "branch": "chris/<slug>",
   "worktrees": {
@@ -101,6 +101,8 @@ Every project has `~/Code/chris/projects/<slug>/status.json`:
     }
   ],
   "pr_url": "https://github.com/org/repo/pull/42",
+  "tags": [],
+  "children": [],
   "created": "<ISO8601>",
   "updated": "<ISO8601>",
   "closed_at": "<ISO8601>"
