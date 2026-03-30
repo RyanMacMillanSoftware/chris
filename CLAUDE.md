@@ -2,7 +2,7 @@
 
 Chris orchestrates projects through a fixed pipeline from idea to completion. Projects follow one of two tracks:
 
-- **Code projects:** `new → prd → spec → tasks → build → review → done` (7 stages)
+- **Code projects:** `new → [prd-research] → prd → [spec-research] → spec → tasks → build → review → done` (7+ stages, research stages optional)
 - **Non-code projects:** `new → plan → build → review → done` (5 stages)
 
 Use `/wf-status` to see your projects and their stages, `/wf-new` to register a project, and `/wf-build` plus `/wf-review`/`/wf-done` for the hands-on work and wrap-up. Code projects use `/wf-prd → /wf-spec → /wf-tasks` for planning; non-code projects use `/wf-plan`.

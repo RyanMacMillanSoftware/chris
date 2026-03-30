@@ -14,7 +14,7 @@ Chris is a personal workflow manager that turns ideas into shipped work through 
 
 ## Current Focus
 
-Forge backport improvements: adding 3 new project types (investigation, communication, program), vault backing, type-specific plan templates, agent specs, and install script.
+Forge backport improvements (in review): 6 project types with two-track pipeline, vault backing, type-specific plan templates, agent specs, install script, and optional research stages for code projects.
 
 ## Conventions
 
