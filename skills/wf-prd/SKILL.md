@@ -12,7 +12,7 @@ Interactively write a PRD for the current project. Work through each section wit
 
 1. If `$ARGUMENTS` is provided, use that slug. Check `~/Code/chris/projects/<slug>/` exists.
 2. Else if cwd is `~/Code/<repo>/` or a subdirectory, scan all `~/Code/chris/projects/*/status.json` for entries where `repos` contains this repo name. If exactly one match, use it. If multiple, ask which one.
-3. Else list all projects with stage `"new"` or `"prd"` and ask which one to work on.
+3. Else list all projects with stage `"new"`, `"prd-research"`, or `"prd"` and ask which one to work on.
 
 If no matching project is found, suggest running `/wf-new` first.
 
@@ -30,6 +30,15 @@ Before proceeding to any file write operation:
   ```
   ❌ Slug mismatch: argument is '<arg-slug>' but cwd matches '<detected-slug>'. Check your working directory.
   ```
+
+## Load research context
+
+Check if `~/Code/chris/projects/<slug>/PRD-RESEARCH.md` exists.
+
+- **If it exists:** Read it in full. Print: `📄 Loading PRD research findings as context...`
+  Use the research content to inform PRD drafting — reference specific findings when working through sections, especially Goals, Non-Goals, Constraints, and Key Concepts. When drafting each section, actively incorporate relevant insights from the research (e.g., competitive gaps inform Goals, market constraints inform Constraints).
+
+- **If it does not exist:** Proceed unchanged. Do not mention the research file.
 
 ## Write the PRD
 
@@ -68,6 +77,6 @@ git -C ~/Code/chris/projects add <slug>/PRD.md <slug>/status.json && git -C ~/Co
 ```
 ✅ PRD saved to ~/Code/chris/projects/<slug>/PRD.md
 
-Next step: /wf-spec
-  Generate the technical specification from this PRD.
+Next step: /wf-spec-research (optional) or /wf-spec
+  Run /wf-spec-research to investigate technical approaches, or skip to /wf-spec.
 ```
