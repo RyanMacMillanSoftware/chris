@@ -95,6 +95,32 @@ Terse commit log, grouped by repo. Format:
 - <sha> <commit message>
 ```
 
+## Obsidian integration
+
+When writing release files (PRESS-RELEASE.md, RELEASE-NOTES.md, UPDATE-LOG.md), include YAML frontmatter:
+```yaml
+---
+project: <Project Name>
+type: <press-release|release-notes|update-log>
+tags:
+  - project/<slug>
+  - type/<type>
+  - stage/done
+aliases:
+  - <Project Name> <Type Label>
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+After the title heading, include: `> **Hub:** [[<slug>/index|<Project Name>]]`
+
+After writing release files, update the project's `index.md`:
+1. Append each release file to the Artifacts table or a new Release section
+2. Update the hub's `stage/` tag to `stage/done`
+3. Update the hub's stage line to: `> **Stage:** done | **Type:** <project-type>`
+4. Update the hub's `updated` frontmatter field
+
 ## Clean up git
 
 **Skip this section entirely for non-code projects** (`research`, `investigation`, `writing`, `communication`, `program`). Non-code projects don't use git branches or worktrees.

@@ -1,9 +1,19 @@
+---
+project: {{ Project Name }}
+type: tasks
+tags:
+  - project/{{ slug }}
+  - type/tasks
+  - stage/tasks
+aliases:
+  - {{ Project Name }} Task List
+created: {{ YYYY-MM-DD }}
+updated: {{ YYYY-MM-DD }}
+---
+
 # Tasks: {{ Project Name }}
 
-**Project:** {{ slug }}
-**Branch:** chris/{{ slug }}
-**Repos:** {{ repo-names }}
-**Status:** Ready to build
+> **Hub:** [[{{ slug }}/index|{{ Project Name }}]] | **PRD:** [[{{ slug }}/PRD]] | **Spec:** [[{{ slug }}/SPEC]]
 
 > Tasks marked `[P]` can run in parallel if their deps are met.
 

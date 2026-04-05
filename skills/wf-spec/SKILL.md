@@ -107,6 +107,23 @@ Stop and return control to the user.
 
 **On pass:** Fall through to "Save and commit" without any additional prompt.
 
+## Obsidian integration
+
+When writing SPEC.md, include YAML frontmatter from `templates/SPEC.md`. Fill in:
+- `project`: from `status.json.project`
+- `slug`: from `status.json.slug`
+- `YYYY-MM-DD`: current date
+
+After the `# Spec: <Project Name>` heading, include the navigation blockquote:
+```
+> **Hub:** [[<slug>/index|<Project Name>]] | **PRD:** [[<slug>/PRD]] | **Tasks:** [[<slug>/TASKS]]
+```
+
+After writing SPEC.md, update the project's `index.md`:
+1. In the Artifacts table, change the SPEC row status from `—` to `✅`
+2. Update the hub's `updated` frontmatter field to the current date
+3. Update the hub's `stage/` tag to `stage/spec`
+
 ## Save and commit
 
 Write to `~/Code/chris/projects/<slug>/SPEC.md`.

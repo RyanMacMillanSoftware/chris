@@ -95,6 +95,19 @@ Review the research draft above. Any changes or additions?
 
 Iterate until the user approves. Make requested edits and re-present the updated sections. Do not proceed until the user explicitly approves.
 
+## Obsidian integration
+
+When writing PRD-RESEARCH.md, include YAML frontmatter from `templates/PRD-RESEARCH.md`. Fill in values from `status.json` and the current date.
+
+After the title heading, include:
+```
+> **Hub:** [[<slug>/index|<Project Name>]] | **PRD:** [[<slug>/PRD]]
+```
+
+After writing the file, update the project's `index.md`:
+1. Append to the Research section: `- [[<slug>/PRD-RESEARCH|PRD Research]]`
+2. Update the hub's `updated` frontmatter field
+
 ## Save and update
 
 Once approved, write the research document to `~/Code/chris/projects/<slug>/PRD-RESEARCH.md`.

@@ -54,6 +54,12 @@ Tone: <tone from PLAN.md>
 - Do not set up git worktrees, branches, or make git commits
 ```
 
+## Obsidian integration (passthrough)
+
+Include these instructions in the communicator agent brief:
+
+"Every draft file you write must start with YAML frontmatter (project, type: draft, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/index|{project_name}]]`. After writing a draft, append a wikilink to the project's `index.md` Drafts section."
+
 ## Approval gate
 
 After the agent completes, present the full draft to the user with AskUserQuestion:

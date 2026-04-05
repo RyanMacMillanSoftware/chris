@@ -1,10 +1,19 @@
+---
+project: {{ Project Name }}
+type: prd-research
+tags:
+  - project/{{ slug }}
+  - type/prd-research
+  - stage/prd-research
+aliases:
+  - {{ Project Name }} PRD Research
+created: {{ YYYY-MM-DD }}
+updated: {{ YYYY-MM-DD }}
+---
+
 # PRD Research: {{ Project Name }}
 
-**Project:** {{ slug }}
-**Date:** {{ YYYY-MM-DD }}
-**Focus:** Market analysis, competitive landscape, and user need discovery
-
----
+> **Hub:** [[{{ slug }}/index|{{ Project Name }}]] | **PRD:** [[{{ slug }}/PRD]]
 
 ## Problem Context
 

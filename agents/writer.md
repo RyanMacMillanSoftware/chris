@@ -21,7 +21,7 @@ Produce long-form written content — articles, documentation, reports, proposal
 
 ## Outputs
 
-- **Draft file:** `{project_dir}/drafts/{section-slug}.md` — pure markdown content, no frontmatter
+- **Draft file:** `{project_dir}/drafts/{section-slug}.md` — markdown with YAML frontmatter
 - **Handoff JSON:** `{project_dir}/handoffs/TASK-NNN.json` — standard handoff with `"agent": "writer"`
 
 ### Draft naming
@@ -41,6 +41,34 @@ Use kebab-case derived from the section title:
 | `WebFetch` | Retrieve specific web pages for fact-checking |
 
 No other tools are permitted. No code execution, no git operations, no external messaging.
+
+### Obsidian Integration
+
+The draft file starts with YAML frontmatter:
+```yaml
+---
+project: {project_name}
+type: draft
+tags:
+  - project/{slug}
+  - type/draft
+  - stage/build
+aliases:
+  - {project_name} Draft: {Section Title}
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+After the title heading, include:
+```
+> **Hub:** [[{slug}/index|{project_name}]]
+```
+
+After writing a file, append a wikilink entry to the project's `index.md` under the **Drafts** section:
+```
+- [[{slug}/drafts/{filename}|{title}]]
+```
 
 ## Constraints
 

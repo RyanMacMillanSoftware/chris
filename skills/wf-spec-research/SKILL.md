@@ -109,6 +109,19 @@ Does this look right? Anything to add, remove, or change?
 
 Iterate on sections until the user explicitly confirms the document is ready. Do not save without explicit approval.
 
+## Obsidian integration
+
+When writing SPEC-RESEARCH.md, include YAML frontmatter from `templates/SPEC-RESEARCH.md`. Fill in values from `status.json` and the current date.
+
+After the title heading, include:
+```
+> **Hub:** [[<slug>/index|<Project Name>]] | **Spec:** [[<slug>/SPEC]]
+```
+
+After writing the file, update the project's `index.md`:
+1. Append to the Research section: `- [[<slug>/SPEC-RESEARCH|Spec Research]]`
+2. Update the hub's `updated` frontmatter field
+
 ## Save and update
 
 Write the approved document to `~/Code/chris/projects/<slug>/SPEC-RESEARCH.md`.

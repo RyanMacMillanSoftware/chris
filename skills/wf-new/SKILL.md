@@ -66,6 +66,35 @@ If `vault_path` is set and the directory exists:
 
 If `vault_path` is not set or directory doesn't exist, use `~/Code/chris/projects/<slug>/` directly (the default behavior in step 4).
 
+**4c. Create hub note**
+
+Create `<project_dir>/index.md` using `~/Code/chris/templates/index.md` as the template. Fill in:
+- `project`: from `status.json.project`
+- `slug`: from `status.json.slug`
+- `current-stage`: `"new"`
+- `project-type`: from `status.json.project_type`
+- `YYYY-MM-DD`: current date
+
+Populate the Artifacts table based on `project_type`:
+- **Code projects** (`code`):
+  ```
+  | Document | Status |
+  |----------|--------|
+  | [[<slug>/PRD]] | — |
+  | [[<slug>/SPEC]] | — |
+  | [[<slug>/TASKS]] | — |
+  | [[<slug>/REVIEW]] | — |
+  ```
+- **Non-code projects** (`research`, `investigation`, `writing`, `communication`, `program`):
+  ```
+  | Document | Status |
+  |----------|--------|
+  | [[<slug>/PLAN]] | — |
+  | [[<slug>/REVIEW]] | — |
+  ```
+
+Set the hub description placeholder to the project description (if available) or leave as `{{ One-line description from PRD overview or plan goal. }}`.
+
 **5. Ask about a new repo**
 
 Ask: "Does this project need a new repo to be created? (y/n)"

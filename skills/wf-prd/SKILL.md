@@ -61,6 +61,23 @@ Sections to cover:
 8. **Key Concepts** — Define any domain-specific terms or entities that will recur
 9. **Open Questions** — Things that need answering before or during spec
 
+## Obsidian integration
+
+When writing PRD.md, include YAML frontmatter from `templates/PRD.md`. Fill in:
+- `project`: from `status.json.project`
+- `slug`: from `status.json.slug`
+- `YYYY-MM-DD`: current date
+
+After the `# PRD: <Project Name>` heading, include the navigation blockquote:
+```
+> **Hub:** [[<slug>/index|<Project Name>]] | **Spec:** [[<slug>/SPEC]] | **Tasks:** [[<slug>/TASKS]]
+```
+
+After writing PRD.md, update the project's `index.md`:
+1. In the Artifacts table, change the PRD row status from `—` to `✅`
+2. Update the hub's `updated` frontmatter field to the current date
+3. Update the hub's `stage/` tag to `stage/prd`
+
 ## Save and commit
 
 Once all sections are confirmed, write the PRD to `~/Code/chris/projects/<slug>/PRD.md`.

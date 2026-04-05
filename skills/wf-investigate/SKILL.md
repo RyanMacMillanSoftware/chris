@@ -69,6 +69,12 @@ Working directory: <project_dir>/research/
 - If this is the last step, also write research/summary.md
 ```
 
+## Obsidian integration (passthrough)
+
+Include these instructions in the investigator agent brief:
+
+"Every markdown file you write must start with YAML frontmatter (project, type: research, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/index|{project_name}]]`. After writing a file, append a wikilink to the project's `index.md` Research section."
+
 ## Update status
 
 Set `status.json.stage` to `"build"` if not already. Update `updated` timestamp. Add agent to `active_agents`.

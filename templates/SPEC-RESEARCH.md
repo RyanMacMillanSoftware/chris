@@ -1,10 +1,19 @@
+---
+project: {{ Project Name }}
+type: spec-research
+tags:
+  - project/{{ slug }}
+  - type/spec-research
+  - stage/spec-research
+aliases:
+  - {{ Project Name }} Spec Research
+created: {{ YYYY-MM-DD }}
+updated: {{ YYYY-MM-DD }}
+---
+
 # Spec Research: {{ Project Name }}
 
-**Project:** {{ slug }}
-**Date:** {{ YYYY-MM-DD }}
-**Focus:** Technical design patterns, similar implementations, and architectural approaches
-
----
+> **Hub:** [[{{ slug }}/index|{{ Project Name }}]] | **Spec:** [[{{ slug }}/SPEC]]
 
 ## Problem Context
 

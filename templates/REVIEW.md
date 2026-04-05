@@ -1,11 +1,19 @@
+---
+project: {{ Project Name }}
+type: review
+tags:
+  - project/{{ slug }}
+  - type/review
+  - stage/review
+aliases:
+  - {{ Project Name }} Review
+created: {{ YYYY-MM-DD }}
+updated: {{ YYYY-MM-DD }}
+---
+
 # Review: {{ Project Name }}
 
-**Type:** {{ project_type }}
-**Date:** {{ YYYY-MM-DD }}
-**Reviewer:** {{ reviewer }}
-**Stage at review:** build → review
-
----
+> **Hub:** [[{{ slug }}/index|{{ Project Name }}]] | **PRD:** [[{{ slug }}/PRD]] | **Tasks:** [[{{ slug }}/TASKS]]
 
 ## Plan vs. Actual
 

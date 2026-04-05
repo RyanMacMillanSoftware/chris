@@ -177,6 +177,21 @@ Tasks with open questions or lower confidence that deserve closer scrutiny:
 
 Show the user the report and ask: "Does this review look accurate? Anything to adjust before proceeding?"
 
+## Obsidian integration
+
+When writing REVIEW.md, include YAML frontmatter from `templates/REVIEW.md`. Fill in values from `status.json` and the current date.
+
+After the title heading, include:
+```
+> **Hub:** [[<slug>/index|<Project Name>]] | **PRD:** [[<slug>/PRD]] | **Tasks:** [[<slug>/TASKS]]
+```
+For non-code projects, use: `> **Hub:** [[<slug>/index|<Project Name>]] | **Plan:** [[<slug>/PLAN]] | **Tasks:** [[<slug>/TASKS]]`
+
+After writing the file, update the project's `index.md`:
+1. In the Artifacts table, change the REVIEW row status from `—` to `✅`
+2. Update the hub's `updated` frontmatter field
+3. Update the hub's `stage/` tag to `stage/review`
+
 ## Review template
 
 Load `~/Code/chris/templates/REVIEW.md` and fill in the template with the review findings. Write the completed review to `<project_dir>/REVIEW.md`.

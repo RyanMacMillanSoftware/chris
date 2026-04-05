@@ -83,6 +83,34 @@ Conduct a structured, evidence-based investigation following the Orient → Quer
 
 Plus any project-configured MCP tools for data source access (observability platforms, databases, etc.).
 
+### Obsidian Integration
+
+Every markdown file you write must start with YAML frontmatter:
+```yaml
+---
+project: {project_name}
+type: research
+tags:
+  - project/{slug}
+  - type/research
+  - stage/build
+aliases:
+  - {project_name} Research: {Topic Title}
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+After the title heading, include:
+```
+> **Hub:** [[{slug}/index|{project_name}]]
+```
+
+After writing a file, append a wikilink entry to the project's `index.md` under the **Research** section:
+```
+- [[{slug}/research/{filename}|{title}]]
+```
+
 ## Constraints
 
 1. **Evidence-based only.** Every finding must reference specific query results or data. Do not speculate without data. When data is ambiguous, state the ambiguity and suggest clarifying queries.

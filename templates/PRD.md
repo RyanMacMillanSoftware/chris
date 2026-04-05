@@ -1,10 +1,19 @@
+---
+project: {{ Project Name }}
+type: prd
+tags:
+  - project/{{ slug }}
+  - type/prd
+  - stage/prd
+aliases:
+  - {{ Project Name }} PRD
+created: {{ YYYY-MM-DD }}
+updated: {{ YYYY-MM-DD }}
+---
+
 # PRD: {{ Project Name }}
 
-**Date:** {{ YYYY-MM-DD }}
-**Status:** Draft
-**Author:** [Your name]
-
----
+> **Hub:** [[{{ slug }}/index|{{ Project Name }}]] | **Spec:** [[{{ slug }}/SPEC]] | **Tasks:** [[{{ slug }}/TASKS]]
 
 ## Overview
 

@@ -72,6 +72,29 @@ Clear recommendation based on this project's context and constraints.
 
 Omit sections that aren't relevant (e.g. no "Options Considered" if it's not a comparison).
 
+## Obsidian integration
+
+Instruct the research-analyst agent to include YAML frontmatter on all research output files:
+```yaml
+---
+project: <project name>
+type: research
+tags:
+  - project/<slug>
+  - type/research
+  - stage/build
+aliases:
+  - <Project Name> Research: <Topic>
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+After the title heading, include: `> **Hub:** [[<slug>/index|<Project Name>]]`
+
+After writing the research file, append a wikilink to the project's `index.md` Research section:
+`- [[<slug>/research/<filename>|<title>]]`
+
 ## Save the findings
 
 Slugify the topic: lowercase, hyphens, strip special characters.
