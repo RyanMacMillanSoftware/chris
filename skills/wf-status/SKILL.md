@@ -81,20 +81,27 @@ If `$ARGUMENTS` contains `--dashboard`:
 
    | Project | Type | Stage | Updated |
    |---------|------|-------|---------|
-   | [[Projects/<slug>/PLAN\|<name>]] | <type> | <stage> | <YYYY-MM-DD> |
+   | [[<slug>/index|<name>]] | <type> | <stage> | <YYYY-MM-DD> |
 
    ## Completed
 
    | Project | Type | Completed |
    |---------|------|-----------|
-   | [[Projects/<slug>/PLAN\|<name>]] | <type> | <YYYY-MM-DD> |
+   | [[<slug>/index|<name>]] | <type> | <YYYY-MM-DD> |
    ```
 
-   Use `[[Projects/<slug>/PLAN\|<name>]]` for non-code projects and `[[Projects/<slug>/PRD\|<name>]]` for code projects.
+   Use `[[<slug>/index|<name>]]` for all projects (link to hub note, not individual artifacts).
 
 4. Print: `✅ Dashboard written to <vault_path>/dashboard.md`
 
 5. Then continue to print the normal table mode output below.
+
+## Obsidian integration
+
+When generating the project status dashboard, link each project to its hub note:
+`[[<slug>/index|<Project Name>]]`
+
+Do not link to PRD or PLAN directly -- the hub note serves as the entry point.
 
 ## Sort projects
 
