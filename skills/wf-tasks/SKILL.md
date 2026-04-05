@@ -144,6 +144,23 @@ For each confirmed repo:
    ```
    If multiple chris branches exist, note: "⚠️ Multiple projects touching <repo> — worktrees will be used during /wf-build."
 
+## Obsidian integration
+
+When writing TASKS.md, include YAML frontmatter from `templates/TASKS.md`. Fill in:
+- `project`: from `status.json.project`
+- `slug`: from `status.json.slug`
+- `YYYY-MM-DD`: current date
+
+After the `# Tasks: <Project Name>` heading, include the navigation blockquote:
+```
+> **Hub:** [[<slug>/index|<Project Name>]] | **PRD:** [[<slug>/PRD]] | **Spec:** [[<slug>/SPEC]]
+```
+
+After writing TASKS.md, update the project's `index.md`:
+1. In the Artifacts table, change the TASKS row status from `—` to `✅`
+2. Update the hub's `updated` frontmatter field to the current date
+3. Update the hub's `stage/` tag to `stage/tasks`
+
 ## Save and commit
 
 Write `~/Code/chris/projects/<slug>/TASKS.md` using the format above.
