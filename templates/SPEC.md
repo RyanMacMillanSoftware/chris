@@ -1,11 +1,19 @@
+---
+project: {{ Project Name }}
+type: spec
+tags:
+  - project/{{ slug }}
+  - type/spec
+  - stage/spec
+aliases:
+  - {{ Project Name }} Technical Spec
+created: {{ YYYY-MM-DD }}
+updated: {{ YYYY-MM-DD }}
+---
+
 # SPEC: {{ Project Name }}
 
-**Date:** {{ YYYY-MM-DD }}
-**Status:** Draft
-**Author:** [Your name]
-**PRD:** `~/Code/chris/projects/{{ slug }}/PRD.md`
-
----
+> **Hub:** [[{{ slug }}/index|{{ Project Name }}]] | **PRD:** [[{{ slug }}/PRD]] | **Tasks:** [[{{ slug }}/TASKS]]
 
 ## Architecture Overview
 
