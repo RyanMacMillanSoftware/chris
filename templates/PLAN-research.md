@@ -1,8 +1,19 @@
+---
+project: {{ Project Name }}
+type: plan
+tags:
+  - project/{{ slug }}
+  - type/plan
+  - stage/plan
+aliases:
+  - {{ Project Name }} Plan
+created: {{ YYYY-MM-DD }}
+updated: {{ YYYY-MM-DD }}
+---
+
 # Plan: {{ Project Name }}
 
-**Type:** research
-**Date:** {{ YYYY-MM-DD }}
-**Status:** Draft <!-- Draft | Approved -->
+> **Hub:** [[{{ slug }}/index|{{ Project Name }}]]
 
 ## Goal
 
