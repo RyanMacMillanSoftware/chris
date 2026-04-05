@@ -8,9 +8,18 @@ Show all active Chris projects and their current stage. Output is formatted as a
 
 `$ARGUMENTS` — optional: `all` to include done projects (default hides them), `--dashboard` to write Obsidian dashboard
 
+## Resolve projects directory
+
+Use the path resolution logic from `skills/_shared/paths.md`:
+
+1. Read `~/.chris/config.yml`. If `vault_path` is set and `<vault_path>/Projects/` exists:
+   → Projects dir = `<vault_path>/Projects/`
+2. Otherwise:
+   → Projects dir = `~/Code/chris/projects/`
+
 ## Read all projects
 
-Scan `~/Code/chris/projects/*/status.json`. Read each file.
+Scan `<projects_dir>/*/status.json`. Read each file.
 
 ## Dashboard mode
 
