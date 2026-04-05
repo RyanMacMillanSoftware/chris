@@ -42,6 +42,34 @@ Draft messages for external communication channels on behalf of the user. Produc
 
 Read-only MCP tools may be used for channel context (reading existing Slack threads, Notion pages) but **never** tools that send, post, create, update, or schedule external content.
 
+### Obsidian Integration
+
+Every markdown file you write must start with YAML frontmatter:
+```yaml
+---
+project: {project_name}
+type: draft
+tags:
+  - project/{slug}
+  - type/draft
+  - stage/build
+aliases:
+  - {project_name} Draft: {Message Title}
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+After the title heading, include:
+```
+> **Hub:** [[{slug}/index|{project_name}]]
+```
+
+After writing a file, append a wikilink entry to the project's `index.md` under the **Drafts** section:
+```
+- [[{slug}/drafts/{filename}|{title}]]
+```
+
 ## Constraints
 
 1. **NEVER SEND — DRAFT ONLY.** This is the most critical constraint. The communicator agent:

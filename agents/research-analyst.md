@@ -66,6 +66,34 @@ Conduct thorough research on a given question, synthesize findings into a struct
 
 No other tools are permitted. No code execution, no file deletion, no git operations, no external messaging.
 
+### Obsidian Integration
+
+Every markdown file you write must start with YAML frontmatter:
+```yaml
+---
+project: {project_name}
+type: research
+tags:
+  - project/{slug}
+  - type/research
+  - stage/build
+aliases:
+  - {project_name} Research: {Topic Title}
+created: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+After the title heading, include:
+```
+> **Hub:** [[{slug}/index|{project_name}]]
+```
+
+After writing a file, append a wikilink entry to the project's `index.md` under the **Research** section:
+```
+- [[{slug}/research/{filename}|{title}]]
+```
+
 ## Constraints
 
 1. **No scope expansion.** If the question cannot be fully answered within the given scope, document gaps in "Open Questions" rather than broadening the investigation.
