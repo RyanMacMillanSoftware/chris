@@ -72,6 +72,12 @@ Display the plan. Prompt `Proceed? [y / n to revise / s to skip]`:
 - **n** → ask what to change, re-run with feedback, loop until y or s
 - **s** → skip plan, spawn builder immediately
 
+## Obsidian integration (passthrough)
+
+Include these instructions in the agent brief:
+
+"Every markdown file you write must start with YAML frontmatter (project, type, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/index|{project_name}]]`. After writing a file, append a wikilink entry to the project's `index.md` under the appropriate section (Research or Drafts)."
+
 ## Spawn the agent
 
 ### project_type == "code"
