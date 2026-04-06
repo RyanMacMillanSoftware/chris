@@ -13,7 +13,7 @@ updated: {{ YYYY-MM-DD }}
 
 # Tasks: {{ Project Name }}
 
-> **Hub:** [[{{ slug }}/index|{{ Project Name }}]] | **PRD:** [[{{ slug }}/PRD]] | **Spec:** [[{{ slug }}/SPEC]]
+> **Hub:** [[{{ slug }}/{{ slug }}-index|{{ Project Name }}]] | **PRD:** [[{{ slug }}/PRD]] | **Spec:** [[{{ slug }}/SPEC]]
 
 > Tasks marked `[P]` can run in parallel if their deps are met.
 

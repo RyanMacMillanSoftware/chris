@@ -70,10 +70,10 @@ When writing PRD.md, include YAML frontmatter from `templates/PRD.md`. Fill in:
 
 After the `# PRD: <Project Name>` heading, include the navigation blockquote:
 ```
-> **Hub:** [[<slug>/index|<Project Name>]] | **Spec:** [[<slug>/SPEC]] | **Tasks:** [[<slug>/TASKS]]
+> **Hub:** [[<slug>/<slug>-index|<Project Name>]] | **Spec:** [[<slug>/SPEC]] | **Tasks:** [[<slug>/TASKS]]
 ```
 
-After writing PRD.md, update the project's `index.md`:
+After writing PRD.md, update the project's `<slug>-index.md`:
 1. In the Artifacts table, change the PRD row status from `—` to `✅`
 2. Update the hub's `updated` frontmatter field to the current date
 3. Update the hub's `stage/` tag to `stage/prd`

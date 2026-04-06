@@ -58,7 +58,7 @@ Tone: <tone from PLAN.md>
 
 Include these instructions in the communicator agent brief:
 
-"Every draft file you write must start with YAML frontmatter (project, type: draft, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/index|{project_name}]]`. After writing a draft, append a wikilink to the project's `index.md` Drafts section."
+"Every draft file you write must start with YAML frontmatter (project, type: draft, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/{slug}-index|{project_name}]]`. After writing a draft, append a wikilink to the project's `{slug}-index.md` Drafts section."
 
 ## Approval gate
 

@@ -86,10 +86,10 @@ updated: YYYY-MM-DD
 
 After the title heading, include:
 ```
-> **Hub:** [[{slug}/index|{project_name}]]
+> **Hub:** [[{slug}/{slug}-index|{project_name}]]
 ```
 
-After writing a file, append a wikilink entry to the project's `index.md` under the **Research** section:
+After writing a file, append a wikilink entry to the project's `{slug}-index.md` under the **Research** section:
 ```
 - [[{slug}/research/{filename}|{title}]]
 ```

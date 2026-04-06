@@ -68,7 +68,7 @@ If `vault_path` is not set or directory doesn't exist, use `~/Code/chris/project
 
 **4c. Create hub note**
 
-Create `<project_dir>/index.md` using `~/Code/chris/templates/index.md` as the template. Fill in:
+Create `<project_dir>/<slug>-index.md` using `~/Code/chris/templates/hub-index.md` as the template. Fill in:
 - `project`: from `status.json.project`
 - `slug`: from `status.json.slug`
 - `current-stage`: `"new"`

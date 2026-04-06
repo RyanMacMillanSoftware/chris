@@ -73,7 +73,7 @@ Working directory: <project_dir>/research/
 
 Include these instructions in the investigator agent brief:
 
-"Every markdown file you write must start with YAML frontmatter (project, type: research, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/index|{project_name}]]`. After writing a file, append a wikilink to the project's `index.md` Research section."
+"Every markdown file you write must start with YAML frontmatter (project, type: research, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/{slug}-index|{project_name}]]`. After writing a file, append a wikilink to the project's `{slug}-index.md` Research section."
 
 ## Update status
 

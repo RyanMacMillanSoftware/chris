@@ -153,10 +153,10 @@ When writing TASKS.md, include YAML frontmatter from `templates/TASKS.md`. Fill 
 
 After the `# Tasks: <Project Name>` heading, include the navigation blockquote:
 ```
-> **Hub:** [[<slug>/index|<Project Name>]] | **PRD:** [[<slug>/PRD]] | **Spec:** [[<slug>/SPEC]]
+> **Hub:** [[<slug>/<slug>-index|<Project Name>]] | **PRD:** [[<slug>/PRD]] | **Spec:** [[<slug>/SPEC]]
 ```
 
-After writing TASKS.md, update the project's `index.md`:
+After writing TASKS.md, update the project's `<slug>-index.md`:
 1. In the Artifacts table, change the TASKS row status from `—` to `✅`
 2. Update the hub's `updated` frontmatter field to the current date
 3. Update the hub's `stage/` tag to `stage/tasks`

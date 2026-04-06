@@ -90,9 +90,9 @@ updated: YYYY-MM-DD
 ---
 ```
 
-After the title heading, include: `> **Hub:** [[<slug>/index|<Project Name>]]`
+After the title heading, include: `> **Hub:** [[<slug>/<slug>-index|<Project Name>]]`
 
-After writing the research file, append a wikilink to the project's `index.md` Research section:
+After writing the research file, append a wikilink to the project's `<slug>-index.md` Research section:
 `- [[<slug>/research/<filename>|<title>]]`
 
 ## Save the findings

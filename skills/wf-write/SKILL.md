@@ -78,7 +78,7 @@ There is no test-pass criterion. Do not include any test or CI gate in the brief
 
 Include these instructions in the writer agent brief:
 
-"Every draft file you write must start with YAML frontmatter (project, type: draft, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/index|{project_name}]]`. After writing a draft, append a wikilink to the project's `index.md` Drafts section: `- [[{slug}/drafts/{filename}|{title}]]`"
+"Every draft file you write must start with YAML frontmatter (project, type: draft, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/{slug}-index|{project_name}]]`. After writing a draft, append a wikilink to the project's `{slug}-index.md` Drafts section: `- [[{slug}/drafts/{filename}|{title}]]`"
 
 ## Spawn agent
 

@@ -101,10 +101,10 @@ When writing PRD-RESEARCH.md, include YAML frontmatter from `templates/PRD-RESEA
 
 After the title heading, include:
 ```
-> **Hub:** [[<slug>/index|<Project Name>]] | **PRD:** [[<slug>/PRD]]
+> **Hub:** [[<slug>/<slug>-index|<Project Name>]] | **PRD:** [[<slug>/PRD]]
 ```
 
-After writing the file, update the project's `index.md`:
+After writing the file, update the project's `<slug>-index.md`:
 1. Append to the Research section: `- [[<slug>/PRD-RESEARCH|PRD Research]]`
 2. Update the hub's `updated` frontmatter field
 
