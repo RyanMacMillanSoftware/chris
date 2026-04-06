@@ -115,10 +115,10 @@ When writing SPEC-RESEARCH.md, include YAML frontmatter from `templates/SPEC-RES
 
 After the title heading, include:
 ```
-> **Hub:** [[<slug>/index|<Project Name>]] | **Spec:** [[<slug>/SPEC]]
+> **Hub:** [[<slug>/<slug>-index|<Project Name>]] | **Spec:** [[<slug>/SPEC]]
 ```
 
-After writing the file, update the project's `index.md`:
+After writing the file, update the project's `<slug>-index.md`:
 1. Append to the Research section: `- [[<slug>/SPEC-RESEARCH|Spec Research]]`
 2. Update the hub's `updated` frontmatter field
 

@@ -13,7 +13,7 @@ updated: {{ YYYY-MM-DD }}
 
 # PRD: {{ Project Name }}
 
-> **Hub:** [[{{ slug }}/index|{{ Project Name }}]] | **Spec:** [[{{ slug }}/SPEC]] | **Tasks:** [[{{ slug }}/TASKS]]
+> **Hub:** [[{{ slug }}/{{ slug }}-index|{{ Project Name }}]] | **Spec:** [[{{ slug }}/SPEC]] | **Tasks:** [[{{ slug }}/TASKS]]
 
 ## Overview
 

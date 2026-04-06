@@ -116,10 +116,10 @@ When writing SPEC.md, include YAML frontmatter from `templates/SPEC.md`. Fill in
 
 After the `# Spec: <Project Name>` heading, include the navigation blockquote:
 ```
-> **Hub:** [[<slug>/index|<Project Name>]] | **PRD:** [[<slug>/PRD]] | **Tasks:** [[<slug>/TASKS]]
+> **Hub:** [[<slug>/<slug>-index|<Project Name>]] | **PRD:** [[<slug>/PRD]] | **Tasks:** [[<slug>/TASKS]]
 ```
 
-After writing SPEC.md, update the project's `index.md`:
+After writing SPEC.md, update the project's `<slug>-index.md`:
 1. In the Artifacts table, change the SPEC row status from `—` to `✅`
 2. Update the hub's `updated` frontmatter field to the current date
 3. Update the hub's `stage/` tag to `stage/spec`

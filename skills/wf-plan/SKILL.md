@@ -80,10 +80,10 @@ When writing PLAN.md, include YAML frontmatter from `templates/PLAN.md`. Fill in
 
 After the `# Plan: <Project Name>` heading, include the navigation blockquote:
 ```
-> **Hub:** [[<slug>/index|<Project Name>]]
+> **Hub:** [[<slug>/<slug>-index|<Project Name>]]
 ```
 
-After writing PLAN.md, update the project's `index.md`:
+After writing PLAN.md, update the project's `<slug>-index.md`:
 1. In the Artifacts table, change the PLAN row status from `—` to `✅`
 2. Update the hub's `updated` frontmatter field to the current date
 3. Update the hub's `stage/` tag to `stage/plan`

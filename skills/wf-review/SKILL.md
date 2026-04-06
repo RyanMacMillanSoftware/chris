@@ -183,11 +183,11 @@ When writing REVIEW.md, include YAML frontmatter from `templates/REVIEW.md`. Fil
 
 After the title heading, include:
 ```
-> **Hub:** [[<slug>/index|<Project Name>]] | **PRD:** [[<slug>/PRD]] | **Tasks:** [[<slug>/TASKS]]
+> **Hub:** [[<slug>/<slug>-index|<Project Name>]] | **PRD:** [[<slug>/PRD]] | **Tasks:** [[<slug>/TASKS]]
 ```
-For non-code projects, use: `> **Hub:** [[<slug>/index|<Project Name>]] | **Plan:** [[<slug>/PLAN]] | **Tasks:** [[<slug>/TASKS]]`
+For non-code projects, use: `> **Hub:** [[<slug>/<slug>-index|<Project Name>]] | **Plan:** [[<slug>/PLAN]] | **Tasks:** [[<slug>/TASKS]]`
 
-After writing the file, update the project's `index.md`:
+After writing the file, update the project's `<slug>-index.md`:
 1. In the Artifacts table, change the REVIEW row status from `—` to `✅`
 2. Update the hub's `updated` frontmatter field
 3. Update the hub's `stage/` tag to `stage/review`

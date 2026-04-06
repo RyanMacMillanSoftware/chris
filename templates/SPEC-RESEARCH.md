@@ -13,7 +13,7 @@ updated: {{ YYYY-MM-DD }}
 
 # Spec Research: {{ Project Name }}
 
-> **Hub:** [[{{ slug }}/index|{{ Project Name }}]] | **Spec:** [[{{ slug }}/SPEC]]
+> **Hub:** [[{{ slug }}/{{ slug }}-index|{{ Project Name }}]] | **Spec:** [[{{ slug }}/SPEC]]
 
 ## Problem Context
 

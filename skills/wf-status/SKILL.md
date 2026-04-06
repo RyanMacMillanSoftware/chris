@@ -81,16 +81,16 @@ If `$ARGUMENTS` contains `--dashboard`:
 
    | Project | Type | Stage | Updated |
    |---------|------|-------|---------|
-   | [[<slug>/index|<name>]] | <type> | <stage> | <YYYY-MM-DD> |
+   | [[<slug>/<slug>-index|<name>]] | <type> | <stage> | <YYYY-MM-DD> |
 
    ## Completed
 
    | Project | Type | Completed |
    |---------|------|-----------|
-   | [[<slug>/index|<name>]] | <type> | <YYYY-MM-DD> |
+   | [[<slug>/<slug>-index|<name>]] | <type> | <YYYY-MM-DD> |
    ```
 
-   Use `[[<slug>/index|<name>]]` for all projects (link to hub note, not individual artifacts).
+   Use `[[<slug>/<slug>-index|<name>]]` for all projects (link to hub note, not individual artifacts).
 
 4. Print: `✅ Dashboard written to <vault_path>/dashboard.md`
 
@@ -99,7 +99,7 @@ If `$ARGUMENTS` contains `--dashboard`:
 ## Obsidian integration
 
 When generating the project status dashboard, link each project to its hub note:
-`[[<slug>/index|<Project Name>]]`
+`[[<slug>/<slug>-index|<Project Name>]]`
 
 Do not link to PRD or PLAN directly -- the hub note serves as the entry point.
 

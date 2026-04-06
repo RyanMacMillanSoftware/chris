@@ -13,7 +13,7 @@ updated: {{ YYYY-MM-DD }}
 
 # PRD Research: {{ Project Name }}
 
-> **Hub:** [[{{ slug }}/index|{{ Project Name }}]] | **PRD:** [[{{ slug }}/PRD]]
+> **Hub:** [[{{ slug }}/{{ slug }}-index|{{ Project Name }}]] | **PRD:** [[{{ slug }}/PRD]]
 
 ## Problem Context
 

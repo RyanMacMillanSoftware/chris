@@ -113,9 +113,9 @@ updated: YYYY-MM-DD
 ---
 ```
 
-After the title heading, include: `> **Hub:** [[<slug>/index|<Project Name>]]`
+After the title heading, include: `> **Hub:** [[<slug>/<slug>-index|<Project Name>]]`
 
-After writing release files, update the project's `index.md`:
+After writing release files, update the project's `<slug>-index.md`:
 1. Append each release file to the Artifacts table or a new Release section
 2. Update the hub's `stage/` tag to `stage/done`
 3. Update the hub's stage line to: `> **Stage:** done | **Type:** <project-type>`

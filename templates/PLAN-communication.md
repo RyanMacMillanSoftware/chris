@@ -13,7 +13,7 @@ updated: {{ YYYY-MM-DD }}
 
 # Plan: {{ Project Name }}
 
-> **Hub:** [[{{ slug }}/index|{{ Project Name }}]]
+> **Hub:** [[{{ slug }}/{{ slug }}-index|{{ Project Name }}]]
 
 ## Goal
 

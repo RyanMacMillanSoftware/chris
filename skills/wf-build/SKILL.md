@@ -76,7 +76,7 @@ Display the plan. Prompt `Proceed? [y / n to revise / s to skip]`:
 
 Include these instructions in the agent brief:
 
-"Every markdown file you write must start with YAML frontmatter (project, type, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/index|{project_name}]]`. After writing a file, append a wikilink entry to the project's `index.md` under the appropriate section (Research or Drafts)."
+"Every markdown file you write must start with YAML frontmatter (project, type, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/{slug}-index|{project_name}]]`. After writing a file, append a wikilink entry to the project's `{slug}-index.md` under the appropriate section (Research or Drafts)."
 
 ## Spawn the agent
 
