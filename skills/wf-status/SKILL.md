@@ -9,55 +9,9 @@ Show all active Chris projects and their current stage. Output is formatted as a
 `$ARGUMENTS` — optional: `all` to include done projects (default hides them), `--dashboard` to write Obsidian dashboard
 
 
-## Resolve projects directory
-
-Use the path resolution logic from `skills/_shared/paths.md`:
-
-1. Read `~/.chris/config.yml`. If `vault_path` is set and `<vault_path>/Projects/` exists:
-   → Projects dir = `<vault_path>/Projects/`
-2. Otherwise:
-   → Projects dir = `~/Code/chris/projects/`
-
 ## Read all projects
 
-Scan `<projects_dir>/*/status.json`. Read each file.
-
-## Dashboard mode
-
-If `$ARGUMENTS` contains `--dashboard`:
-
-1. Read `vault_path` from `~/.chris/config.yml`. If not set:
-   ```
-   ❌ Vault path not configured. Run scripts/install.sh to set it up.
-   ```
-   Stop.
-
-2. Scan all projects (same as table mode).
-
-3. Write `<vault_path>/dashboard.md` in Obsidian wiki-link format:
-   ```markdown
-   # Chris Dashboard
-
-   *Last updated: YYYY-MM-DD HH:MM*
-
-   ## Active Projects
-
-   | Project | Type | Stage | Updated |
-   |---------|------|-------|---------|
-   | [[Projects/<slug>/PLAN\|<name>]] | <type> | <stage> | <YYYY-MM-DD> |
-
-   ## Completed
-
-   | Project | Type | Completed |
-   |---------|------|-----------|
-   | [[Projects/<slug>/PLAN\|<name>]] | <type> | <YYYY-MM-DD> |
-   ```
-
-   Use `[[Projects/<slug>/PLAN\|<name>]]` for non-code projects and `[[Projects/<slug>/PRD\|<name>]]` for code projects.
-
-4. Print: `✅ Dashboard written to <vault_path>/dashboard.md`
-
-5. Then continue to print the normal table mode output below.
+Scan `~/Code/chris/projects/*/status.json`. Read each file.
 
 ## Dashboard mode
 

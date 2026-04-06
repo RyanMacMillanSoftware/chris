@@ -55,18 +55,7 @@ Create `~/Code/chris/projects/<slug>/` and write `status.json`:
 }
 ```
 
-**4b. Vault path handling**
-
-Read `~/.chris/config.yml` and extract `vault_path` (may not exist or be empty).
-
-If `vault_path` is set and the directory exists:
-1. Create the project directory at `<vault_path>/Projects/<slug>/` instead of `~/Code/chris/projects/<slug>/`.
-2. Create a symlink: `~/Code/chris/projects/<slug>/` → `<vault_path>/Projects/<slug>/`.
-3. Write `status.json` to `<vault_path>/Projects/<slug>/status.json` (the symlink ensures backwards compatibility).
-
-If `vault_path` is not set or directory doesn't exist, use `~/Code/chris/projects/<slug>/` directly (the default behavior in step 4).
-
-**4c. Create hub note**
+**4b. Create hub note**
 
 Create `<project_dir>/<slug>-index.md` using `~/Code/chris/templates/hub-index.md` as the template. Fill in:
 - `project`: from `status.json.project`
