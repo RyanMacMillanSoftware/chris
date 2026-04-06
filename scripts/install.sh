@@ -4,7 +4,8 @@ set -euo pipefail
 # Chris Workflow Manager — Install Script
 # Sets up symlinks, vault directories, and config.
 
-CHRIS_DIR="$HOME/Code/chris"
+# Auto-detect Chris repo location from this script's path
+CHRIS_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 CHRIS_CONFIG_DIR="$HOME/.chris"
 CLAUDE_COMMANDS_DIR="$HOME/.claude/commands"
 CLAUDE_AGENTS_DIR="$HOME/.claude/agents"
@@ -14,11 +15,12 @@ echo "==================="
 echo ""
 
 # 1. Verify Chris repo exists
-if [ ! -d "$CHRIS_DIR" ]; then
+if [ ! -f "$CHRIS_DIR/README.md" ] || [ ! -d "$CHRIS_DIR/skills" ]; then
   echo "❌ Chris repo not found at $CHRIS_DIR"
-  echo "   Clone it first: git clone <repo-url> ~/Code/chris"
+  echo "   Run this script from within the chris repo."
   exit 1
 fi
+echo "✅ Chris repo: $CHRIS_DIR"
 
 # 2. Create ~/.chris/ if missing
 mkdir -p "$CHRIS_CONFIG_DIR"
@@ -115,6 +117,6 @@ if [ -n "$vault_path" ]; then
 fi
 echo ""
 echo "Next steps:"
-echo "  cd ~/Code/chris && claude"
+echo "  cd $CHRIS_DIR && claude"
 echo "  /wf-new   — create a new project"
 echo "  /wf-status — see all projects"
