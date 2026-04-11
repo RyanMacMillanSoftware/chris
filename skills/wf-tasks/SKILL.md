@@ -112,6 +112,21 @@ Read SPEC.md and break it into phases, components, and work items. For each work
 
 5. **One bead = one commit:** Each bead should produce exactly one atomic commit.
 
+6. **Notes convention:** Append the following instruction to every bead description:
+   ```
+   When done, append notes to this bead using `bd update <id> --append-notes`:
+
+   ## Handoff Notes
+   Decisions: <key decisions made>
+   Open questions: <unresolved issues>
+   Confidence: high|medium|low
+   Test status: passed|failed|skipped|no-tests
+
+   <any additional freeform context for the next agent or reviewer>
+   ```
+
+7. **Gate bead detail:** Gate beads are executed by polecats — they must include specific validation steps, not just "all tests pass." Include: which test commands to run, which endpoints to hit, what to verify in logs/traces. The more explicit, the better the gate.
+
 ### Bead creation
 
 For each bead, run:
@@ -119,7 +134,7 @@ For each bead, run:
 ```bash
 bd create "<title>" \
   --prefix <rig-prefix> \
-  --description "<full description with steps>" \
+  --description "<full description with steps, including notes convention>" \
   --acceptance "<specific, verifiable criteria>" \
   --design-file <temp-file-with-spec-excerpt-and-hints> \
   --spec-id "<slug>/SPEC" \

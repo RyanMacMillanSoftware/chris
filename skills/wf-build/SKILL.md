@@ -56,6 +56,31 @@ Parse the convoy state:
 - **Convoy is `new` (not yet staged):**
   Proceed to "Stage and launch convoy" below.
 
+- **Some beads failed or stalled:**
+  List each failed/blocked bead and prompt:
+  ```
+  ⚠️ Failed beads detected:
+     <bead_id> TASK-NNN: <title> — <status/reason>
+
+  For each failed bead:
+    (r) Retry — re-sling the same bead to a fresh polecat
+    (e) Edit and replace — close this bead and create a revised replacement
+    (s) Skip — leave it and continue with other beads
+
+  Choice for <bead_id>? (r/e/s)
+  ```
+
+  **On retry:** `gt sling <bead_id> <rig>` — dispatches a fresh polecat. The new polecat gets the bead's design field + any notes from the failed attempt.
+
+  **On edit and replace:**
+  1. Close the failed bead: `bd update <bead_id> --status closed --close-reason "approach failed, replacing"`
+  2. Ask user what to change in the description/approach
+  3. Create a new bead with revised description, wire it into the same dependency position (`bd dep add`/`bd dep rm`)
+  4. Add to convoy: `gt convoy add <convoy_id> <new_bead_id>`
+  5. Update `bead_mapping` in status.json
+
+  **On skip:** Leave the bead as-is. Downstream beads will remain blocked.
+
 - **All beads closed (convoy complete):**
   ```
   ✅ All beads complete for '<slug>'.
