@@ -33,9 +33,9 @@ If `$ARGUMENTS` contains `--dashboard`:
 
    ## Active Projects
 
-   | Project | Type | Stage | Updated |
-   |---------|------|-------|---------|
-   | [[<slug>/<slug>-index|<name>]] | <type> | <stage> | <YYYY-MM-DD> |
+   | Project | Type | Stage | Convoy | Updated |
+   |---------|------|-------|--------|---------|
+   | [[<slug>/<slug>-index|<name>]] | <type> | <stage> | N/M beads (or —) | <YYYY-MM-DD> |
 
    ## Completed
 
