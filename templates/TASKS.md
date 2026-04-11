@@ -15,48 +15,60 @@ updated: {{ YYYY-MM-DD }}
 
 > **Hub:** [[{{ slug }}/{{ slug }}-index|{{ Project Name }}]] | **PRD:** [[{{ slug }}/PRD]] | **Spec:** [[{{ slug }}/SPEC]]
 
-> Tasks marked `[P]` can run in parallel if their deps are met.
+> ⚠️ **Generated file.** Beads are the source of truth. Edit via `bd update <id>` then run `/wf-tasks --refresh`.
 
 ---
 
 ## Phase 1 — {{ Phase Name }}
 
-- [ ] TASK-001: Short task title [P]
-  **Repos:** {{ repo-name }}
-  **Deps:** none
+### TASK-001: Short task title `[{{ bead-id }}]`
+- **Rig:** {{ rig-name }} (`{{ prefix }}`)
+- **Deps:** none
+- **Type:** scaffold
+- **Accepts:** Specific, verifiable condition.
 
-  Description of what needs to be done. Be specific enough that an agent can execute this without asking questions.
-
-  Steps:
-  - Step one
-  - Step two
-
-  **Accepts:** Specific, verifiable condition that proves this task is complete.
+Description of what needs to be done.
 
 ---
 
-- [ ] TASK-002: Short task title
-  **Repos:** {{ repo-name }}
-  **Deps:** TASK-001
+### TASK-001.1: Test stubs `[{{ bead-id }}.1]`
+- **Rig:** {{ rig-name }} (`{{ prefix }}`)
+- **Deps:** TASK-001 `[{{ bead-id }}]`
+- **Type:** test-stub
+- **Accepts:** Tests exist and fail.
 
-  Description.
+---
 
-  **Accepts:** Verifiable condition.
+### TASK-001.2: Implementation `[{{ bead-id }}.2]`
+- **Rig:** {{ rig-name }} (`{{ prefix }}`)
+- **Deps:** TASK-001.1 `[{{ bead-id }}.1]`
+- **Type:** impl
+- **Accepts:** All tests from TASK-001.1 pass.
+
+---
+
+### TASK-V01: Phase 1 validation checkpoint `[{{ gate-bead-id }}]`
+- **Rig:** hq
+- **Deps:** TASK-001.2 `[{{ bead-id }}.2]`
+- **Type:** gate
+- **Accepts:** All tests pass, all services start, integration verified.
 
 ---
 
 ## Phase 2 — {{ Phase Name }}
 
-- [ ] TASK-003: Short task title
-  **Repos:** {{ repo-name }}
-  **Deps:** TASK-001, TASK-002
+### TASK-002: Short task title `[{{ bead-id }}]`
+- **Rig:** {{ rig-name }} (`{{ prefix }}`)
+- **Deps:** TASK-V01 `[{{ gate-bead-id }}]`
+- **Type:** impl
+- **Accepts:** Verifiable condition.
 
-  Description.
-
-  **Accepts:** Verifiable condition.
+Description.
 
 ---
 
 ## Notes
 
-- Any conventions, gotchas, or context for the agent working these tasks
+- Beads are the source of truth. This file is regenerated from bead state.
+- Edit beads via `bd update <id>`, then run `/wf-tasks --refresh` to regenerate.
+- Parallelism is handled by the bead dependency graph — no `[P]` tags needed.

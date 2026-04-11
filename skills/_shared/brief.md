@@ -10,26 +10,26 @@ Include: repo identity (name, purpose, stack) and key conventions. Skip Key File
 
 Include: current sprint state only (Current Focus and any active Open Questions). Skip "Recent Decisions" unless directly relevant to the task.
 
-## Task block — full
+## Bead context — full
 
-Include the complete task entry from TASKS.md: description, Repos, Deps, Accepts.
+Run `bd show <bead_id>` and include the full output: title, description, design, acceptance criteria, and notes. If the bead has notes from a prior session, include them as prior context.
+
+The design field contains the relevant spec excerpt for this bead. The acceptance field contains the verifiable completion criteria.
 
 ## Standards — max 3 files
 
-Delegate to `/inject-standards` with keywords from the task description and task Repos field. Use the output directly; do not re-implement the matching logic here.
+Delegate to `/inject-standards` with keywords from the bead description and target rig. Use the output directly; do not re-implement the matching logic here.
 
 If `/inject-standards` is unavailable or AgentOS is not configured, skip silently and print:
 ```
 Tip: configure AgentOS path with /wf-init to enable standards injection.
 ```
 
-## Prior handoff — max 5 lines
+## Prior bead notes — max 5 lines
 
-If a handoff file exists for the immediately preceding dependency task, include only:
-- `open_questions` entries
-- `confidence` level
+If the bead has an immediate dependency (via `bd dep`), run `bd show <dep_bead_id>` and include only the notes field. This contains decisions, open questions, and confidence from the prior polecat session.
 
-Omit `files_changed`, `decisions_made`, `agent_notes`, and `completed_at` from prior handoffs.
+Omit all other fields from dependency beads.
 
 ---
 

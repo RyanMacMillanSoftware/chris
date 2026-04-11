@@ -18,6 +18,9 @@ Every project has a `status.json` file in its project directory. This document d
 | `pr_url` | string\|null | yes | `null` | GitHub PR URL, set by `/wf-review` |
 | `tags` | string[] | yes | `[]` | Freeform labels for filtering in `/wf-status` |
 | `children` | string[] | yes | `[]` | Child project slugs; used by `program` type only |
+| `convoy_id` | string\|null | yes | `null` | Gastown convoy ID tracking this project's beads, set by `/wf-tasks` |
+| `bead_mapping` | object | yes | `{}` | Maps TASK-NNN IDs to bead entries (see Bead Mapping Entry) |
+| `tested_bd_version` | string\|null | yes | `null` | Last `bd` CLI version confirmed working, set by `/wf-tasks`, checked by preflight |
 | `created` | string | yes | — | ISO-8601 timestamp of project creation |
 | `updated` | string | yes | — | ISO-8601 timestamp of last status change |
 | `closed_at` | string\|null | yes | `null` | ISO-8601 timestamp of project closure, set by `/wf-done` |
@@ -73,6 +76,24 @@ Every project has a `status.json` file in its project directory. This document d
 | `task` | string | Task identifier from TASKS.md |
 | `started_at` | string | ISO-8601 timestamp when the agent was spawned |
 
+### Bead Mapping Entry
+
+```json
+{
+  "bead_id": "ma-b2c",
+  "rig": "molly_api",
+  "prefix": "ma"
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `bead_id` | string | Gastown bead ID (prefixed, e.g., `ma-b2c`) |
+| `rig` | string | Gastown rig name this bead targets |
+| `prefix` | string | Rig prefix used for bead ID generation |
+
+The `bead_mapping` object is keyed by TASK-NNN ID. Example: `{"TASK-001": {"bead_id": "ma-b2c", "rig": "molly_api", "prefix": "ma"}}`.
+
 ### Conflict
 
 ```json
@@ -111,6 +132,12 @@ Every project has a `status.json` file in its project directory. This document d
   "pr_url": null,
   "tags": ["infrastructure", "backport"],
   "children": [],
+  "convoy_id": "hq-a3f8",
+  "bead_mapping": {
+    "TASK-001": {"bead_id": "ma-b2c", "rig": "molly_api", "prefix": "ma"},
+    "TASK-001.1": {"bead_id": "ma-b2c.1", "rig": "molly_api", "prefix": "ma"}
+  },
+  "tested_bd_version": "1.0.0",
   "created": "2026-03-29T00:00:00Z",
   "updated": "2026-03-30T10:00:00Z",
   "closed_at": null
