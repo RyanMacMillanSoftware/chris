@@ -104,10 +104,8 @@ Keep both files current. Stale context is worse than no context.
 ```bash
 cd ~/Code/my-project
 # Open Claude CLI and run:
-/wf-build              # spawns an agent session for the next task
-/wf-build --local      # prints a task brief for a local Claude session
-/wf-build --no-arch    # skip the architect pass for this run
-/wf-build --sequential # disable parallel execution, run one task at a time
+/wf-build              # dispatch beads to Gastown (code) or spawn agent (non-code)
+/wf-build --local      # print convoy status and bead details without dispatching
 ```
 
 **Code projects:** `/wf-build` runs a **stage preflight** (checks branch, convoy exists, bd version, Gastown status), then dispatches beads to Gastown via `gt convoy stage` + `gt convoy launch`. Gastown spawns polecats in worktrees, the refinery handles merging. Subsequent `/wf-build` calls check convoy progress.
