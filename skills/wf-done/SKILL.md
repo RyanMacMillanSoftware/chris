@@ -39,6 +39,15 @@ Ask: "Is the work for '<slug>' complete? This will generate release artifacts an
 
 If no, print: "Cancelled. Run again when ready."
 
+## Close convoy (code projects only)
+
+If `status.json.convoy_id` exists:
+```bash
+gt convoy close <convoy_id>
+```
+
+If convoy close fails (e.g., beads still open), warn but allow proceeding if the user confirmed above.
+
 ## Generate release artifacts
 
 Create directory `~/Code/chris/projects/<slug>/release/` if it doesn't exist.
@@ -49,7 +58,8 @@ For code projects:
 - `<project_dir>/PRD.md`
 - `<project_dir>/SPEC.md`
 - `<project_dir>/TASKS.md`
-- `status.json` (for PR URL, repos, branch)
+- `status.json` (for PR URL, repos, branch, convoy_id)
+- Bead notes from convoy beads (via `bd show <bead_id>` for each bead in `bead_mapping`)
 
 For non-code projects:
 - `<project_dir>/PLAN.md`
@@ -76,8 +86,8 @@ Base content on the PRD goals, problem statement, and completed tasks.
 
 Technical changelog for future reference. Audience: future maintainers, future agents. Include:
 - Project name, completion date, repos touched, PR URL
-- **Completed Tasks** — list all `[x]` tasks from TASKS.md
-- **Decisions Made During Build** — any notable choices, trade-offs, or things that diverged from the spec
+- **Completed Tasks** — list all completed beads/tasks (from TASKS.md view or bead_mapping)
+- **Decisions Made During Build** — from bead notes (code projects) or handoff files (non-code); any notable choices, trade-offs, or divergences from spec
 - **Deferred / Out of Scope** — anything intentionally left out
 - **Known Issues** — anything to watch for post-merge
 

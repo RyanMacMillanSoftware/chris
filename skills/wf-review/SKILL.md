@@ -34,33 +34,60 @@ Otherwise:
 git -C ~/Code/<repo>/ diff $(git -C ~/Code/<repo>/ merge-base main chris/<slug>) chris/<slug>
 ```
 
-## Consume handoff files
+## Consume bead context (code projects)
 
-Read all files matching `~/Code/chris/projects/<slug>/handoffs/*.json`.
+For code projects, read bead state instead of handoff files.
+
+Read `convoy_id` and `bead_mapping` from `status.json`.
+
+For each bead in `bead_mapping`:
+```bash
+bd show <bead_id>
+```
+
+From each bead's output, extract:
+- **Notes** — contains decisions, open questions, and confidence from polecats (replaces handoff JSON)
+- **Acceptance criteria** — the verifiable completion criteria
+- **Status** — open, in_progress, or closed
+
+Pass all bead context to the critic brief.
+
+## Consume handoff files (non-code projects)
+
+For non-code projects, read all files matching `~/Code/chris/projects/<slug>/handoffs/*.json`.
 
 For each handoff file found:
 - Collect any `open_questions` entries.
 - Note the `confidence` level.
 - Note the `test_status`.
-- Pass all handoff contents to the critic brief (see next section).
+- Pass all handoff contents to the critic brief.
 
 ## Assemble critic brief
 
-Assemble the critic brief following `skills/_shared/brief.md` (AGENTS.md excerpt, CONTEXT.md excerpt, completed task blocks, standards via `/inject-standards`). Pass all handoff contents from the previous step as the prior handoff section.
+For code projects: Assemble using `skills/_shared/brief.md` with bead context from above. Include AGENTS.md excerpt, CONTEXT.md excerpt, bead acceptance criteria, and bead notes.
+
+For non-code projects: Assemble using `skills/_shared/brief.md` with handoff contents as the prior handoff section.
 
 ## Build eval gate
 
-Before proceeding, verify that the build is complete. Checks vary by project type.
+Before proceeding, verify that the build is complete.
 
 ### Code projects
 
-**Check 1 — Task completion:** Scan `<project_dir>/TASKS.md` for any lines matching `- [ ]`. Collect the task IDs of any incomplete tasks.
+**Check — Convoy completion:** Run:
+```bash
+gt convoy status <convoy_id>
+```
 
-**Check 2 — Handoff existence:** Check whether at least one file exists in `<project_dir>/handoffs/`. A missing or empty handoffs directory means no build agent has handed off work.
+If any beads are still open or in-progress, list them and print:
+```
+❌ Build eval failed — convoy not complete.
+   Open beads: <bead-list>
+   In progress: <bead-list>
+```
+Stop.
 
-**On fail:** List each issue and print `❌ Build eval failed`. Stop.
-
-**On pass:** Both checks pass. Continue with the review flow below.
+If all beads are closed, continue.
 
 ### Research / Investigation projects
 
@@ -92,38 +119,38 @@ Skip this section entirely if `--no-critic` flag is set.
 
 Spawn a synchronous critic sub-agent (using the Task tool, in-session) with:
 - The full diff gathered above
-- Task acceptance criteria from TASKS.md (all completed tasks)
-- All handoff JSON contents from `~/Code/chris/projects/<slug>/handoffs/*.json`
-- Injected AgentOS standards (see above)
+- Bead acceptance criteria (code projects) or task acceptance criteria from TASKS.md (non-code)
+- Bead notes (code projects) or handoff JSON contents (non-code)
+- Injected AgentOS standards (if available)
 
-Sub-agent instruction: "Review this diff. For each completed task: does the diff satisfy the acceptance criteria? Note any standards violations. Produce a structured verdict."
+Sub-agent instruction: "Review this diff. For each completed bead/task: does the diff satisfy the acceptance criteria? Note any standards violations. Produce a structured verdict."
 
 Display the critic output labeled "Agent Pre-Review" **above** the human review report, using this exact format:
 ```
 ## Agent Pre-Review
 
-- [x] TASK-001 — ✅ Auth module matches acceptance criteria.
-- [x] TASK-002 — ✅ Tests pass. ⚠️ Missing test for expired token (open question in handoff).
-- [ ] TASK-003 — ❌ No changelog update found in diff.
+- [x] <bead-id> TASK-001 — ✅ Auth module matches acceptance criteria.
+- [x] <bead-id> TASK-002 — ✅ Tests pass. ⚠️ Missing test for expired token (open question in notes).
+- [ ] <bead-id> TASK-003 — ❌ No changelog update found in diff.
 
-Open questions from handoffs:
-- TASK-002: Should token refresh be automatic? (confidence: medium)
+Open questions from bead notes:
+- TASK-002 (<bead-id>): Should token refresh be automatic? (confidence: medium)
 
 **Verdict:** PASS WITH NOTES
 ```
 
 The critic verdict is advisory — it does not block the review from proceeding.
 
-## Review against spec and tasks
+## Review against spec and beads
 
-Read `~/Code/chris/projects/<slug>/SPEC.md` and `TASKS.md` in full.
+Read `~/Code/chris/projects/<slug>/SPEC.md` in full.
 
 Evaluate the diff against each criterion:
 
-**Per task (from TASKS.md):**
-- Is the task checkbox marked `[x]`?
+**Per bead (code projects) / per task (non-code):**
+- Is the bead closed / task checkbox marked?
 - Does the diff show changes that satisfy the acceptance criteria?
-- Cite specific evidence from the diff for each task (file names and line ranges if possible).
+- Cite specific evidence from the diff (file names and line ranges if possible).
 - Are there any obvious gaps?
 
 **Against the spec:**
@@ -147,21 +174,17 @@ Format the report as:
 ### Agent Pre-Review
 <critic agent output, if not skipped>
 
-### Tasks
-- [x] TASK-001: title — ✅ Complete
+### Beads / Tasks
+- [x] <bead-id> TASK-001: title — ✅ Complete
   Evidence: src/auth/jwt.ts (lines 45–89), tests/auth/jwt.test.ts (12 test cases)
-- [x] TASK-002: title — ✅ Complete
+- [x] <bead-id> TASK-002: title — ✅ Complete
   Evidence: src/models/user.ts (lines 12–34)
-- [ ] TASK-003: title — ❌ Not done / acceptance criteria not met
-  ⚠️ Unverified — no specific evidence found in diff
+- [ ] <bead-id> TASK-003: title — ❌ Not done / acceptance criteria not met
 
-Note: distinguish file-exists parity (file is present in the diff) from test-passes parity
-(tests are present and verifiably correct) in report language.
-
-### Handoff Notes
-Tasks with open questions or lower confidence that deserve closer scrutiny:
-- TASK-002 (confidence: medium): Should token refresh be automatic?
-- TASK-004 (confidence: low): Performance under load not yet verified.
+### Bead Notes Summary
+Tasks with open questions or lower confidence:
+- TASK-002 (<bead-id>, confidence: medium): Should token refresh be automatic?
+- TASK-004 (<bead-id>, confidence: low): Performance under load not yet verified.
 
 ### Spec Compliance
 ✅ Architecture matches spec
@@ -213,7 +236,7 @@ gh pr create --repo <github-org>/<repo> --head chris/<slug> --base <default_bran
 **Generated PR body** should include:
 - Link to `~/Code/chris/projects/<slug>/PRD.md` relative path
 - Summary of what was built (from PRD overview + goals)
-- List of completed tasks
+- List of completed beads/tasks
 - Any known issues or deferred items from the review
 
 Record the PR URL in `status.json` as `pr_url`.
