@@ -33,9 +33,9 @@ If `$ARGUMENTS` contains `--dashboard`:
 
    ## Active Projects
 
-   | Project | Type | Stage | Updated |
-   |---------|------|-------|---------|
-   | [[<slug>/<slug>-index|<name>]] | <type> | <stage> | <YYYY-MM-DD> |
+   | Project | Type | Stage | Convoy | Updated |
+   |---------|------|-------|--------|---------|
+   | [[<slug>/<slug>-index|<name>]] | <type> | <stage> | N/M beads (or —) | <YYYY-MM-DD> |
 
    ## Completed
 
@@ -80,6 +80,8 @@ Use this exact format — plain text, emoji for stage, no tables:
 
 🟢 <slug> — build (code)
    Repos: <repo1>, <repo2>
+   Convoy: <convoy_id> — N/M beads done, Wave W in progress
+   Ready: <bead1>, <bead2> (N beads unblocked)
    ⚠️  Conflict: <repo> ↔ <competing-project>
 
 🟡 <slug> — tasks (code)
@@ -110,6 +112,11 @@ Use this exact format — plain text, emoji for stage, no tables:
 **Type display:** Show the project type in parentheses after the stage: `build (code)`, `plan (research)`, etc. Read `project_type` from each project's `status.json`.
 
 **Conflict indicator:** Only show the `⚠️ Conflict` line if the project's `conflicts` array contains entries where `resolved` is `false`.
+
+**Convoy indicator (code projects only):** If `status.json.convoy_id` exists, run:
+- `gt convoy status <convoy_id>` to get completion counts and current wave
+- `bd ready` per rig prefix (from `bead_mapping`) to get unblocked bead count
+Show convoy progress on the line after Repos. For projects without a `convoy_id`, skip the convoy lines.
 
 **Active agent indicator:** Show `(agent running)` in the build line if `active_agents` array is non-empty.
 

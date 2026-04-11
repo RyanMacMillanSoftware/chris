@@ -1,17 +1,16 @@
 ---
-description: "Spawn an agent to work on the next task. Manages git and loads context."
+description: "Dispatch beads to Gastown for execution. Check convoy progress."
 ---
 
 # /wf-build
 
-Spawn an agent to work on the next incomplete task in a project. Set up worktrees if needed. Load all relevant context. Manage git.
+Dispatch project beads to Gastown for execution via convoy stage and launch. On subsequent calls, check convoy progress.
 
-`$ARGUMENTS` — optional: `<project-slug>`, `<project-slug> --local`, `<project-slug> --no-arch`, `<project-slug> --sequential`
+`$ARGUMENTS` — optional: `<project-slug>`, `<project-slug> --local`, `<project-slug> --sequential`
 
 **Flags:**
-- `--local` — Print the agent brief to the terminal instead of spawning a subagent.
-- `--no-arch` — Skip the architect pass entirely for this invocation.
-- `--sequential` — Disable parallel execution; pick only the first ready task and proceed as single-task flow.
+- `--local` — Print convoy status and bead details instead of dispatching.
+- `--sequential` — Not applicable for bead-native builds (Gastown manages wave dispatch). Accepted but ignored for backwards compatibility.
 
 ## Determine the target project
 
@@ -31,183 +30,172 @@ Read `project_type` from `status.json`. Default to `"code"` if the field is abse
 
 **Branch gate — program projects:** If `project_type == "program"`, skip to the [Program path] section below. Do not proceed with the standard task flow.
 
-## Find the next task
+## Check convoy state
 
-Read TASKS.md. Find the first unchecked `- [ ] TASK-NNN`. If all checked, print `✅ All tasks complete for '<slug>'. Run /wf-review.` and stop.
+Read `convoy_id` from `status.json`. Run:
 
-## Parallel detection
-
-Find ready tasks (all `Deps:` are `"none"` or checked `[x]`). From those, collect tasks tagged `[P]`.
-
-- `--sequential`: skip parallel detection, pick only the first ready task.
-- **2+ ready `[P]` tasks:** show `⚡ N parallelizable tasks ready: TASK-XXX, TASK-YYY. Spawn in parallel? (y/n)`. Yes → treat all as current batch (each gets its own brief + subagent, all IDs added to `status.json.active_agents`). No → single-task flow.
-- **0–1 ready `[P]` tasks:** single-task flow.
-
-## Check for conflicts
-
-For each repo, find other `chris/*` branches and compare their changed files against this project's changed files (use `git diff --name-only $(git merge-base main <branch>) <branch>`). If any files overlap, notify the user and add an entry to `status.json` conflicts array: `{"repo", "competing_project", "files", "detected_at", "resolved": false}`.
-
-## Set up worktrees
-
-**Skip this section entirely if `project_type` is `"writing"` or `"research"`.**
-
-If a competing branch exists on the repo, use a worktree at `~/Code/.chris-worktrees/<slug>/<repo>/` (create with `git worktree add` if absent; run `install_cmd` from AGENTS.md front matter if set; update `status.json` worktrees map). Otherwise check out `chris/<slug>` directly in `~/Code/<repo>/`.
-
-## Assemble agent context
-
-**Skip this section if `project_type` is `"writing"` (already handled by the branch gate above) or `"research"` (jump to [Research path] below).**
-
-Read PRD.md, SPEC.md, TASKS.md, and each involved repo's AGENTS.md. Assemble the brief following `skills/_shared/brief.md` (AGENTS.md excerpt, CONTEXT.md excerpt, task block, standards via `/inject-standards`, prior handoff — all with section budgets). Working directory is the worktree path if set up, else `~/Code/<repo>/`.
-
-## Architect pass (per task)
-
-**Skip this section if `project_type` is `"writing"` or `"research"`.**
-
-Skip if `--no-arch` is set. For parallel tasks run passes sequentially, confirm all, then spawn builders.
-
-Spawn a synchronous architect sub-agent (Task tool, in-session) with the task description + acceptance criteria + SPEC.md Architecture section + any injected standards. Instruction: "Produce a short implementation plan — no file writes. Which files, what changes, what approach. Max one screen."
-
-Display the plan. Prompt `Proceed? [y / n to revise / s to skip]`:
-- **y** → append plan to brief as `## Architect Plan`, spawn builder
-- **n** → ask what to change, re-run with feedback, loop until y or s
-- **s** → skip plan, spawn builder immediately
-
-## Obsidian integration (passthrough)
-
-Include these instructions in the agent brief:
-
-"Every markdown file you write must start with YAML frontmatter (project, type, tags, aliases, created, updated). After the title heading, include: `> **Hub:** [[{slug}/{slug}-index|{project_name}]]`. After writing a file, append a wikilink entry to the project's `{slug}-index.md` under the appropriate section (Research or Drafts)."
-
-## Spawn the agent
-
-### project_type == "code"
-
-**Default (no `--local` flag):**
-
-Spawn a subagent with a brief assembled per `skills/_shared/brief.md`, plus:
-```
-You are working on project '<slug>', task <TASK-NNN>: <title>.
-Working directory: <worktree-or-repo-path>
-Branch: chris/<slug>
-
-[Assembled context per skills/_shared/brief.md]
-
-## Architect Plan
-<approved architect plan, if any>
-
-Git instructions:
-- You are on branch chris/<slug>. Do not switch branches.
-- Commit at logical checkpoints using conventional commits (feat:, fix:, chore:, etc.)
-- Do not push — /wf-review handles pushing
-
-## Handoff instructions (section E)
-
-When done with this task:
-1. Mark the task [x] in TASKS.md
-2. Generate handoff per `skills/_shared/handoff.md`
-3. Commit all changes (TASKS.md + handoff + source)
-4. Report: "Build complete: <slug> TASK-NNN done"
-
-## CONTEXT.md update instructions (section F)
-
-Update CONTEXT.md on completion:
-- Set "Current Focus" to the next expected work
-- Add key decisions to "Recent Decisions"
-- Remove any resolved items from "Open Questions"
+```bash
+gt convoy status <convoy_id>
 ```
 
-**With `--local` flag:** Print the brief to the terminal. Tell the user to open a new Claude session: `cd <worktree-or-repo-path> && claude`.
+Parse the convoy state:
 
-### project_type == "writing"
+- **Convoy is `staged` or `launched` with in-progress beads:**
+  Print a status summary showing beads in-progress and beads queued.
+  ```
+  🟢 Gastown is working on '<slug>'.
+     Convoy: <convoy_id>
+     In progress: <bead-list>
+     Queued: <N> beads remaining
 
-This path is handled by the branch gate in "Stage preflight". If execution reaches this point for a writing project, delegate now: follow all instructions in `skills/wf-write/SKILL.md` starting from "Load context." Do not continue past this subsection.
+  Gastown manages dispatch. Run /wf-status to check progress.
+  Run /wf-review when all beads are complete.
+  ```
+  Stop. No further action needed.
 
-### project_type == "research"
+- **Convoy is `new` (not yet staged):**
+  Proceed to "Stage and launch convoy" below.
 
-**Default (no `--local` flag):**
+- **Some beads failed or stalled:**
+  List each failed/blocked bead and prompt:
+  ```
+  ⚠️ Failed beads detected:
+     <bead_id> TASK-NNN: <title> — <status/reason>
 
-Spawn a subagent with the following brief:
+  For each failed bead:
+    (r) Retry — re-sling the same bead to a fresh polecat
+    (e) Edit and replace — close this bead and create a revised replacement
+    (s) Skip — leave it and continue with other beads
+
+  Choice for <bead_id>? (r/e/s)
+  ```
+
+  **On retry:** `gt sling <bead_id> <rig>` — dispatches a fresh polecat. The new polecat gets the bead's design field + any notes from the failed attempt.
+
+  **On edit and replace:**
+  1. Close the failed bead: `bd update <bead_id> --status closed --close-reason "approach failed, replacing"`
+  2. Ask user what to change in the description/approach
+  3. Create a new bead with revised description, wire it into the same dependency position (`bd dep add`/`bd dep rm`)
+  4. Add to convoy: `gt convoy add <convoy_id> <new_bead_id>`
+  5. Update `bead_mapping` in status.json
+
+  **On skip:** Leave the bead as-is. Downstream beads will remain blocked.
+
+- **All beads closed (convoy complete):**
+  ```
+  ✅ All beads complete for '<slug>'.
+     Convoy: <convoy_id>
+
+  Run /wf-review to review the work.
+  ```
+  Stop.
+
+## --local flag
+
+If `--local` is set:
+1. Print convoy status (same as above)
+2. Print details for each ready bead: `bd show <bead_id>` for all beads returned by `bd ready`
+3. Print: "To dispatch manually: `gt sling <bead_id> <rig>`"
+4. Stop. Do not stage or launch.
+
+## Stage and launch convoy
+
+### Stage
+
+```bash
+gt convoy stage <convoy_id>
+```
+
+This analyzes dependencies and computes execution waves. Print the wave plan:
 
 ```
-You are working on project '<slug>', task <TASK-NNN>: <title>.
-Working directory: ~/Code/chris/projects/<slug>/research/
-
-## Project context
-
-<PRD overview paragraph — one short paragraph summarizing the project goal>
-
-## Task
-
-<Full task block from TASKS.md, including the Question: and Deliverable: fields>
-
-## Research instructions
-
-- Research the question stated in the task using primary sources, peer-reviewed publications,
-  and official documentation. Prefer these over secondary summaries.
-- Synthesize your findings into a clear, well-structured markdown document.
-- Cite every source as a markdown link including the page title and the date accessed:
-  [Title](https://example.com) — accessed <YYYY-MM-DD>
-- Output a single markdown file named after the task title (lowercase, hyphenated, .md extension).
-  Example: for "TASK-004: LLM Benchmarks 2025" → `llm-benchmarks-2025.md`
-- Save the file to: ~/Code/chris/projects/<slug>/research/
-- Do not create subdirectories under research/. Do not write to any other location.
-- Do not write any code, scripts, or technical implementation. Research and prose only.
-- Do not set up git worktrees, branches, or make git commits.
-
-## Acceptance criterion
-
-Deliverable file exists in ~/Code/chris/projects/<slug>/research/ and covers all points in
-the task's Deliverable field, with all sources cited.
-
-There is no test-pass criterion for research tasks.
-
-## Handoff instructions (section E)
-
-When done with this task:
-1. Mark the task [x] in ~/Code/chris/projects/<slug>/TASKS.md
-2. Generate handoff file at ~/Code/chris/projects/<slug>/handoffs/<TASK-NNN>.json with fields:
-   - task: "<TASK-NNN>"
-   - title: "<task title>"
-   - completed_at: "<ISO8601 timestamp>"
-   - output_file: "<filename>.md"
-   - confidence: "high" | "medium" | "low"
-   - open_questions: [] or list of strings
-   - notes: brief summary of research findings and sources used
-3. Report: "Build complete: <slug> <TASK-NNN> done"
+📋 Wave plan for '<slug>':
+   Wave 1: <bead-list> (<N> beads)
+   Wave 2: <bead-list> (<N> beads)
+   Wave 3: <bead-list> (<N> beads)
+   ...
 ```
 
-**With `--local` flag:** Print the brief to the terminal. Tell the user to open a new Claude session: `cd ~/Code/chris/projects/<slug>/research/ && claude`.
+### Confirm launch
+
+Show the wave plan to the user:
+```
+Ready to launch Wave 1? This will spawn polecats in Gastown. (y/n)
+```
+
+If no, print "Launch cancelled. Run `/wf-build` again when ready." and stop.
+
+### Launch
+
+```bash
+gt convoy launch <convoy_id>
+```
+
+Gastown dispatches Wave 1 beads to their target rigs, spawning polecats. Subsequent waves are dispatched automatically as dependencies are resolved.
 
 ## Update status.json
 
-Set `stage` to `"build"`. Add `{"task": "TASK-NNN", "started_at": "<ISO8601>"}` to `active_agents`. Update `updated`. Commit: `chore: start build for <slug> TASK-NNN`.
+Set `stage` to `"build"`. Clear `active_agents` (Gastown manages agents now). Update `updated` timestamp.
 
-**Note for `"writing"` projects:** status.json update is handled inside `wf-write`; skip this step.
-
-**Note for `"research"` projects:** run the update directly here.
+Commit:
+```bash
+git -C ~/Code/chris/projects add <slug>/status.json && git -C ~/Code/chris/projects commit -m "chore: start build for <slug>"
+```
 
 ## Print confirmation
 
-For `"code"` projects:
 ```
-🟢 Build started: <slug> — TASK-NNN: <title>
-   Working in: <working-directory>
-   Branch: chris/<slug>
-```
+🟢 Build launched: <slug>
+   Convoy: <convoy_id>
+   Wave 1 dispatched: <bead-list>
+   Remaining waves: <N>
 
-For `"writing"` projects: print confirmation is handled by `wf-write`.
-
-For `"research"` projects:
-```
-🟢 Build started: <slug> — TASK-NNN: <title>
-   Working in: ~/Code/chris/projects/<slug>/research/
+Gastown manages execution from here.
+Run /wf-build again to check progress, or /wf-status for overview.
+Run /wf-review when all beads are complete.
 ```
 
 ---
 
 ## Research path
 
-_Entered when `project_type == "research"` after "Find the next task" and "Parallel detection". Skip "Check for conflicts", "Set up worktrees", "Assemble agent context", and "Architect pass". Proceed directly to [Spawn the agent — project_type == "research"] above, then "Update status.json" and "Print confirmation"._
+_Entered when `project_type == "research"` after preflight._
+
+Research projects do not use beads. Follow the legacy flow:
+
+1. Read TASKS.md. Find the first unchecked `- [ ] TASK-NNN`. If all checked, print `✅ All tasks complete for '<slug>'. Run /wf-review.` and stop.
+
+2. Spawn a subagent with the research brief:
+   ```
+   You are working on project '<slug>', task <TASK-NNN>: <title>.
+   Working directory: ~/Code/chris/projects/<slug>/research/
+
+   ## Project context
+   <PRD overview paragraph>
+
+   ## Task
+   <Full task block from TASKS.md, including Question: and Deliverable: fields>
+
+   ## Research instructions
+   - Research the question using primary sources, peer-reviewed publications, and official documentation.
+   - Synthesize findings into a clear, well-structured markdown document.
+   - Cite every source as a markdown link: [Title](url) — accessed <YYYY-MM-DD>
+   - Save output to: ~/Code/chris/projects/<slug>/research/<task-title-slugified>.md
+   - Do not write code. Research and prose only.
+   - Do not set up git worktrees or branches.
+
+   ## When done
+   1. Mark the task [x] in TASKS.md
+   2. Report: "Build complete: <slug> <TASK-NNN> done"
+   ```
+
+3. Update status.json: set stage to `"build"`, add to `active_agents`, update timestamp. Commit.
+
+4. Print:
+   ```
+   🟢 Build started: <slug> — TASK-NNN: <title>
+      Working in: ~/Code/chris/projects/<slug>/research/
+   ```
 
 ---
 

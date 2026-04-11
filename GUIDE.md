@@ -25,8 +25,8 @@ Every project has a **workflow**, **context files**, and a **home**.
 | `/wf-new [name]` | Scaffolds project directory + Chris registry entry | `~/Code/<name>/`, `AGENTS.md` |
 | `/wf-prd` | Guides you through writing a Product Requirements Document | `PRD.md` |
 | `/wf-spec` | Writes a technical spec from the PRD | `SPEC.md` |
-| `/wf-tasks` | Breaks the spec into ordered, testable tasks | `TASKS.md` |
-| `/wf-build` | Spawns an agent loaded with your project context | Running agent |
+| `/wf-tasks` | Breaks the spec into beads, creates convoy, generates TASKS.md view | Beads + `TASKS.md` |
+| `/wf-build` | Dispatches beads to Gastown (code) or spawns agent (non-code) | Convoy launch / agent |
 | `/wf-review` | Reviews the current diff against spec + tasks | Review report |
 | `/wf-done` | Closes a merged project and writes release artifacts | `release/` docs |
 | `/wf-status` | Shows all projects and their current stage | Status list |
@@ -110,11 +110,13 @@ cd ~/Code/my-project
 /wf-build --sequential # disable parallel execution, run one task at a time
 ```
 
-Before spawning a builder, `/wf-build` runs a **stage preflight** (checks branch, stage, and required docs) and an **architect pass** — a synchronous sub-agent that produces a one-screen implementation plan for your approval. Approve, revise, or skip before the builder runs.
+**Code projects:** `/wf-build` runs a **stage preflight** (checks branch, convoy exists, bd version, Gastown status), then dispatches beads to Gastown via `gt convoy stage` + `gt convoy launch`. Gastown spawns polecats in worktrees, the refinery handles merging. Subsequent `/wf-build` calls check convoy progress.
 
-If multiple tasks are tagged `[P]` and their dependencies are met, Chris offers to spawn them as concurrent sub-agents.
+Polecats get task context from the bead's design field (relevant spec excerpt) and append structured handoff notes to the bead on completion — decisions, open questions, confidence, and test status.
 
-Each builder writes a `handoffs/TASK-NNN.json` on completion — capturing files changed, decisions made, confidence level, and open questions for the next agent.
+If a bead fails, `/wf-build` offers retry (re-sling to fresh polecat), edit and replace (close + create revised bead), or skip.
+
+**Non-code projects:** `/wf-build` spawns agent sessions directly (research, writing, investigation, communication). Each builder writes a `handoffs/TASK-NNN.json` on completion.
 
 ---
 
@@ -167,6 +169,6 @@ AgentOS is opt-in — Chris degrades gracefully if it's not configured.
 - **Keep AGENTS.md current.** Stale context is worse than no context.
 - **Update CONTEXT.md per task.** Builders do this automatically; check it if something feels off.
 - **Don't skip the PRD.** Even a rough one catches assumptions before they become bugs.
-- **Use `[P]` tags in TASKS.md.** Independent tasks tagged `[P]` can run in parallel — big throughput win.
+- **Beads handle parallelism.** For code projects, Gastown dispatches beads in waves based on the dependency graph — no manual tagging needed.
 - **`/wf-review` before merging.** Runs a critic agent pre-review + the human report. Takes 2 minutes, catches drift from the original spec.
 - **Run multiple builds in parallel.** Chris is designed for concurrent projects — use it.

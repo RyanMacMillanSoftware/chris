@@ -18,17 +18,42 @@ Run these checks before proceeding. Stop on any failure.
    ```
    Stop.
 
-3. **Required files check:**
+3. **Required files and convoy check:**
 
-   For `code` projects: Verify all three of these files exist in the project folder (resolved per `_shared/paths.md`):
+   For `code` projects: Verify these files exist in the project folder:
    - `<project_dir>/PRD.md`
    - `<project_dir>/SPEC.md`
-   - `<project_dir>/TASKS.md`
+
+   AND verify `status.json.convoy_id` is non-null. If convoy_id is null:
+   ```
+   ❌ No convoy found. Run /wf-tasks to create beads and a convoy.
+   ```
+   Stop.
 
    For non-code projects: Verify this file exists:
    - `<project_dir>/PLAN.md`
 
    List any missing files and stop if any are absent.
+
+3b. **bd version check (code projects only):**
+
+   Run `bd version` and parse the version string. Compare against `status.json.tested_bd_version`.
+
+   If different:
+   ```
+   ⚠️ bd version changed (<tested_version> → <current_version>). Beads may behave differently.
+   ```
+   Warn only — do not block.
+
+3c. **Gastown check (code projects only):**
+
+   Check if the Gastown daemon is running: `gt status` or check for PID file at `~/gt/daemon/daemon.pid`.
+
+   If not running:
+   ```
+   ⚠️ Gastown is not running. Start with `gt up` before dispatching.
+   ```
+   Warn only — do not block.
 
 4. **Branch check (code projects only):** Verify the current git branch in each repo equals `status.json.branch`. If there is a mismatch:
    ```
