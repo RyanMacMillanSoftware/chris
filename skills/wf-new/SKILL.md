@@ -149,28 +149,39 @@ Print: `Created N child project stubs.`
 
 **6. AgentOS install (optional)**
 
-Ask: "Set up AgentOS standards in this repo? (y/n)"
+**If no repo was identified in step 5**, skip this step entirely.
 
-- **If y:**
-  1. Read `agent_os_path` from `~/.chris/config.yml`. If the file does not exist or the key is not set, print:
-     ```
-     ⚠️  AgentOS path not configured. Run /wf-init to set it up, or clone
-         AgentOS and run the install script manually:
-         git clone https://github.com/buildermethods/agent-os ~/your/path/agent-os
-         bash ~/your/path/agent-os/scripts/project-install.sh
-     ```
-     Then skip the AgentOS install step.
-  2. If the path is configured and the directory exists on disk, run from the repo directory:
-     ```bash
-     bash <agent-os-path>/scripts/project-install.sh
-     ```
-  3. Print:
-     ```
-     ✅ AgentOS installed in ~/Code/<repo>/agent-os/
-        Run /discover-standards inside <repo> to extract standards from your codebase.
-        Edit agent-os/standards/global/tech-stack.md to document your stack.
-     ```
-- **If n:** Skip silently.
+**If a repo was identified in step 5:**
+
+First, check if `~/Code/<repo>/agent-os/` already exists:
+
+- **If it exists**, print:
+  ```
+  AgentOS already installed in ~/Code/<repo>/agent-os/
+  ```
+  Then skip the prompt and continue to step 7.
+
+- **If it does not exist**, ask: "Set up AgentOS standards in this repo? (y/n)"
+  - **If y:**
+    1. Read `agent_os_path` from `~/.chris/config.yml`. If the file does not exist or the key is not set, print:
+       ```
+       ⚠️  AgentOS path not configured. Run /wf-init to set it up, or clone
+           AgentOS and run the install script manually:
+           git clone https://github.com/buildermethods/agent-os ~/your/path/agent-os
+           bash ~/your/path/agent-os/scripts/project-install.sh
+       ```
+       Then skip the AgentOS install step.
+    2. If the path is configured and the directory exists on disk, run from the repo directory:
+       ```bash
+       bash <agent-os-path>/scripts/project-install.sh
+       ```
+    3. Print:
+       ```
+       ✅ AgentOS installed in ~/Code/<repo>/agent-os/
+          Run /discover-standards inside <repo> to extract standards from your codebase.
+          Edit agent-os/standards/global/tech-stack.md to document your stack.
+       ```
+  - **If n:** Skip silently.
 
 **7. Commit to projects repo**
 
